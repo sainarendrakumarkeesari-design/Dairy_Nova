@@ -33,6 +33,7 @@ class DairyDovaApp {
     this.updateLiveSensorUI();
     this.refreshPassbook();
     this.refreshAdminDashboard();
+    this.updateDeviceStatusUI(sessionStorage.getItem('dairy_nova_hardware_connected') === 'true');
 
     document.addEventListener('click', () => {
       if (window.soundCtrl) window.soundCtrl.init();
