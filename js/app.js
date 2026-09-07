@@ -433,21 +433,56 @@ class DairyDovaApp {
   }
 
   openRegisterFarmerModal() {
-    this.openFarmerLoginModal('signup');
+    window.location.href = 'farmer-auth.html?mode=signup';
   }
 
-  // Farmer Portal Modal (Sign In & Sign Up)
+  // Farmer Portal Navigation (Redirect to dedicated page)
   openFarmerLoginModal(initialTab = 'signin') {
-    const modal = document.getElementById('modal-farmer-login');
-    if (modal) {
-      modal.classList.add('modal-open');
-      this.switchFarmerModalTab(initialTab);
-    }
+    window.location.href = initialTab === 'signup' ? 'farmer-auth.html?mode=signup' : 'farmer-auth.html';
   }
 
   closeFarmerLoginModal() {
     const modal = document.getElementById('modal-farmer-login');
     if (modal) modal.classList.remove('modal-open');
+  }
+
+  // Device Connection Controller
+  toggleDeviceConnection() {
+    if (window.sensorEngine) {
+      const isConn = window.sensorEngine.isDeviceConnected();
+      if (isConn) {
+        window.sensorEngine.disconnectDevice();
+        this.updateDeviceStatusUI(false);
+        this.showToast('🔴 ESP32 Sensors disconnected', 'info');
+        if (window.soundCtrl) window.soundCtrl.playTick();
+      } else {
+        window.sensorEngine.connectDevice();
+        this.updateDeviceStatusUI(true);
+        this.showToast('🟢 ESP32 Sensors connected & calibrated successfully!', 'success');
+        if (window.soundCtrl) window.soundCtrl.playSuccessChime();
+      }
+    }
+  }
+
+  updateDeviceStatusUI(connected) {
+    const isConn = connected !== undefined ? connected : (window.sensorEngine ? window.sensorEngine.isDeviceConnected() : false);
+    const pill = document.getElementById('index-iot-pill');
+    const dot = document.getElementById('index-iot-dot');
+    const text = document.getElementById('index-iot-text');
+    const btn = document.getElementById('index-btn-connect-device');
+
+    if (dot) {
+      dot.style.background = isConn ? '#10b981' : '#ef4444';
+      dot.style.boxShadow = isConn ? '0 0 10px #10b981' : 'none';
+    }
+    if (text) {
+      text.innerText = isConn ? 'ESP32 SENSORS: ONLINE' : 'DEVICE: DISCONNECTED';
+      text.style.color = isConn ? '#10b981' : '#ef4444';
+    }
+    if (btn) {
+      btn.innerText = isConn ? '🔌 Disconnect Device' : '🔌 Connect Device';
+      btn.className = isConn ? 'btn btn-sm btn-outline' : 'btn btn-sm btn-primary';
+    }
   }
 
   switchFarmerModalTab(tab = 'signin') {
