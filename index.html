@@ -1,0 +1,2649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DAIRY DOVA | Smart Milk Quality, Purity & RFID Cloud-Based Pricing System</title>
+  <meta name="description" content="Automated milk quality testing with IoT sensors, interactive RFID farmer identification scanner, farmer registration, 5-tier purity grading, and cloud pricing management.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- ==================== HEADER & TOP NAVIGATION ==================== -->
+  <header class="header-glass">
+    <div class="nav-container">
+      <div class="brand-wrapper" onclick="window.app.switchSection('overview')">
+        <img src="assets/logo.svg" alt="DAIRY DOVA" class="brand-logo-img">
+        <span class="brand-badge">IoT CLOUD v2.5</span>
+      </div>
+
+      <nav class="nav-tabs" role="tablist">
+        <button class="nav-btn active" data-section="overview" role="tab" id="nav-overview">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Overview
+        </button>
+        <button class="nav-btn" data-section="testing-station" role="tab" id="nav-testing">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+          RFID Scan &amp; Milk Test
+        </button>
+        <button class="nav-btn" data-section="quality-rules" role="tab" id="nav-quality-rules">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          Quality Rules
+        </button>
+        <button class="nav-btn" data-section="pricing" role="tab" id="nav-pricing">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          Pricing Engine
+        </button>
+        <button class="nav-btn" data-section="passbook" role="tab" id="nav-passbook">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          Farmer Passbook
+        </button>
+        <button class="nav-btn" data-section="admin" role="tab" id="nav-admin">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          Dairy Cooperative
+        </button>
+        <button class="nav-btn" data-section="traceability" role="tab" id="nav-trace">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+          Purity Traceability
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <!-- 3 Role Portals Quick Switcher -->
+        <div class="portal-switch-bar" id="portal-switch-bar">
+          <button class="portal-switch-btn" data-portal="passbook" onclick="window.app.switchSection('passbook')" title="Switch to Farmer Portal">
+            👨‍🌾 Farmer
+          </button>
+          <button class="portal-switch-btn active" data-portal="testing-station" onclick="window.app.switchSection('testing-station')" title="Switch to Collection Center">
+            🏭 Collection Center
+          </button>
+          <button class="portal-switch-btn" data-portal="admin" onclick="window.app.switchSection('admin')" title="Switch to Admin Portal">
+            🏢 Admin
+          </button>
+        </div>
+
+        <div class="iot-pill" title="Hardware Controller: ESP32-WROOM Active">
+          <div class="live-dot"></div>
+          <span>ESP32 SENSORS: ONLINE</span>
+        </div>
+        <button class="sound-toggle-btn" id="sound-toggle-btn" title="Toggle Synthesizer Audio">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
+        </button>
+        <button class="theme-toggle-btn" id="theme-toggle-btn" title="Toggle Light/Dark Theme">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9h-1m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="main-wrapper">
+
+    <!-- 1. OVERVIEW SECTION (FOCUSED LAUNCHPAD: FARMER LOGIN, ADMIN LOGIN, START MILK TEST, NEW REGISTRATION) -->
+    <section class="app-section active-section" id="section-overview">
+      <div class="overview-launchpad">
+        <!-- Hero Header -->
+        <div class="overview-launchpad-header">
+          <div class="overview-portal-badge">
+            <span class="live-dot" style="background: #10b981;"></span>
+            <span>DAIRY DOVA &bull; SMART MILK QUALITY ECOSYSTEM</span>
+          </div>
+          <h1 class="overview-portal-title">
+            SMART MILK <span class="gradient-text">QUALITY SYSTEM</span>
+          </h1>
+          <p class="overview-portal-sub">
+            Welcome to the centralized dairy portal. Access farmer records, cooperative admin management, automated optical milk quality testing, and new producer onboarding.
+          </p>
+        </div>
+
+        <!-- 4 Primary Action Cards Grid: Farmer Login, Admin Login, Start Milk Test, New Registration -->
+        <div class="overview-cards-grid">
+          <!-- 1. FARMER LOGIN -->
+          <div class="overview-hub-card hub-card-farmer" onclick="window.app.openFarmerLoginModal()" id="card-farmer-login">
+            <div>
+              <div class="hub-card-top">
+                <div class="hub-card-icon icon-bg-green">
+                  👨‍🌾
+                </div>
+                <span class="hub-pill pill-green">PRODUCER PORTAL</span>
+              </div>
+              <h3 class="hub-card-title">Farmer Login</h3>
+              <p class="hub-card-desc">
+                Log in to view daily milk supply passbook, collection records, quality score certificates, and direct bank settlement (DBT) transfer logs.
+              </p>
+            </div>
+            <div class="hub-action-btn btn-theme-green">
+              <span>Farmer Login</span>
+              <span>&rarr;</span>
+            </div>
+          </div>
+
+          <!-- 2. ADMIN LOGIN -->
+          <div class="overview-hub-card hub-card-admin" onclick="window.app.openAdminLoginModal()" id="card-admin-login">
+            <div>
+              <div class="hub-card-top">
+                <div class="hub-card-icon icon-bg-blue">
+                  🏢
+                </div>
+                <span class="hub-pill pill-blue">COOPERATIVE ADMIN</span>
+              </div>
+              <h3 class="hub-card-title">Admin Login</h3>
+              <p class="hub-card-desc">
+                Authorized management portal to configure pricing standards, quality policies, aggregated center telemetry, and export financial CSV ledgers.
+              </p>
+            </div>
+            <div class="hub-action-btn btn-theme-blue">
+              <span>Admin Login</span>
+              <span>&rarr;</span>
+            </div>
+          </div>
+
+          <!-- 3. START MILK TEST -->
+          <div class="overview-hub-card hub-card-test" onclick="window.app.switchSection('testing-station')" id="card-start-milk-test">
+            <div>
+              <div class="hub-card-top">
+                <div class="hub-card-icon icon-bg-cyan">
+                  🔬
+                </div>
+                <span class="hub-pill pill-cyan">INTAKE STATION</span>
+              </div>
+              <h3 class="hub-card-title">Start Milk Test</h3>
+              <p class="hub-card-desc">
+                Launch the 2-step automated milk testing terminal with 8-channel optical NIR spectroscopy, load cell mass &amp; density-compensated volume analysis.
+              </p>
+            </div>
+            <div class="hub-action-btn btn-theme-cyan">
+              <span>Start Milk Test</span>
+              <span>&rarr;</span>
+            </div>
+          </div>
+
+          <!-- 4. NEW REGISTRATION -->
+          <div class="overview-hub-card hub-card-register" onclick="window.app.openRegisterFarmerModal()" id="btn-open-register-modal">
+            <div>
+              <div class="hub-card-top">
+                <div class="hub-card-icon icon-bg-purple">
+                  📝
+                </div>
+                <span class="hub-pill pill-purple">FARMER ONBOARDING</span>
+              </div>
+              <h3 class="hub-card-title">New Registration</h3>
+              <p class="hub-card-desc">
+                Register a new dairy producer to the cooperative, auto-generate unique Farmer ID &amp; contactless RFID card, and link direct bank account.
+              </p>
+            </div>
+            <div class="hub-action-btn btn-theme-purple">
+              <span>New Registration</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTACTLESS RFID SCANNER TERMINAL -->
+        <div class="overview-rfid-terminal" id="overview-rfid-section">
+          <div class="overview-rfid-header">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <span class="badge" style="background: rgba(16, 185, 129, 0.18); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); font-size: 0.78rem;">
+                📶 CONTACTLESS RFID SCANNER
+              </span>
+              <span class="live-dot" style="background: #10b981;"></span>
+              <span style="font-size: 0.78rem; color: #10b981; font-family: var(--font-mono); font-weight: 700;">
+                NFC-ISO14443A ACTIVE &bull; SCAN FOR DIRECT FARMER DETAILS
+              </span>
+            </div>
+            <div style="font-size: 0.82rem; color: var(--text-muted);">
+              Scan or tap physical RFID card to load farmer details &amp; passbook instantly
+            </div>
+          </div>
+
+          <div class="overview-rfid-body">
+            <!-- Left: Interactive RFID Touch Reader Pad -->
+            <div class="overview-rfid-pad" id="overview-rfid-touch-pad" onclick="window.app.scanRandomOrNextFarmerRFID()" title="Click or Tap to Scan RFID">
+              <div class="rfid-antenna-rings">
+                <div class="ring ring-1"></div>
+                <div class="ring ring-2"></div>
+                <div class="ring ring-3"></div>
+                <div class="rfid-nfc-icon">
+                  <svg width="38" height="38" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="rfid-pad-prompt">
+                <span class="rfid-status-led" id="overview-rfid-led"></span>
+                <span>TAP RFID CARD HERE</span>
+              </div>
+              <div class="rfid-pad-sub">13.56 MHz Proximity Sensor &bull; Auto-Go to Details</div>
+            </div>
+
+            <!-- Right: Direct Scan Input + Registered Farmers Quick-Tap Chips -->
+            <div class="overview-rfid-controls">
+              <!-- Fast Input Bar -->
+              <div class="overview-rfid-input-row">
+                <div class="rfid-input-wrap">
+                  <span class="rfid-input-icon">💳</span>
+                  <input type="text" id="overview-rfid-input" class="form-input rfid-text-input" placeholder="Scan or enter RFID UID (e.g. RFID-88192-A2 or FMR-2026-00125)..." onkeydown="if (event.key === 'Enter') window.app.scanInputRFID(this.value)">
+                </div>
+                <button class="btn btn-primary rfid-scan-action-btn" onclick="window.app.scanInputRFID(document.getElementById('overview-rfid-input').value)">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                  Scan &amp; View Details &rarr;
+                </button>
+              </div>
+
+              <!-- Quick Registered Cards Strip -->
+              <div>
+                <div class="overview-rfid-cards-header">
+                  <span>SELECT / TAP REGISTERED FARMER RFID CARD:</span>
+                  <span class="rfid-count-badge" id="overview-rfid-count-badge">4 Cards Active</span>
+                </div>
+                <div class="overview-rfid-deck" id="overview-rfid-deck-container" style="margin-top: 0.65rem;">
+                  <!-- Populated by app.js renderOverviewRfidDeck() -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Status Ribbon -->
+        <div class="overview-quick-status-ribbon">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="live-dot" style="background: #10b981;"></span>
+            <span><strong>IoT Edge Gateway:</strong> ESP32 &bull; HX711 &bull; NIR 900–2250nm Active</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span>⚖️</span>
+            <span><strong>Mass-to-Volume:</strong> &rho;-Compensated Density Conversion ($V = m / \rho$)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span>⚡</span>
+            <span><strong>Direct Benefit Transfer:</strong> Instant Cloud DBT Settlement</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. IOT SENSOR INTAKE, AUTOMATIC MILK GRADING & RFID SCANNING STATION -->
+    <section class="app-section" id="section-testing-station">
+      
+      <!-- RFID ACTIVE INTAKE SESSION BANNER -->
+      <div class="rfid-session-active-card" id="rfid-session-banner" style="display: none; margin-bottom: 1.5rem; background: rgba(16, 185, 129, 0.08); border: 1.5px solid rgba(16, 185, 129, 0.35); border-radius: var(--radius-lg); padding: 1rem 1.4rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="font-size: 1.8rem;" id="rfid-session-avatar">👨‍🌾</div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="badge badge-success" style="font-size: 0.72rem; padding: 2px 8px;">RFID AUTHENTICATED</span>
+                <span class="live-dot" style="background: #10b981;"></span>
+                <span style="font-size: 0.76rem; color: #10b981; font-family: var(--font-mono); font-weight: 700;" id="rfid-session-uid">RFID-88192-A2</span>
+              </div>
+              <h3 style="font-size: 1.15rem; margin-top: 2px; color: #ffffff;">
+                Active Intake: <span id="rfid-session-farmer-name" class="highlight-cyan">Ramesh Patel</span> &bull; <span id="rfid-session-village" style="color: var(--text-muted); font-size: 0.85rem; font-weight: normal;">Sabarkantha Dairy</span>
+              </h3>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span class="hub-pill pill-cyan" id="rfid-session-status-tag">FLOW: 1. MILK TEST &rarr; 2. CALCULATE LITERS &rarr; 3. FARMER DETAILS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 1: CHECK MILK WITH EMBEDDED SENSORS & NIR ANALYZER -->
+      <div class="section-header">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="badge badge-primary">STEP 1</span>
+            <h2 class="section-title" style="font-size: 1.6rem;">Check Milk Quality: Embedded Sensors &amp; Spectroscopy Analyzer</h2>
+          </div>
+          <p class="section-desc">
+            Physical probes detect milk level, density, conductance, and pH, while a calibrated Near-Infrared (NIR) spectroscopy analyzer module measures molecular Fat, Protein &amp; Lactose. Colors represent analyzer-detected quality tiers.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button class="btn btn-primary" id="btn-run-scan" style="padding: 0.8rem 1.6rem; font-size: 1rem; box-shadow: 0 4px 20px var(--primary-glow);">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Check Milk Quality &amp; Auto-Grade
+          </button>
+          <button class="btn btn-success" id="btn-commit-intake">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+            Commit to Cloud &amp; Pay
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Samples -->
+      <div style="margin-bottom: 0.75rem; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px;">
+        Quick Milk Test Samples:
+      </div>
+      <div class="presets-strip">
+        <div class="preset-card-btn active" data-preset="standardAnalysis">
+          <span class="badge badge-success preset-badge">GRADE A+</span>
+          <div class="preset-name">Standard Pure (4.2% Fat)</div>
+          <div class="preset-specs">4.20% Fat &bull; 3.40% Protein &bull; 6.8°C</div>
+        </div>
+        <div class="preset-card-btn" data-preset="pureCow">
+          <span class="badge badge-success preset-badge">GRADE A+</span>
+          <div class="preset-name">Pure Cow Milk (A2 Gir)</div>
+          <div class="preset-specs">4.6% Fat &bull; 8.85% SNF &bull; +12% Premium</div>
+        </div>
+        <div class="preset-card-btn" data-preset="pureBuffalo">
+          <span class="badge badge-success preset-badge">GRADE A+</span>
+          <div class="preset-name">Pure Buffalo Milk (Murrah)</div>
+          <div class="preset-specs">7.8% Fat &bull; 9.35% SNF &bull; +12% Premium</div>
+        </div>
+        <div class="preset-card-btn" data-preset="waterDiluted">
+          <span class="badge badge-warning preset-badge">GRADE C</span>
+          <div class="preset-name">Water Diluted Sample</div>
+          <div class="preset-specs">2.8% Fat &bull; +22% Water &bull; -25% Penalty</div>
+        </div>
+        <div class="preset-card-btn" data-preset="chemicalContaminated">
+          <span class="badge badge-danger preset-badge">GRADE F</span>
+          <div class="preset-name">Neutralizer / Urea</div>
+          <div class="preset-specs">Synthetic Trace &bull; Auto-Confiscated</div>
+        </div>
+        <div class="preset-card-btn" data-preset="souredMilk">
+          <span class="badge badge-danger preset-badge">GRADE C</span>
+          <div class="preset-name">High Acidity Souring</div>
+          <div class="preset-specs">pH 5.75 &bull; High Temp &bull; Degraded</div>
+        </div>
+      </div>
+
+      <!-- ==================== IOT HARDWARE-TO-CLOUD TELEMETRY CARD ==================== -->
+      <div class="card-glass iot-telemetry-card" id="iot-telemetry-pipeline-card" style="margin-bottom: 1.75rem;">
+        <div class="iot-telemetry-header">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge" style="background: rgba(14, 165, 233, 0.2); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.4);">
+                HARDWARE INGESTION &amp; TRANSMISSION
+              </span>
+              <span class="live-dot" style="background: #10b981;"></span>
+              <span style="font-size: 0.75rem; color: #10b981; font-family: var(--font-mono);">5-STAGE TELEMETRY: ONLINE (14ms)</span>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-top: 4px;">Hardware-to-Cloud Telemetry Pipeline</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+              End-to-end edge-to-cloud transmission pipeline connecting physical optical spectroscopy to the live web interface.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-sm btn-outline" onclick="window.app.copyIotTelemetryFlowAscii()">
+              📋 Copy Flow Text
+            </button>
+            <button class="btn btn-sm btn-primary" id="btn-ping-iot-pipeline" onclick="window.app.pingIotPipeline()">
+              ⚡ Ping Pipeline (14ms)
+            </button>
+          </div>
+        </div>
+
+        <!-- 5-Step Horizontal Flow Pipeline -->
+        <div class="iot-pipeline-flow-container">
+          <!-- Step 1: NIR Analyzer -->
+          <div class="iot-node-step" style="border-top: 3px solid #a855f7;">
+            <div class="iot-node-badge">STEP 1 &bull; SENSOR</div>
+            <div class="iot-node-icon">🌈</div>
+            <h4 class="iot-node-title highlight-purple">NIR Analyzer</h4>
+            <div class="iot-node-sub">8-Band Optical Spectrophotometer</div>
+            <div class="iot-node-specs">
+              <span>Bands: <strong>900–2250nm</strong></span>
+              <span>Absorption: <strong>A(λ) = log(1/T)</strong></span>
+            </div>
+          </div>
+
+          <!-- Connector 1 -->
+          <div class="iot-pipe-connector">
+            <div class="iot-pipe-line"></div>
+            <div class="iot-pipe-arrow">&rarr;</div>
+            <span class="iot-pipe-protocol">I2C / SPI</span>
+          </div>
+
+          <!-- Step 2: ESP32 -->
+          <div class="iot-node-step" style="border-top: 3px solid #0ea5e9;">
+            <div class="iot-node-badge">STEP 2 &bull; MCU</div>
+            <div class="iot-node-icon">📟</div>
+            <h4 class="iot-node-title highlight-cyan">ESP32</h4>
+            <div class="iot-node-sub">Dual-Core 240MHz Microcontroller</div>
+            <div class="iot-node-specs">
+              <span>Sampling: <strong>12-bit ADC</strong></span>
+              <span>Modules: <strong>RFID + Temp</strong></span>
+            </div>
+          </div>
+
+          <!-- Connector 2 -->
+          <div class="iot-pipe-connector">
+            <div class="iot-pipe-line"></div>
+            <div class="iot-pipe-arrow">&rarr;</div>
+            <span class="iot-pipe-protocol">802.11 b/g/n</span>
+          </div>
+
+          <!-- Step 3: Wi-Fi -->
+          <div class="iot-node-step" style="border-top: 3px solid #eab308;">
+            <div class="iot-node-badge">STEP 3 &bull; NETWORK</div>
+            <div class="iot-node-icon">📶</div>
+            <h4 class="iot-node-title highlight-yellow">Wi-Fi</h4>
+            <div class="iot-node-sub">Collection Center Gateway</div>
+            <div class="iot-node-specs">
+              <span>Band: <strong>2.4 GHz WPA3</strong></span>
+              <span>Latency: <strong>4–6 ms</strong></span>
+            </div>
+          </div>
+
+          <!-- Connector 3 -->
+          <div class="iot-pipe-connector">
+            <div class="iot-pipe-line"></div>
+            <div class="iot-pipe-arrow">&rarr;</div>
+            <span class="iot-pipe-protocol">HTTPS / WS</span>
+          </div>
+
+          <!-- Step 4: API -->
+          <div class="iot-node-step" style="border-top: 3px solid #10b981;">
+            <div class="iot-node-badge">STEP 4 &bull; BACKEND</div>
+            <div class="iot-node-icon">⚙️</div>
+            <h4 class="iot-node-title highlight-green">API</h4>
+            <div class="iot-node-sub">Node.js Express &amp; FastAPI</div>
+            <div class="iot-node-specs">
+              <span>Endpoint: <strong>/api/v1/milk-test</strong></span>
+              <span>AI Engine: <strong>PLS / SVR</strong></span>
+            </div>
+          </div>
+
+          <!-- Connector 4 -->
+          <div class="iot-pipe-connector">
+            <div class="iot-pipe-line"></div>
+            <div class="iot-pipe-arrow">&rarr;</div>
+            <span class="iot-pipe-protocol">Reactive State</span>
+          </div>
+
+          <!-- Step 5: Website -->
+          <div class="iot-node-step" style="border-top: 3px solid #38bdf8;">
+            <div class="iot-node-badge">STEP 5 &bull; UI</div>
+            <div class="iot-node-icon">💻</div>
+            <h4 class="iot-node-title highlight-cyan">Website</h4>
+            <div class="iot-node-sub">Real-Time PWA &amp; Receipt UI</div>
+            <div class="iot-node-specs">
+              <span>Client: <strong>Desktop &amp; Mobile</strong></span>
+              <span>Render: <strong>Continuous Curve</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Telemetry Status Bar -->
+        <div class="iot-status-bar">
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem;">
+            <span class="live-dot" style="background: #10b981;"></span>
+            <span>Link Telemetry: <strong style="color: #ffffff;" id="iot-status-text">Synchronized &bull; NIR 1730nm Lipids &amp; 2180nm Amide Bands Active</strong></span>
+          </div>
+          <div class="iot-ascii-mini">
+            <pre class="iot-ascii-pre">NIR Analyzer
+     ↓
+ESP32
+     ↓
+Wi-Fi
+     ↓
+API
+     ↓
+Website</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== WEBSITE -> MANUAL/TEST DATA INGESTION CARD ==================== -->
+      <div class="card-glass manual-test-card" id="website-manual-test-data-card" style="margin-bottom: 1.75rem;">
+        <div class="manual-test-header">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge badge-primary">TESTING INGESTION WORKBENCH</span>
+              <span class="live-dot" style="background: #eab308;"></span>
+              <span style="font-size: 0.75rem; color: #eab308; font-family: var(--font-mono);">MANUAL / SIMULATION MODE READY</span>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-top: 4px;">Website &rarr; Manual/Test Data Pipeline</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+              Direct operator data injection, laboratory offline verification, and quality calibration test bench.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-sm btn-outline" onclick="window.app.copyManualTestFlowAscii()">
+              📋 Copy Flow Text
+            </button>
+            <button class="btn btn-sm btn-secondary" id="btn-toggle-manual-panel" onclick="window.app.toggleManualTestPanel()">
+              ⚙️ Toggle Test Bench
+            </button>
+          </div>
+        </div>
+
+        <div class="manual-test-flow-wrapper" id="manual-test-flow-panel">
+          <div class="manual-test-flow-grid">
+            <!-- Tier 1: Website -->
+            <div class="manual-stage-box stage-website">
+              <div class="stage-badge">SOURCE &bull; INTERFACE</div>
+              <div class="stage-title-row">
+                <span class="stage-icon">💻</span>
+                <div>
+                  <h4 class="stage-name highlight-cyan">Website</h4>
+                  <div class="stage-desc">Collection Operator / Lab Technician UI</div>
+                </div>
+              </div>
+              <div class="stage-controls">
+                <div class="form-group" style="margin-bottom: 0.5rem;">
+                  <label style="font-size: 0.74rem; color: var(--text-muted);">Quick Sample Preset:</label>
+                  <select class="input-glass" id="manual-select-preset" onchange="window.app.loadManualTestPreset(this.value)" style="padding: 6px 10px; font-size: 0.82rem; width: 100%;">
+                    <option value="standardAnalysis" selected>Standard Pure (4.2% Fat &bull; Score 92 &bull; ₹49/L)</option>
+                    <option value="pureCow">Pure Cow A2 Gir (4.6% Fat &bull; Score 99 &bull; ₹52.70/L)</option>
+                    <option value="pureBuffalo">Pure Buffalo Murrah (7.8% Fat &bull; Score 100 &bull; ₹70.52/L)</option>
+                    <option value="waterDiluted">Water Diluted (+22% Water &bull; Score 68 &bull; ₹24.30/L)</option>
+                    <option value="chemicalContaminated">Neutralizer / Urea Contaminated (Score 24 &bull; ₹0.00/L)</option>
+                    <option value="souredMilk">High Acidity Souring (pH 5.75 &bull; Score 48 &bull; ₹0.00/L)</option>
+                  </select>
+                </div>
+                <div style="font-size: 0.74rem; color: var(--text-dim); line-height: 1.4;">
+                  Dispatches calibrated parameters directly from the web client into local testing chamber memory.
+                </div>
+              </div>
+            </div>
+
+            <!-- Downward/Right Flow Indicator -->
+            <div class="manual-flow-connector">
+              <div class="manual-flow-line"></div>
+              <div class="manual-flow-arrow">↓</div>
+              <span class="manual-flow-tag">Parameters Injected</span>
+            </div>
+
+            <!-- Tier 2: Manual / Test Data -->
+            <div class="manual-stage-box stage-testdata">
+              <div class="stage-badge" style="background: rgba(234, 179, 8, 0.2); color: #facc15;">TARGET &bull; TEST BENCH</div>
+              <div class="stage-title-row">
+                <span class="stage-icon">🧪</span>
+                <div>
+                  <h4 class="stage-name highlight-yellow">Manual/Test Data</h4>
+                  <div class="stage-desc">Calibrated Parameters &amp; Chamber Overrides</div>
+                </div>
+              </div>
+
+              <!-- Interactive Fields Grid -->
+              <div class="manual-inputs-grid">
+                <div class="manual-field">
+                  <label>Quantity (L)</label>
+                  <input type="number" step="0.1" id="m-input-qty" value="25.4" class="manual-num-input" />
+                </div>
+                <div class="manual-field">
+                  <label>Fat (%)</label>
+                  <input type="number" step="0.05" id="m-input-fat" value="4.20" class="manual-num-input" />
+                </div>
+                <div class="manual-field">
+                  <label>Protein (%)</label>
+                  <input type="number" step="0.05" id="m-input-protein" value="3.40" class="manual-num-input" />
+                </div>
+                <div class="manual-field">
+                  <label>SNF (%)</label>
+                  <input type="number" step="0.05" id="m-input-snf" value="8.75" class="manual-num-input" />
+                </div>
+                <div class="manual-field">
+                  <label>Temperature (°C)</label>
+                  <input type="number" step="0.1" id="m-input-temp" value="6.8" class="manual-num-input" />
+                </div>
+                <div class="manual-field">
+                  <label>Score (0-100)</label>
+                  <input type="number" step="1" id="m-input-score" value="92" class="manual-num-input" />
+                </div>
+              </div>
+
+              <!-- Action button -->
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; flex-wrap: wrap; gap: 8px;">
+                <div style="font-size: 0.74rem; color: #10b981; font-family: var(--font-mono);">
+                  Calculated: <strong>₹49.00/L</strong> &bull; Total: <strong>₹1,244.60</strong> (PREMIUM 🟢)
+                </div>
+                <button class="btn btn-sm btn-primary" onclick="window.app.applyManualTestData()">
+                  ⚡ Inject Test Data to Chamber
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ASCII raw box -->
+          <div class="manual-ascii-box">
+            <span class="manual-ascii-label">ASCII INGESTION FLOW:</span>
+            <pre class="manual-ascii-pre">Website
+   ↓
+Manual/Test Data</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sensor Diagnostic Progress Banner -->
+      <div class="quality-diagnostic-banner" id="sensor-diagnostic-banner" style="display: none;">
+        <!-- Dynamic content while scanning -->
+      </div>
+
+      <div class="intake-layout">
+        <!-- Left: Virtual Milk Container with Laser Scan -->
+        <div class="tank-container">
+          <div class="tank-header">
+            <div>
+              <span class="badge badge-primary">ULTRASONIC LEVEL</span>
+              <h4 style="margin-top: 4px; font-size: 1rem;">Intake Chamber</h4>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim);">CHAMBER #01</span>
+          </div>
+
+          <div class="tank-vessel-outer">
+            <div class="sensor-scan-laser" id="tank-scan-laser"></div>
+
+            <div class="ultrasonic-beam-cap">
+              <div class="sensor-lens"></div>
+              <div class="sensor-lens"></div>
+            </div>
+
+            <div class="sound-waves">
+              <div class="wave-ring"></div>
+              <div class="wave-ring"></div>
+              <div class="wave-ring"></div>
+            </div>
+
+            <div class="tank-scale">
+              <div>80L<span class="scale-tick"></span></div>
+              <div>60L<span class="scale-tick"></span></div>
+              <div>40L<span class="scale-tick"></span></div>
+              <div>20L<span class="scale-tick"></span></div>
+              <div>0L<span class="scale-tick"></span></div>
+            </div>
+
+            <div class="milk-fluid" id="tank-milk-fluid">
+              <div class="milk-wave"></div>
+              <div class="milk-wave milk-wave-secondary"></div>
+            </div>
+          </div>
+
+          <div class="tank-readout-pill">
+            <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Computed Volume (Ultrasonic)</div>
+            <div class="tank-volume-big" id="tank-volume-disp">38.5<span>L</span></div>
+          </div>
+
+          <!-- HARDWARE TERMINAL: MILK QUALITY TEST -->
+          <div class="milk-quality-test-box" id="milk-quality-test-box">
+            <div class="test-box-header">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="test-box-led"></span>
+                <span class="test-box-title">MILK QUALITY TEST</span>
+              </div>
+              <span class="test-box-status-chip">READY</span>
+            </div>
+
+            <div class="test-box-body">
+              <div class="test-box-row">
+                <span class="test-box-label">Farmer ID:</span>
+                <span class="test-box-value highlight-cyan" id="test-box-farmer-id">FMR-2026-00125</span>
+              </div>
+
+              <div class="test-box-divider"></div>
+
+              <div class="test-box-row">
+                <span class="test-box-label">Mass (Load Cell):</span>
+                <span class="test-box-value highlight-yellow" id="test-box-mass">26.16 kg</span>
+              </div>
+
+              <div class="test-box-row">
+                <span class="test-box-label">Quantity (Vol):</span>
+                <span class="test-box-value highlight-cyan" id="test-box-quantity">25.4 L</span>
+              </div>
+
+              <div class="test-box-row">
+                <span class="test-box-label">Density (&rho;):</span>
+                <span class="test-box-value highlight-purple" id="test-box-density">1.030 kg/L</span>
+              </div>
+
+              <div class="test-box-row">
+                <span class="test-box-label">Temperature:</span>
+                <span class="test-box-value highlight-green" id="test-box-temperature">6.8 °C</span>
+              </div>
+
+              <button class="btn btn-primary test-box-start-btn" id="btn-start-analysis" onclick="window.app.runLiveIntakeScan()">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                START ANALYSIS
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Step 2: Automatic Milk Grading & Telemetry -->
+        <div>
+          <!-- AI / ML PREDICTION ENGINE READOUT (FAT % PREDICTION | QUALITY SCORE | PURITY STATUS) -->
+          <div class="ai-inference-card" id="ai-inference-live-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="badge" style="background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4);">
+                  AI / ML PREDICTION ENGINE
+                </span>
+                <span style="font-size: 0.75rem; color: var(--text-dim); font-family: var(--font-mono);">SPECTROSCOPY REGRESSOR &amp; NEURAL ENSEMBLE</span>
+              </div>
+              <div style="font-size: 0.75rem; color: #10b981; font-family: var(--font-mono); display: flex; align-items: center; gap: 6px;">
+                <span class="live-dot" style="width: 8px; height: 8px; background: #10b981;"></span>
+                EDGE INFERENCE: <span id="ai-latency-disp">12ms</span> (WebAssembly)
+              </div>
+            </div>
+
+            <div class="ai-outputs-grid">
+              <!-- 1. Fat % Prediction -->
+              <div class="ai-output-box" style="border-left: 3px solid #eab308;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Predicted Fat:</span>
+                  <span class="level-indicator-badge badge-level-green" id="ai-fat-badge">🟢 94% CONF</span>
+                </div>
+                <div style="display: flex; align-items: baseline; gap: 6px;">
+                  <span style="font-size: 1.65rem; font-weight: 800; color: #eab308; font-family: var(--font-mono);" id="ai-fat-pred">4.21%</span>
+                  <span style="font-size: 0.78rem; color: var(--text-dim);" id="ai-fat-ci">&plusmn; 0.04%</span>
+                </div>
+                <div style="font-size: 0.76rem; color: var(--text-muted); margin-top: 5px; display: flex; justify-content: space-between; align-items: center;">
+                  <span>Confidence: <strong id="ai-fat-conf-text" style="color: #10b981; font-family: var(--font-mono); font-size: 0.88rem;">94%</strong></span>
+                  <span style="font-size: 0.7rem; color: var(--text-dim);">PLS &bull; 1730nm</span>
+                </div>
+              </div>
+
+              <!-- 2. Quality Score -->
+              <div class="ai-output-box" style="border-left: 3px solid #10b981;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Quality Score</span>
+                  <span class="level-indicator-badge badge-level-green" id="ai-quality-grade-badge">GRADE A+</span>
+                </div>
+                <div style="display: flex; align-items: baseline; gap: 6px;">
+                  <span style="font-size: 1.6rem; font-weight: 800; color: #10b981; font-family: var(--font-mono);" id="ai-score-disp">98.5</span>
+                  <span style="font-size: 0.85rem; color: var(--text-dim);">/ 100</span>
+                </div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">
+                  Multi-Parameter Ensemble Score &bull; Pure Baseline
+                </div>
+              </div>
+
+              <!-- 3. Purity Status -->
+              <div class="ai-output-box" style="border-left: 3px solid #38bdf8;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Purity Status</span>
+                  <span class="level-indicator-badge badge-level-green" id="ai-purity-badge">PASS &bull; 100% PURE</span>
+                </div>
+                <div style="display: flex; align-items: baseline; gap: 6px;">
+                  <span style="font-size: 1.3rem; font-weight: 800; color: #38bdf8;" id="ai-purity-text">Organic Pure</span>
+                </div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">
+                  Adulterant Risk: <strong id="ai-adulterant-risk" style="color: #10b981;">&lt; 0.1%</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- INTERACTIVE NIR -> PREPROCESSING -> PLS / SVR / XGBoost -> PREDICTED FAT % PIPELINE -->
+            <div class="ml-pipeline-flow-card">
+              <div class="ml-pipeline-flow-header">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="live-dot" style="background: #eab308; width: 6px; height: 6px;"></span>
+                  <span style="font-size: 0.75rem; color: #ffffff; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px;">
+                    NIR Chemometrics Fat Regression Pipeline
+                  </span>
+                </div>
+                <div style="font-size: 0.72rem; color: #c084fc; font-family: var(--font-mono);" id="pipe-active-model-desc">
+                  Active: PLS Regressor &bull; R&sup2; = 0.992 &bull; RMSEP = 0.05%
+                </div>
+              </div>
+              
+              <div class="ml-pipeline-steps-row">
+                <!-- Step 1: NIR Data -->
+                <div class="ml-pipeline-step">
+                  <div class="ml-step-badge">INPUT</div>
+                  <div class="ml-step-title">NIR Data</div>
+                  <div class="ml-step-sub" id="pipe-nir-summary">8 Spectral Bands</div>
+                </div>
+
+                <div class="ml-pipeline-arrow">&rarr;</div>
+
+                <!-- Step 2: Preprocessing -->
+                <div class="ml-pipeline-step">
+                  <div class="ml-step-badge">STAGE 1</div>
+                  <div class="ml-step-title">Preprocessing</div>
+                  <div class="ml-step-sub" id="pipe-preprocess-summary">SNV + Savitzky-Golay</div>
+                </div>
+
+                <div class="ml-pipeline-arrow">&rarr;</div>
+
+                <!-- Step 3: PLS / SVR / XGBoost -->
+                <div class="ml-pipeline-step" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.06);">
+                  <div class="ml-step-badge" style="background: rgba(168, 85, 247, 0.25); color: #c084fc;">REGRESSOR</div>
+                  <div class="ml-step-title">PLS / SVR / XGBoost</div>
+                  <div class="ml-model-btn-group">
+                    <button class="ml-model-btn active" id="btn-model-pls" onclick="window.app.selectFatModel('PLS')">PLS</button>
+                    <button class="ml-model-btn" id="btn-model-svr" onclick="window.app.selectFatModel('SVR')">SVR</button>
+                    <button class="ml-model-btn" id="btn-model-xgb" onclick="window.app.selectFatModel('XGBoost')">XGBoost</button>
+                  </div>
+                </div>
+
+                <div class="ml-pipeline-arrow">&rarr;</div>
+
+                <!-- Step 4: Predicted Fat % -->
+                <div class="ml-pipeline-step ml-step-result">
+                  <div class="ml-step-badge" style="background: rgba(234, 179, 8, 0.2); color: #eab308;">OUTPUT</div>
+                  <div class="ml-step-title" style="color: #eab308;">Predicted Fat:</div>
+                  <div class="ml-step-val" id="pipe-pred-fat-val">4.21%</div>
+                  <div style="font-size: 0.68rem; color: #10b981; font-weight: 700; margin-top: 3px;">
+                    Confidence: <span id="pipe-pred-conf-val">94%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ==================== AI / ML BACKEND INFERENCE PIPELINE CARD ==================== -->
+            <div class="ai-backend-microservice-card" id="ai-backend-pipeline-card">
+              <div class="ai-backend-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="badge" style="background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4);">
+                    BACKEND INFERENCE PIPELINE
+                  </span>
+                  <span class="live-dot" style="background: #10b981;"></span>
+                  <span style="font-size: 0.75rem; color: #10b981; font-family: var(--font-mono);">IPC BRIDGE: ACTIVE</span>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-dim); font-family: var(--font-mono);">
+                  FastAPI / Uvicorn &bull; Port 8000 &bull; JSON / gRPC
+                </div>
+              </div>
+
+              <div class="ai-microservice-flow-grid">
+                <!-- 1. Node.js -->
+                <div class="microservice-tier-box" style="border-top: 3px solid #22c55e;">
+                  <div class="microservice-tier-header">
+                    <span class="microservice-step-badge" style="background: rgba(34, 197, 94, 0.2); color: #4ade80;">GATEWAY</span>
+                    <span class="microservice-meta">v20 LTS &bull; Express</span>
+                  </div>
+                  <div class="microservice-title highlight-green">
+                    <svg width="20" height="20" viewBox="0 0 32 32" fill="#22c55e"><path d="M16 2L3 9.5v15L16 32l13-7.5v-15L16 2zm0 3.2l9.7 5.6-4.6 2.7-5.1-3v-5.3zm-1.8 5.3v5.3l-5.1 3-4.6-2.7L14.2 10.5zm-1.8 8.1l4 2.3-4 2.3-4-2.3 4-2.3zm1.8 4.3v5.3l-9.7-5.6v-5l9.7 5.3zm3.6 0l9.7-5.3v5l-9.7 5.6v-5.3zm6.8-4.3l-4-2.3 4-2.3 4 2.3-4 2.3z"/></svg>
+                    Node.js
+                  </div>
+                  <div class="microservice-desc">
+                    Aggregates optical spectral matrix from IoT sensor bus and dispatches high-speed JSON inference requests.
+                  </div>
+                </div>
+
+                <div class="microservice-arrow-divider">
+                  <span class="microservice-arrow-char">↓</span>
+                  <span class="microservice-protocol-pill">HTTP / gRPC IPC</span>
+                </div>
+
+                <!-- 2. Python AI API -->
+                <div class="microservice-tier-box" style="border-top: 3px solid #eab308;">
+                  <div class="microservice-tier-header">
+                    <span class="microservice-step-badge" style="background: rgba(234, 179, 8, 0.2); color: #facc15;">INFERENCE API</span>
+                    <span class="microservice-meta">FastAPI &bull; Python 3.11</span>
+                  </div>
+                  <div class="microservice-title highlight-yellow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#eab308"><path d="M11.914 0C5.82 0 6.2 2.656 6.2 2.656l.008 2.752h5.814v.826H3.9S0 5.79 0 11.94c0 6.14 3.402 5.922 3.402 5.922l2.031-.004v-2.863s-.11-3.41 3.35-3.41h5.756v-.855s.31-3.32-3.35-3.32h-5.46V5.41s-.414-2.754 5.908-2.754c6.32 0 5.467 2.754 5.467 2.754v1.947h-2.73v.826h5.484s3.9.444 3.9 6.592c0 6.15-3.416 5.932-3.416 5.932l-2.043.004v-2.863s.114-3.41-3.346-3.41H9.986v-.855s-.313-3.32 3.346-3.32h5.465v2.002s.414 2.754-5.908 2.754c-6.32 0-5.467-2.754-5.467-2.754V11.23h2.73v-.826H4.668S.768 9.96.768 3.812C.768-2.338 4.184-2.12 4.184-2.12l2.043-.004V.74S6.113 4.15 9.573 4.15h5.756V5s.313 3.32-3.346 3.32H6.518V6.318s-.414-2.754 5.908-2.754c6.32 0 5.467 2.754 5.467 2.754v1.947h-2.73v.826h5.484S24 9.535 24 15.683c0 6.15-3.416 5.932-3.416 5.932l-2.043.004v-2.863s.114-3.41-3.346-3.41H9.986v-.855s-.313-3.32 3.346-3.32h5.465v2.002s.414 2.754-5.908 2.754z"/></svg>
+                    Python AI API
+                  </div>
+                  <div class="microservice-desc">
+                    Applies SNV preprocessing &amp; Savitzky-Golay derivation, feeds tensors to models, and computes confidence bounds.
+                  </div>
+                </div>
+
+                <div class="microservice-arrow-divider">
+                  <span class="microservice-arrow-char">↓</span>
+                  <span class="microservice-protocol-pill">Tensors / ONNX</span>
+                </div>
+
+                <!-- 3. ML Model -->
+                <div class="microservice-tier-box" style="border-top: 3px solid #a855f7;">
+                  <div class="microservice-tier-header">
+                    <span class="microservice-step-badge" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">PREDICTIVE ENGINE</span>
+                    <span class="microservice-meta">Scikit-Learn &bull; XGBoost</span>
+                  </div>
+                  <div class="microservice-title highlight-purple">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#a855f7"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    ML Model
+                  </div>
+                  <div class="microservice-desc">
+                    Calibrated ensemble models (PLS / SVR / XGBoost) predicting Fat% with <strong>94% Confidence</strong> in 12ms.
+                  </div>
+                </div>
+              </div>
+
+              <div class="ai-backend-test-bar">
+                <div style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">
+                  Pipeline Link: <strong style="color: #10b981;">Node.js &rarr; Python AI API &rarr; ML Model: Active (8ms)</strong>
+                </div>
+                <button class="btn btn-sm btn-outline" id="btn-ping-ai-pipeline" onclick="window.app.simulateAiPipelinePing()">
+                  ⚡ Benchmark Pipeline (8ms)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- NIR MULTI-WAVELENGTH SPECTROSCOPY READINGS -->
+          <div class="nir-spectroscopy-panel" id="nir-spectroscopy-panel">
+            <div class="nir-panel-header">
+              <div class="nir-panel-title-wrap">
+                <span class="live-dot" style="background: #a855f7;"></span>
+                <span class="nir-panel-title">NIR WAVELENGTH READINGS &bull; SPECTRAL BANDS</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="badge" style="background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); font-size: 0.75rem;">
+                  OPTICAL SENSOR ARRAY (900&ndash;2250nm)
+                </span>
+              </div>
+            </div>
+
+            <!-- NIR Spectral Response Curve (SVG) -->
+            <div class="nir-spectrum-chart-box">
+              <div class="nir-chart-header">
+                <div>
+                  <strong style="color: #ffffff;">NIR Absorbance Spectrum</strong> &bull; <span style="font-family: var(--font-mono); color: var(--primary-light);">Optical Absorbance A(&lambda;) = log&#8321;&#8320;(1/T)</span>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 0.72rem; color: #a855f7;">
+                  NIR-SWIR SPECTROMETER ACTIVE
+                </div>
+              </div>
+              <div class="nir-spectrum-svg-wrap">
+                <svg class="nir-spectrum-svg" id="nir-spectrum-svg" viewBox="0 0 800 130" preserveAspectRatio="none">
+                  <!-- Rendered dynamically by updateLiveSensorUI -->
+                </svg>
+              </div>
+            </div>
+
+            <!-- 8-Channel NIR Wavelength Telemetry Matrix -->
+            <div class="nir-bands-grid" id="nir-bands-grid">
+              <!-- Dynamically populated by updateLiveSensorUI -->
+            </div>
+          </div>
+
+          <!-- STEP 2: AUTOMATIC MILK GRADING CERTIFICATION CARD -->
+          <div class="card-glass" id="milk-quality-result-card" style="margin-bottom: 1.5rem; border-color: rgba(16, 185, 129, 0.4); background: linear-gradient(145deg, rgba(16, 185, 129, 0.08), rgba(14, 165, 233, 0.05));">
+            <!-- Rendered dynamically by updateLiveSensorUI -->
+          </div>
+
+          <!-- ==================== DEDICATED MILK ANALYSIS SPEC CARD ==================== -->
+          <div class="milk-analysis-spec-card" id="milk-analysis-spec-card">
+            <div class="analysis-spec-header">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="live-dot" style="background: #10b981;"></span>
+                <span class="analysis-spec-title">MILK ANALYSIS</span>
+              </div>
+              <span class="badge badge-success" id="analysis-overall-badge">100% PURE &bull; GRADE A+</span>
+            </div>
+
+            <div class="analysis-spec-grid">
+              <!-- 1. Fat -->
+              <div class="analysis-spec-item">
+                <div class="analysis-item-label">Fat</div>
+                <div class="analysis-item-value-row">
+                  <span class="analysis-item-val" id="spec-card-fat">4.20 %</span>
+                  <span class="analysis-item-indicator" id="spec-ind-fat">🟢</span>
+                </div>
+              </div>
+
+              <!-- 2. Protein -->
+              <div class="analysis-spec-item">
+                <div class="analysis-item-label">Protein</div>
+                <div class="analysis-item-value-row">
+                  <span class="analysis-item-val" id="spec-card-protein">3.40 %</span>
+                  <span class="analysis-item-indicator" id="spec-ind-protein">🟢</span>
+                </div>
+              </div>
+
+              <!-- 3. Lactose -->
+              <div class="analysis-spec-item">
+                <div class="analysis-item-label">Lactose</div>
+                <div class="analysis-item-value-row">
+                  <span class="analysis-item-val" id="spec-card-lactose">4.65 %</span>
+                  <span class="analysis-item-indicator" id="spec-ind-lactose">🟢</span>
+                </div>
+              </div>
+
+              <!-- 4. Density -->
+              <div class="analysis-spec-item">
+                <div class="analysis-item-label">Density</div>
+                <div class="analysis-item-value-row">
+                  <span class="analysis-item-val" id="spec-card-density">1.030</span>
+                  <span class="analysis-item-indicator" id="spec-ind-density">🟢</span>
+                </div>
+              </div>
+
+              <!-- 5. Water/Adulteration -->
+              <div class="analysis-spec-item">
+                <div class="analysis-item-label">Water/Adulteration</div>
+                <div class="analysis-item-value-row">
+                  <span class="analysis-item-val" id="spec-card-water">Normal</span>
+                  <span class="analysis-item-indicator" id="spec-ind-water">🟢</span>
+                </div>
+              </div>
+
+              <!-- 6. Temperature -->
+              <div class="analysis-spec-item">
+                <div class="analysis-item-label">Temperature</div>
+                <div class="analysis-item-value-row">
+                  <span class="analysis-item-val" id="spec-card-temp">6.8 °C</span>
+                  <span class="analysis-item-indicator" id="spec-ind-temp">🟢</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== DEDICATED MILK STATUS SUMMARY CARD ==================== -->
+          <div class="milk-status-card" id="milk-status-card">
+            <div class="milk-status-title">MILK STATUS</div>
+            
+            <div class="milk-status-list">
+              <div class="milk-status-row">
+                <span class="milk-status-dot" id="mstatus-dot-fat">🟢</span>
+                <span class="milk-status-name">FAT</span>
+              </div>
+              <div class="milk-status-row">
+                <span class="milk-status-dot" id="mstatus-dot-protein">🟢</span>
+                <span class="milk-status-name">PROTEIN</span>
+              </div>
+              <div class="milk-status-row">
+                <span class="milk-status-dot" id="mstatus-dot-lactose">🟡</span>
+                <span class="milk-status-name">LACTOSE</span>
+              </div>
+              <div class="milk-status-row">
+                <span class="milk-status-dot" id="mstatus-dot-density">🟢</span>
+                <span class="milk-status-name">DENSITY</span>
+              </div>
+              <div class="milk-status-row">
+                <span class="milk-status-dot" id="mstatus-dot-purity">🟢</span>
+                <span class="milk-status-name">PURITY</span>
+              </div>
+            </div>
+
+            <div class="milk-status-box" id="milk-status-box">
+              <div class="milk-status-box-score" id="mstatus-score-text">QUALITY: 91/100</div>
+              <div class="milk-status-box-tier" id="mstatus-tier-text">🟢 PREMIUM</div>
+            </div>
+
+            <!-- 4-Tier Quality Classification Scale -->
+            <div class="quality-tier-rule-grid">
+              <div class="tier-rule-chip tier-premium active-tier" id="rule-chip-premium">
+                <span class="tier-rule-range">90&ndash;100</span>
+                <span class="tier-rule-arrow">&rarr;</span>
+                <span class="tier-rule-label">PREMIUM</span>
+                <span class="tier-rule-dot">🟢</span>
+              </div>
+              <div class="tier-rule-chip tier-good" id="rule-chip-good">
+                <span class="tier-rule-range">75&ndash;89</span>
+                <span class="tier-rule-arrow">&rarr;</span>
+                <span class="tier-rule-label">GOOD</span>
+                <span class="tier-rule-dot">🟢</span>
+              </div>
+              <div class="tier-rule-chip tier-average" id="rule-chip-average">
+                <span class="tier-rule-range">60&ndash;74</span>
+                <span class="tier-rule-arrow">&rarr;</span>
+                <span class="tier-rule-label">AVERAGE</span>
+                <span class="tier-rule-dot">🟡</span>
+              </div>
+              <div class="tier-rule-chip tier-poor" id="rule-chip-poor">
+                <span class="tier-rule-range">&lt;60</span>
+                <span class="tier-rule-arrow">&rarr;</span>
+                <span class="tier-rule-label">POOR</span>
+                <span class="tier-rule-dot">🔴</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== 100-POINT QUALITY SCORING SYSTEM BREAKDOWN ==================== -->
+          <div class="quality-scorecard-card" id="quality-scorecard-card">
+            <div class="scorecard-header">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="live-dot" style="background: #38bdf8;"></span>
+                <span class="scorecard-title">100-POINT QUALITY SCORING SYSTEM</span>
+              </div>
+              <span class="badge badge-success" id="scorecard-tier-badge">PREMIUM &bull; 91/100 PTS</span>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="scorecard-table">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th style="text-align: right;">Weight</th>
+                    <th style="text-align: right;">Scored Points</th>
+                    <th style="min-width: 140px;">Quality Score Meter</th>
+                    <th style="text-align: center;">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- 1. Fat -->
+                  <tr>
+                    <td class="scorecard-param-name">Fat</td>
+                    <td style="text-align: right;" class="scorecard-max-pts">20 points</td>
+                    <td style="text-align: right;"><span class="scorecard-live-pts" id="pts-fat-val">20</span> / 20</td>
+                    <td>
+                      <div class="scorecard-meter-track">
+                        <div class="scorecard-meter-fill" id="pts-fat-bar" style="width: 100%;"></div>
+                      </div>
+                    </td>
+                    <td style="text-align: center;"><span id="pts-fat-dot">🟢</span></td>
+                  </tr>
+
+                  <!-- 2. Protein -->
+                  <tr>
+                    <td class="scorecard-param-name">Protein</td>
+                    <td style="text-align: right;" class="scorecard-max-pts">20 points</td>
+                    <td style="text-align: right;"><span class="scorecard-live-pts" id="pts-protein-val">20</span> / 20</td>
+                    <td>
+                      <div class="scorecard-meter-track">
+                        <div class="scorecard-meter-fill" id="pts-protein-bar" style="width: 100%;"></div>
+                      </div>
+                    </td>
+                    <td style="text-align: center;"><span id="pts-protein-dot">🟢</span></td>
+                  </tr>
+
+                  <!-- 3. Density -->
+                  <tr>
+                    <td class="scorecard-param-name">Density</td>
+                    <td style="text-align: right;" class="scorecard-max-pts">15 points</td>
+                    <td style="text-align: right;"><span class="scorecard-live-pts" id="pts-density-val">15</span> / 15</td>
+                    <td>
+                      <div class="scorecard-meter-track">
+                        <div class="scorecard-meter-fill" id="pts-density-bar" style="width: 100%;"></div>
+                      </div>
+                    </td>
+                    <td style="text-align: center;"><span id="pts-density-dot">🟢</span></td>
+                  </tr>
+
+                  <!-- 4. pH -->
+                  <tr>
+                    <td class="scorecard-param-name">pH</td>
+                    <td style="text-align: right;" class="scorecard-max-pts">15 points</td>
+                    <td style="text-align: right;"><span class="scorecard-live-pts" id="pts-ph-val">14</span> / 15</td>
+                    <td>
+                      <div class="scorecard-meter-track">
+                        <div class="scorecard-meter-fill" id="pts-ph-bar" style="width: 93%;"></div>
+                      </div>
+                    </td>
+                    <td style="text-align: center;"><span id="pts-ph-dot">🟢</span></td>
+                  </tr>
+
+                  <!-- 5. Adulteration -->
+                  <tr>
+                    <td class="scorecard-param-name">Adulteration</td>
+                    <td style="text-align: right;" class="scorecard-max-pts">20 points</td>
+                    <td style="text-align: right;"><span class="scorecard-live-pts" id="pts-adult-val">18</span> / 20</td>
+                    <td>
+                      <div class="scorecard-meter-track">
+                        <div class="scorecard-meter-fill" id="pts-adult-bar" style="width: 90%;"></div>
+                      </div>
+                    </td>
+                    <td style="text-align: center;"><span id="pts-adult-dot">🟢</span></td>
+                  </tr>
+
+                  <!-- 6. Temperature -->
+                  <tr>
+                    <td class="scorecard-param-name">Temperature</td>
+                    <td style="text-align: right;" class="scorecard-max-pts">10 points</td>
+                    <td style="text-align: right;"><span class="scorecard-live-pts" id="pts-temp-val">9</span> / 10</td>
+                    <td>
+                      <div class="scorecard-meter-track">
+                        <div class="scorecard-meter-fill" id="pts-temp-bar" style="width: 90%;"></div>
+                      </div>
+                    </td>
+                    <td style="text-align: center;"><span id="pts-temp-dot">🟢</span></td>
+                  </tr>
+
+                  <!-- Total Row -->
+                  <tr class="scorecard-total-row">
+                    <td>TOTAL SCORE</td>
+                    <td style="text-align: right; color: var(--primary-light);">100 points</td>
+                    <td style="text-align: right; font-size: 1.15rem; color: #10b981;" id="pts-total-val">91 / 100</td>
+                    <td>
+                      <div class="scorecard-meter-track" style="height: 8px;">
+                        <div class="scorecard-meter-fill" id="pts-total-bar" style="width: 91%; background: linear-gradient(90deg, #10b981, #0ea5e9);"></div>
+                      </div>
+                    </td>
+                    <td style="text-align: center;"><span class="badge badge-success" id="pts-total-badge">🟢 PREMIUM</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ==================== TRANSPARENT PAYMENT & OFFICIAL RECEIPT ROW ==================== -->
+          <div class="payment-receipt-duo-grid">
+            <!-- Left: Transparent Milk Payment Breakdown Card -->
+            <div class="payment-calc-card" id="transparent-milk-payment-card">
+              <div class="payment-calc-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="live-dot" style="background: #10b981;"></span>
+                  <span class="payment-calc-title">TRANSPARENT MILK PAYMENT</span>
+                </div>
+                <span class="badge badge-success" id="calc-rule-badge">PREMIUM 🟢 &bull; DIRECT BENEFIT TRANSFER</span>
+              </div>
+
+              <div class="payment-calc-body">
+                <div class="calc-formula-row">
+                  <span class="calc-label">Quality Score</span>
+                  <span class="calc-eq">=</span>
+                  <span class="calc-val highlight-green" id="calc-score-val">92</span>
+                </div>
+
+                <div class="calc-divider"></div>
+
+                <div class="calc-formula-row">
+                  <span class="calc-label">Base Price</span>
+                  <span class="calc-eq">=</span>
+                  <span class="calc-val" id="calc-base-val">₹45/L</span>
+                </div>
+
+                <div class="calc-formula-row">
+                  <span class="calc-label">Quality Bonus</span>
+                  <span class="calc-eq">=</span>
+                  <span class="calc-val highlight-green" id="calc-bonus-val">₹4/L</span>
+                </div>
+
+                <div class="calc-divider"></div>
+
+                <div class="calc-formula-row highlight-row">
+                  <span class="calc-label">Final Rate</span>
+                  <span class="calc-eq">=</span>
+                  <span class="calc-val highlight-cyan" id="calc-rate-val">₹49/L</span>
+                </div>
+
+                <div class="calc-formula-row">
+                  <span class="calc-label">Quantity</span>
+                  <span class="calc-eq">=</span>
+                  <span class="calc-val" id="calc-qty-val">25.4 L</span>
+                </div>
+
+                <div class="calc-divider"></div>
+
+                <div class="calc-total-box">
+                  <div class="calc-total-label">Total Payment</div>
+                  <div class="calc-total-sub" id="calc-multi-line">= 25.4 &times; ₹49</div>
+                  <div class="calc-total-amount" id="calc-total-val">= ₹1,244.60</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Official Payment Receipt Slip Card -->
+            <div class="payment-receipt-slip-card" id="official-payment-receipt-card">
+              <div class="receipt-slip-top-perforation"></div>
+              <div class="receipt-slip-inner">
+                <div class="receipt-slip-header-block">
+                  <div class="receipt-brand-tag">DAIRY DOVA CLOUD</div>
+                  <h3 class="receipt-terminal-title">PAYMENT RECEIPT</h3>
+                  <div class="receipt-sub-tag">OFFICIAL DIGITAL INVOICE</div>
+                </div>
+
+                <div class="receipt-slip-divider-dashed"></div>
+
+                <div class="receipt-data-rows">
+                  <div class="receipt-data-row">
+                    <span class="receipt-row-key">Farmer:</span>
+                    <span class="receipt-row-val highlight-cyan" id="receipt-farmer-val">FMR-2026-00125</span>
+                  </div>
+
+                  <div class="receipt-data-row" style="margin-top: 6px;">
+                    <span class="receipt-row-key">Quantity:</span>
+                    <span class="receipt-row-val" id="receipt-qty-val">25.4 L</span>
+                  </div>
+
+                  <div class="receipt-data-row">
+                    <span class="receipt-row-key">Quality:</span>
+                    <span class="receipt-row-val highlight-green" id="receipt-quality-val">92/100</span>
+                  </div>
+
+                  <div class="receipt-data-row">
+                    <span class="receipt-row-key">Grade:</span>
+                    <span class="receipt-row-val highlight-green" id="receipt-grade-val">PREMIUM</span>
+                  </div>
+
+                  <div class="receipt-data-row">
+                    <span class="receipt-row-key">Rate:</span>
+                    <span class="receipt-row-val highlight-cyan" id="receipt-rate-val">₹49/L</span>
+                  </div>
+                </div>
+
+                <div class="receipt-slip-divider-dashed"></div>
+
+                <div class="receipt-total-highlight-row">
+                  <span class="receipt-total-word">TOTAL:</span>
+                  <span class="receipt-total-val-num" id="receipt-total-val">₹1,244.60</span>
+                </div>
+
+                <div class="receipt-slip-divider-dashed"></div>
+
+                <div class="receipt-status-stamp-row">
+                  <span class="receipt-status-word">Status:</span>
+                  <span class="receipt-stamp-pill paid" id="receipt-status-val">PAID</span>
+                </div>
+
+                <div class="receipt-slip-footer-meta">
+                  <span>DBT Instant Transfer &bull; UPI Ref: #UPI-904-88421</span>
+                </div>
+
+                <div class="receipt-card-btn-group">
+                  <button class="btn btn-sm btn-primary" onclick="window.app.printReceiptSlip()">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                    Print Slip
+                  </button>
+                  <button class="btn btn-sm btn-secondary" onclick="window.app.copyReceiptSummary()">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                    Copy Text
+                  </button>
+                </div>
+              </div>
+              <div class="receipt-slip-bottom-perforation"></div>
+            </div>
+          </div>
+
+          <!-- Adulteration Screener Box -->
+          <div class="adulteration-box purity-clean" id="adulteration-indicator-box">
+            <div style="font-size: 1.8rem; line-height: 1;">🛡️</div>
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <strong style="font-size: 0.95rem;">Automated Adulteration Screener</strong>
+                <span class="badge badge-primary">CONDUCTIVITY PROBE</span>
+              </div>
+              <div class="adulterant-chips" id="adulterant-detected-list">
+                <span class="adulterant-pill safe">Zero Adulterants &bull; Clean Pure Sample</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ingredient Color Determination Legend -->
+          <div class="ingredient-color-legend">
+            <span class="legend-title">🎨 Analyzer-Detected Ingredient Levels:</span>
+            <span class="legend-chip"><span class="legend-dot" style="background: #10b981;"></span> 🟢 Green: Optimal Pure (Bonus)</span>
+            <span class="legend-chip"><span class="legend-dot" style="background: #0ea5e9;"></span> 🔵 Blue: Standard Benchmark</span>
+            <span class="legend-chip"><span class="legend-dot" style="background: #f59e0b;"></span> 🟡 Yellow: Low / Marginal</span>
+            <span class="legend-chip"><span class="legend-dot" style="background: #ef4444;"></span> 🔴 Red: Water Diluted / Alert</span>
+            <span class="legend-chip"><span class="legend-dot" style="background: #a855f7;"></span> 🟣 Purple: Premium Elite</span>
+            <div style="width: 100%; font-size: 0.7rem; color: var(--text-dim); margin-top: 4px;">
+              * Note: Molecular components (Fat, Protein, Lactose) are measured via calibrated Near-Infrared (NIR) milk analyzer spectroscopy; physical probes measure level, density &amp; conductance. Colors visually communicate the detected composition tiers.
+            </div>
+          </div>
+
+          <!-- Milk Ingredient Composition Spectrum Stacked Bar -->
+          <div class="composition-spectrum-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="font-size: 0.9rem; color: #ffffff;">Milk Ingredient Composition Spectrum</strong>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
+                  Real-time color-coded level distribution of natural constituents &amp; water content
+                </div>
+              </div>
+              <span id="composition-purity-tag" class="badge badge-success">100% ORGANIC</span>
+            </div>
+
+            <div class="composition-stacked-bar" id="composition-stacked-bar">
+              <div class="comp-seg" id="seg-water" style="width: 87.2%; background: #0284c7;" title="Natural Water: 87.2%"></div>
+              <div class="comp-seg" id="seg-fat" style="width: 4.6%; background: #eab308;" title="Fat: 4.6%"></div>
+              <div class="comp-seg" id="seg-protein" style="width: 3.4%; background: #a855f7;" title="Protein: 3.4%"></div>
+              <div class="comp-seg" id="seg-lactose" style="width: 4.1%; background: #14b8a6;" title="Lactose: 4.1%"></div>
+              <div class="comp-seg" id="seg-minerals" style="width: 0.7%; background: #64748b;" title="Minerals: 0.7%"></div>
+              <div class="comp-seg" id="seg-dilution" style="width: 0%; background: #ef4444;" title="Added Water: 0%"></div>
+            </div>
+
+            <div class="comp-legend-grid">
+              <div class="comp-legend-item">
+                <span class="comp-color-box" style="background: #0284c7;"></span>
+                <span>Base Water: <strong id="spec-water">87.2%</strong></span>
+              </div>
+              <div class="comp-legend-item">
+                <span class="comp-color-box" style="background: #eab308;"></span>
+                <span>Fat: <strong id="spec-fat">4.60%</strong></span>
+              </div>
+              <div class="comp-legend-item">
+                <span class="comp-color-box" style="background: #a855f7;"></span>
+                <span>Protein: <strong id="spec-protein">3.40%</strong></span>
+              </div>
+              <div class="comp-legend-item">
+                <span class="comp-color-box" style="background: #14b8a6;"></span>
+                <span>Lactose: <strong id="spec-lactose">4.85%</strong></span>
+              </div>
+              <div class="comp-legend-item">
+                <span class="comp-color-box" style="background: #ef4444;"></span>
+                <span>Added Water: <strong id="spec-dilution" style="color: #10b981;">0.0%</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sensor Readouts: 6 Key Parameters With Colors Determining Levels -->
+          <div class="telemetry-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+            <!-- 1. FAT CONTENT -->
+            <div class="sensor-card">
+              <div class="sensor-header">
+                <div class="sensor-title-group">
+                  <div class="sensor-icon" style="background: rgba(234, 179, 8, 0.15); color: #eab308;">🧈</div>
+                  <span class="sensor-name">Fat Content</span>
+                </div>
+                <span class="level-indicator-badge badge-level-green" id="badge-fat-level">🟢 OPTIMAL</span>
+              </div>
+              <div class="sensor-value-box">
+                <div class="sensor-val" id="telemetry-fat">4.60</div>
+                <div class="sensor-unit">%</div>
+              </div>
+              <div class="sensor-range-bar"><div class="sensor-fill-bar fill-green" id="bar-fat-fill" style="width: 55%;"></div></div>
+              <div class="sensor-status-sub">
+                <span>Std &ge; 4.0%</span>
+                <span id="label-fat-level" style="font-weight: 700; color: #10b981;">Optimal</span>
+              </div>
+            </div>
+
+            <!-- 2. PROTEIN CONTENT -->
+            <div class="sensor-card">
+              <div class="sensor-header">
+                <div class="sensor-title-group">
+                  <div class="sensor-icon" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">🥩</div>
+                  <span class="sensor-name">Protein</span>
+                </div>
+                <span class="level-indicator-badge badge-level-green" id="badge-protein-level">🟢 OPTIMAL</span>
+              </div>
+              <div class="sensor-value-box">
+                <div class="sensor-val" id="telemetry-protein">3.40</div>
+                <div class="sensor-unit">%</div>
+              </div>
+              <div class="sensor-range-bar"><div class="sensor-fill-bar fill-green" id="bar-protein-fill" style="width: 68%;"></div></div>
+              <div class="sensor-status-sub">
+                <span>Std &ge; 3.2%</span>
+                <span id="label-protein-level" style="font-weight: 700; color: #10b981;">High Protein</span>
+              </div>
+            </div>
+
+            <!-- 3. LACTOSE CONTENT -->
+            <div class="sensor-card">
+              <div class="sensor-header">
+                <div class="sensor-title-group">
+                  <div class="sensor-icon" style="background: rgba(20, 184, 166, 0.15); color: #14b8a6;">🍬</div>
+                  <span class="sensor-name">Lactose</span>
+                </div>
+                <span class="level-indicator-badge badge-level-blue" id="badge-lactose-level">🔵 NORMAL</span>
+              </div>
+              <div class="sensor-value-box">
+                <div class="sensor-val" id="telemetry-lactose">4.85</div>
+                <div class="sensor-unit">%</div>
+              </div>
+              <div class="sensor-range-bar"><div class="sensor-fill-bar fill-blue" id="bar-lactose-fill" style="width: 78%;"></div></div>
+              <div class="sensor-status-sub">
+                <span>Std 4.5&ndash;5.2%</span>
+                <span id="label-lactose-level" style="font-weight: 700; color: #38bdf8;">Natural Pure</span>
+              </div>
+            </div>
+
+            <!-- 4. ADDED WATER DILUTION -->
+            <div class="sensor-card">
+              <div class="sensor-header">
+                <div class="sensor-title-group">
+                  <div class="sensor-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">💧</div>
+                  <span class="sensor-name">Water Content</span>
+                </div>
+                <span class="level-indicator-badge badge-level-green" id="badge-water-level">🟢 0% PURE</span>
+              </div>
+              <div class="sensor-value-box">
+                <div class="sensor-val" id="telemetry-water">0.0</div>
+                <div class="sensor-unit">%</div>
+              </div>
+              <div class="sensor-range-bar"><div class="sensor-fill-bar fill-green" id="bar-water-fill" style="width: 0%;"></div></div>
+              <div class="sensor-status-sub">
+                <span>0.0% Strict Pure</span>
+                <span id="label-water-level" style="font-weight: 700; color: #10b981;">No Dilution</span>
+              </div>
+            </div>
+
+            <!-- 5. MILK DENSITY -->
+            <div class="sensor-card">
+              <div class="sensor-header">
+                <div class="sensor-title-group">
+                  <div class="sensor-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">⚖️</div>
+                  <span class="sensor-name">Milk Density</span>
+                </div>
+                <span class="level-indicator-badge badge-level-green" id="badge-density-level">🟢 OPTIMAL</span>
+              </div>
+              <div class="sensor-value-box">
+                <div class="sensor-val" id="telemetry-density">1.030</div>
+                <div class="sensor-unit">g/cm³</div>
+              </div>
+              <div class="sensor-range-bar"><div class="sensor-fill-bar fill-green" id="bar-density-fill" style="width: 75%;"></div></div>
+              <div class="sensor-status-sub">
+                <span>1.028 &ndash; 1.034</span>
+                <span id="label-density-level" style="font-weight: 700; color: #10b981;">Pure Gravity</span>
+              </div>
+            </div>
+
+            <!-- 6. SOLID-NOT-FAT (SNF) & FRESHNESS -->
+            <div class="sensor-card">
+              <div class="sensor-header">
+                <div class="sensor-title-group">
+                  <div class="sensor-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">🧪</div>
+                  <span class="sensor-name">SNF &amp; Freshness</span>
+                </div>
+                <span class="level-indicator-badge badge-level-green" id="badge-snf-level">🟢 OPTIMAL</span>
+              </div>
+              <div class="sensor-value-box">
+                <div class="sensor-val" id="telemetry-snf">8.85</div>
+                <div class="sensor-unit">%</div>
+              </div>
+              <div class="sensor-range-bar"><div class="sensor-fill-bar fill-green" id="bar-snf-fill" style="width: 88%;"></div></div>
+              <div class="sensor-status-sub">
+                <span>pH: <strong id="telemetry-ph" style="color: var(--primary-light);">6.68</strong></span>
+                <span id="label-snf-level" style="font-weight: 700; color: #10b981;">Optimal SNF</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sliders Drawer -->
+          <div class="manual-controls-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <strong style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase;">
+                Manual Hardware Telemetry Sliders
+              </strong>
+              <span style="font-size: 0.75rem; color: var(--primary-light);">ESP32 Live Bridge</span>
+            </div>
+
+            <div class="control-row">
+              <label for="slider-volume">Milk Volume (L)</label>
+              <input type="range" id="slider-volume" class="control-slider" min="5" max="80" step="0.5" value="38.5">
+              <div class="control-disp" id="disp-volume">38.5</div>
+            </div>
+
+            <div class="control-row">
+              <label for="slider-fat">Fat Content (%)</label>
+              <input type="range" id="slider-fat" class="control-slider" min="1.5" max="11.0" step="0.1" value="4.6">
+              <div class="control-disp" id="disp-fat">4.6</div>
+            </div>
+
+            <div class="control-row">
+              <label for="slider-snf">SNF Content (%)</label>
+              <input type="range" id="slider-snf" class="control-slider" min="6.0" max="10.5" step="0.05" value="8.85">
+              <div class="control-disp" id="disp-snf">8.85</div>
+            </div>
+
+            <div class="control-row">
+              <label for="slider-water">Added Water (%)</label>
+              <input type="range" id="slider-water" class="control-slider" min="0" max="40" step="0.5" value="0.0">
+              <div class="control-disp" id="disp-water">0.0</div>
+            </div>
+
+            <div class="control-row">
+              <label for="slider-ph">Sample pH</label>
+              <input type="range" id="slider-ph" class="control-slider" min="5.5" max="8.5" step="0.05" value="6.68">
+              <div class="control-disp" id="disp-ph">6.68</div>
+            </div>
+
+            <div class="control-row">
+              <label for="slider-temp">Temperature (°C)</label>
+              <input type="range" id="slider-temp" class="control-slider" min="4" max="38" step="0.5" value="18.2">
+              <div class="control-disp" id="disp-temp">18.2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: RFID FARMER SCANNER & IDENTIFICATION TERMINAL -->
+      <div class="rfid-scanner-panel" style="margin-top: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="badge badge-primary">STEP 3</span>
+            <h3 style="font-size: 1.15rem;">RFID Farmer Scanner &amp; Identification Terminal</h3>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <button class="btn btn-primary btn-sm" id="btn-open-register-modal-intake" onclick="document.getElementById('btn-open-register-modal').click();">
+              <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              + Add New Farmer
+            </button>
+            <span style="font-size: 0.75rem; color: var(--text-dim); font-family: var(--font-mono);">NFC-ISO14443A ACTIVE</span>
+          </div>
+        </div>
+
+        <div class="rfid-scanner-grid">
+          <!-- Reader Pad Device -->
+          <div class="rfid-reader-device" id="rfid-touch-pad" title="Click or Tap to Scan Farmer RFID">
+            <div class="rfid-antenna-coil">
+              <svg width="38" height="38" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--primary-light);">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+              </svg>
+            </div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: #ffffff;">
+              <span class="rfid-status-led" id="rfid-scanner-led"></span>
+              TAP RFID CARD HERE
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 4px;">Click pad or tap card to scan farmer</div>
+          </div>
+
+          <!-- Identified Farmer Display & Cards -->
+          <div>
+            <!-- Prominent Farmer Identified Showcase Banner -->
+            <div id="farmer-showcase-box" class="farmer-identity-showcase identified-highlight"></div>
+
+            <!-- Dynamic Clickable RFID Farmer Cards Strip -->
+            <div style="margin-top: 0.85rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">
+                  Registered Farmer RFID Cards (Click to Scan):
+                </span>
+                <span style="font-size: 0.75rem; color: var(--primary-light); cursor: pointer;" onclick="document.getElementById('btn-open-register-modal').click();">
+                  + Add New Name
+                </span>
+              </div>
+              <div class="rfid-cards-deck" id="rfid-cards-deck-container">
+                <!-- Dynamically rendered by app.js renderRfidCardsDeck() -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. QUALITY RULES SECTION -->
+    <section class="app-section" id="section-quality-rules">
+      <div class="section-header">
+        <div>
+          <span class="badge badge-primary">REGULATORY &amp; COOPERATIVE FRAMEWORK</span>
+          <h2 class="section-title">Predefined Quality-Based Pricing Rules</h2>
+          <p class="section-desc">
+            Automated quality grading rules ensuring farmers who supply purer and higher-composition milk receive higher payouts.
+          </p>
+        </div>
+      </div>
+
+      <div class="quality-tiers-grid" id="quality-rules-grid"></div>
+
+      <div class="card-glass" style="margin-bottom: 2rem;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Quality Classification Matrix</h3>
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Classification Tier</th>
+                <th>Purity Score</th>
+                <th>Composition Benchmarks</th>
+                <th>Added Water Limit</th>
+                <th>Price Multiplier</th>
+                <th>Farmer Incentive Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="badge badge-success">GRADE A+</span> <strong>Elite Pure</strong></td>
+                <td>95.0% &ndash; 100%</td>
+                <td>Fat &ge; 4.2% (Cow) / 7.0% (Buf) &bull; SNF &ge; 8.6%</td>
+                <td>0.0% Strict</td>
+                <td><strong style="color: #10b981;">1.12 &times; Base (+12%)</strong></td>
+                <td>Maximum Premium Payout</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-primary">GRADE A</span> <strong>Standard Pure</strong></td>
+                <td>85.0% &ndash; 94.9%</td>
+                <td>Fat &ge; 3.5% (Cow) / 6.5% (Buf) &bull; SNF &ge; 8.5%</td>
+                <td>0.0% Pure</td>
+                <td><strong>1.00 &times; Base (Standard)</strong></td>
+                <td>Standard Market Cooperative Rate</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-warning">GRADE B</span> <strong>Marginal Quality</strong></td>
+                <td>70.0% &ndash; 84.9%</td>
+                <td>Fat 3.0&ndash;3.4% &bull; SNF 8.0&ndash;8.4%</td>
+                <td>1.0% &ndash; 5.0% trace</td>
+                <td><span style="color: #f59e0b;">0.90 &times; Base (-10%)</span></td>
+                <td>Slight Deduction &bull; Feed Advisory</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-warning">GRADE C</span> <strong>Substandard Diluted</strong></td>
+                <td>50.0% &ndash; 69.9%</td>
+                <td>Fat &lt; 3.0% &bull; Low biological solids</td>
+                <td>5.0% &ndash; 25.0% Added Water</td>
+                <td><span style="color: #f97316;">0.75 &times; Base (-25%)</span></td>
+                <td>Severe Deduction Penalty</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-danger">GRADE F</span> <strong>Adulterated Hazard</strong></td>
+                <td>&lt; 50.0%</td>
+                <td>Chemical Contaminants (Urea/Soda/Detergent)</td>
+                <td>Any Chemical</td>
+                <td><strong style="color: #ef4444;">0.00 &times; (₹0.00 Payout)</strong></td>
+                <td>Confiscated &bull; Disciplinary Alert</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- COLOR-DETERMINED INGREDIENT LEVEL BENCHMARKS TABLE -->
+      <div class="card-glass" style="margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <h3 style="font-size: 1.15rem;">🎨 Color-Determined Ingredient Quality Levels</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+              System utilizes multi-spectral color indicators to visually determine and communicate ingredient purity levels in real time.
+            </p>
+          </div>
+          <span class="badge badge-primary">COLOR CODING SYSTEM</span>
+        </div>
+
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Milk Ingredient</th>
+                <th>🟢 Optimal / High Level</th>
+                <th>🔵 Standard Level</th>
+                <th>🟡 Low / Marginal Level</th>
+                <th>🔴 Critical Deficit / Hazard</th>
+                <th>Cooperative Pricing Impact</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>🧈 Fat Content (%)</strong></td>
+                <td><span class="badge-level-green" style="padding: 2px 8px; border-radius: 4px;">&ge; 4.0% (Cow) / 6.5% (Buf)</span></td>
+                <td><span class="badge-level-blue" style="padding: 2px 8px; border-radius: 4px;">3.2% &ndash; 3.9%</span></td>
+                <td><span class="badge-level-yellow" style="padding: 2px 8px; border-radius: 4px;">2.6% &ndash; 3.1%</span></td>
+                <td><span class="badge-level-red" style="padding: 2px 8px; border-radius: 4px;">&lt; 2.6% Deficit</span></td>
+                <td>+₹3.80/point premium for high fat; penalized if &lt;3.0%</td>
+              </tr>
+              <tr>
+                <td><strong>🥩 Protein Content (%)</strong></td>
+                <td><span class="badge-level-green" style="padding: 2px 8px; border-radius: 4px;">&ge; 3.20% (High Protein)</span></td>
+                <td><span class="badge-level-blue" style="padding: 2px 8px; border-radius: 4px;">2.90% &ndash; 3.19%</span></td>
+                <td><span class="badge-level-yellow" style="padding: 2px 8px; border-radius: 4px;">2.50% &ndash; 2.89%</span></td>
+                <td><span class="badge-level-red" style="padding: 2px 8px; border-radius: 4px;">&lt; 2.50% Deficient</span></td>
+                <td>Direct contributor to Grade A+ eligibility and cheese yield</td>
+              </tr>
+              <tr>
+                <td><strong>🍬 Lactose Content (%)</strong></td>
+                <td><span class="badge-level-green" style="padding: 2px 8px; border-radius: 4px;">4.60% &ndash; 5.20% (Natural)</span></td>
+                <td><span class="badge-level-blue" style="padding: 2px 8px; border-radius: 4px;">4.20% &ndash; 4.59%</span></td>
+                <td><span class="badge-level-yellow" style="padding: 2px 8px; border-radius: 4px;">3.70% &ndash; 4.19%</span></td>
+                <td><span class="badge-level-red" style="padding: 2px 8px; border-radius: 4px;">&lt; 3.70% Souring</span></td>
+                <td>Indicates bacterial freshness; drop signifies lactic acid souring</td>
+              </tr>
+              <tr>
+                <td><strong>💧 Added Water (%)</strong></td>
+                <td><span class="badge-level-green" style="padding: 2px 8px; border-radius: 4px;">0.0% Strict Pure</span></td>
+                <td><span class="badge-level-blue" style="padding: 2px 8px; border-radius: 4px;">0.0% Standard</span></td>
+                <td><span class="badge-level-yellow" style="padding: 2px 8px; border-radius: 4px;">0.1% &ndash; 5.0% Trace</span></td>
+                <td><span class="badge-level-red" style="padding: 2px 8px; border-radius: 4px;">&gt; 5.0% Dilution</span></td>
+                <td>-2.5% volume price deduction per 1% added water</td>
+              </tr>
+              <tr>
+                <td><strong>⚖️ Milk Density (g/cm³)</strong></td>
+                <td><span class="badge-level-green" style="padding: 2px 8px; border-radius: 4px;">1.028 &ndash; 1.033 g/cm³</span></td>
+                <td><span class="badge-level-blue" style="padding: 2px 8px; border-radius: 4px;">1.027 &ndash; 1.028</span></td>
+                <td><span class="badge-level-yellow" style="padding: 2px 8px; border-radius: 4px;">1.025 &ndash; 1.026</span></td>
+                <td><span class="badge-level-red" style="padding: 2px 8px; border-radius: 4px;">&lt; 1.025 / &gt; 1.036</span></td>
+                <td>Instant indicator of skim milk skimming or water dilution</td>
+              </tr>
+              <tr>
+                <td><strong>🧪 Solid-Not-Fat (SNF %)</strong></td>
+                <td><span class="badge-level-green" style="padding: 2px 8px; border-radius: 4px;">&ge; 8.5% (Cow) / 9.0% (Buf)</span></td>
+                <td><span class="badge-level-blue" style="padding: 2px 8px; border-radius: 4px;">8.0% &ndash; 8.49%</span></td>
+                <td><span class="badge-level-yellow" style="padding: 2px 8px; border-radius: 4px;">7.5% &ndash; 7.99%</span></td>
+                <td><span class="badge-level-red" style="padding: 2px 8px; border-radius: 4px;">&lt; 7.5% Deficient</span></td>
+                <td>+₹2.50/point premium above benchmark rate</td>
+              </tr>
+              <tr>
+                <td><strong>🌡️ pH Freshness (pH)</strong></td>
+                <td><span class="badge-level-green" style="padding: 2px 8px; border-radius: 4px;">6.55 &ndash; 6.80 pH (Fresh)</span></td>
+                <td><span class="badge-level-blue" style="padding: 2px 8px; border-radius: 4px;">6.50 &ndash; 6.54 pH</span></td>
+                <td><span class="badge-level-yellow" style="padding: 2px 8px; border-radius: 4px;">6.30 &ndash; 6.49 pH</span></td>
+                <td><span class="badge-level-red" style="padding: 2px 8px; border-radius: 4px;">&lt; 6.30 (Sour) / &gt; 6.9 (Soda)</span></td>
+                <td>Alkaline pH triggers neutralizer alert &bull; immediate rejection</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. PRICING ENGINE SECTION -->
+    <section class="app-section" id="section-pricing">
+      <div class="section-header">
+        <div>
+          <span class="badge badge-primary">TRANSPARENT CLOUD PRICING</span>
+          <h2 class="section-title">Quality-Based Cloud Pricing Engine</h2>
+          <p class="section-desc">
+            Two-axis pricing algorithm factoring in Fat %, SNF %, Assigned Quality Grade, and volume with zero intermediary tampering.
+          </p>
+        </div>
+        <button class="btn btn-primary" onclick="window.app.switchSection('testing-station')">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 0118 0z"/></svg>
+          Modify Sensor Sample
+        </button>
+      </div>
+
+      <div class="pricing-layout">
+        <div>
+          <div class="card-glass" style="margin-bottom: 1.5rem;">
+            <h3 style="font-size: 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between;">
+              <span>Real-Time Pricing Calculation</span>
+              <span class="badge badge-success" id="pricing-preview-status">APPROVED</span>
+            </h3>
+
+            <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1.25rem; font-family: var(--font-mono); font-size: 0.85rem; border: 1px solid var(--border-glass);">
+              <div style="color: var(--primary-light); font-weight: 700; margin-bottom: 6px;">TRANSPARENT PRICING FORMULA:</div>
+              <div style="color: #cbd5e1; line-height: 1.6;">
+                Net Rate/L = [Base + (Fat - StdFat)&times;Rate + (SNF - StdSNF)&times;Rate] &times; QualityMultiplier - WaterPenalty
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.92rem;">
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem;">
+                <span style="color: var(--text-muted);">Base Reference Rate:</span>
+                <strong id="pricing-preview-base">₹42.00/L</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem;">
+                <span style="color: var(--text-muted);">Fat Quality Incentive:</span>
+                <strong style="color: var(--success-light);" id="pricing-preview-fat-adj">+₹4.18</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem;">
+                <span style="color: var(--text-muted);">SNF Density Adjustment:</span>
+                <strong style="color: var(--success-light);" id="pricing-preview-snf-adj">+₹0.88</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem;">
+                <span style="color: var(--text-muted);">Quality Classification Tier Impact:</span>
+                <strong style="color: var(--success-light);" id="pricing-preview-quality-tier">+₹5.65 (GRADE A+)</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem;">
+                <span style="color: var(--text-muted);">Added Water Deduction Penalty:</span>
+                <strong style="color: var(--danger-light);" id="pricing-preview-water-ded">-₹0.00</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem;">
+                <span style="font-weight: 700;">Final Calculated Net Rate / Litre:</span>
+                <strong style="font-size: 1.15rem; color: var(--primary-light);" id="pricing-preview-net-rate">₹52.71/L</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding-top: 0.5rem; align-items: baseline;">
+                <span style="font-weight: 800; font-size: 1.1rem;">TOTAL PAYOUT AMOUNT:</span>
+                <strong style="font-size: 1.7rem; color: #ffffff; font-family: var(--font-mono);" id="pricing-preview-total">₹2,029.34</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="live-receipt-placeholder"></div>
+      </div>
+    </section>
+
+    <!-- 5. FARMER PASSBOOK & MOBILE APP -->
+    <section class="app-section" id="section-passbook">
+      <div class="section-header">
+        <div>
+          <span class="badge badge-primary">SECURE CLOUD LEDGER</span>
+          <h2 class="section-title">Farmer Digital Passbook &amp; Mobile App</h2>
+          <p class="section-desc">
+            Historical quality, quantity, and payment records for each farmer accessible through web or mobile smartphone view.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+          <div class="farmer-select-strip" style="margin-bottom: 0;">
+            <label for="passbook-farmer-select" style="font-size: 0.88rem; color: var(--text-muted);">Member Farmer:</label>
+            <select class="custom-select" id="passbook-farmer-select"></select>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-open-register-modal-passbook">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+            + Add New Farmer
+          </button>
+          <button class="btn btn-secondary btn-sm" id="btn-toggle-mobile-view">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            Simulate Mobile App
+          </button>
+        </div>
+      </div>
+
+      <!-- ==================== WELCOME, FARMER DASHBOARD CARD ==================== -->
+      <div class="card-glass farmer-welcome-card" id="farmer-welcome-card" style="margin-bottom: 1.75rem;">
+        <div class="farmer-welcome-header">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="farmer-welcome-avatar" id="farmer-welcome-avatar">🐄</div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="badge badge-success" style="font-size: 0.72rem;">DBT INSTANT SETTLEMENT</span>
+                <span class="live-dot" style="background: #10b981;"></span>
+                <span style="font-size: 0.75rem; color: #10b981; font-family: var(--font-mono);">TODAY'S INTAKE SYNCED</span>
+              </div>
+              <h2 class="farmer-welcome-title">WELCOME, FARMER</h2>
+              <div class="farmer-welcome-subtitle">
+                <span id="farmer-welcome-name">Ramesh Patel</span> &bull; ID: <strong id="farmer-welcome-id" class="highlight-cyan">FMR-2026-00125</strong> &bull; <span id="farmer-welcome-village">Sabarkantha Dairy</span>
+              </div>
+            </div>
+          </div>
+          <div class="farmer-welcome-actions">
+            <button class="btn btn-secondary btn-sm" onclick="window.app.copyFarmerWelcomeSummary()">
+              📋 Copy Summary
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="window.app.switchSection('testing-station')">
+              🔬 New Milk Test
+            </button>
+          </div>
+        </div>
+
+        <div class="farmer-metrics-grid-6">
+          <!-- 1. Today's Supply -->
+          <div class="farmer-metric-box">
+            <div class="f-metric-label">Today's Supply</div>
+            <div class="f-metric-val highlight-cyan" id="farmer-metric-supply">25.4 L</div>
+            <div class="f-metric-sub">Net Intake Volume</div>
+          </div>
+
+          <!-- 2. Quality -->
+          <div class="farmer-metric-box">
+            <div class="f-metric-label">Quality</div>
+            <div class="f-metric-val highlight-green" id="farmer-metric-quality">92/100 🟢</div>
+            <div class="f-metric-sub">PREMIUM Tier (Bonus Eligible)</div>
+          </div>
+
+          <!-- 3. Fat -->
+          <div class="farmer-metric-box">
+            <div class="f-metric-label">Fat</div>
+            <div class="f-metric-val highlight-yellow" id="farmer-metric-fat">4.20%</div>
+            <div class="f-metric-sub">NIR 1730nm &bull; Optimal Pure</div>
+          </div>
+
+          <!-- 4. Protein -->
+          <div class="farmer-metric-box">
+            <div class="f-metric-label">Protein</div>
+            <div class="f-metric-val highlight-green" id="farmer-metric-protein">3.40%</div>
+            <div class="f-metric-sub">Amide Band &bull; Standard Pure</div>
+          </div>
+
+          <!-- 5. Rate -->
+          <div class="farmer-metric-box">
+            <div class="f-metric-label">Rate</div>
+            <div class="f-metric-val highlight-cyan" id="farmer-metric-rate">₹49/L</div>
+            <div class="f-metric-sub">₹45 Base + ₹4 Bonus</div>
+          </div>
+
+          <!-- 6. Today's Payment -->
+          <div class="farmer-metric-box highlight-payout-box">
+            <div class="f-metric-label" style="color: #ffffff;">Today's Payment</div>
+            <div class="f-metric-val-big highlight-green" id="farmer-metric-payment">₹1,244.60</div>
+            <div class="f-metric-sub" style="color: rgba(255,255,255,0.85);">= 25.4 L &times; ₹49/L &bull; <strong style="color: #10b981;">PAID</strong></div>
+          </div>
+        </div>
+
+        <!-- Recent Supply & Pricing History Table -->
+        <div class="farmer-supply-history-wrap">
+          <div class="supply-history-header">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span class="live-dot" style="background: #10b981;"></span>
+              <h4 style="margin: 0; font-size: 0.95rem; font-weight: 800; color: #ffffff; letter-spacing: 0.5px;">RECENT SUPPLY &amp; PRICING HISTORY</h4>
+              <span class="badge badge-success" style="font-size: 0.68rem;">3-DAY INTAKE LOG</span>
+            </div>
+            <button class="btn btn-secondary btn-xs" onclick="window.app.copySupplyHistoryAscii()" title="Copy Table Text">
+              📋 Copy History
+            </button>
+          </div>
+          
+          <div class="supply-history-table-container">
+            <table class="supply-history-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Qty</th>
+                  <th>Fat</th>
+                  <th>Score</th>
+                  <th>Rate</th>
+                  <th style="text-align: right;">Total Payment</th>
+                  <th style="text-align: center;">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="highlight-row">
+                  <td><span class="history-date-badge">04/09</span> <span class="history-tag-today">TODAY</span></td>
+                  <td><strong style="color: #ffffff; font-family: var(--font-mono);">25.4L</strong></td>
+                  <td><span class="history-fat-badge">4.2%</span></td>
+                  <td><span class="history-score-badge premium">92</span> <span style="font-size: 0.72rem; color: #10b981; font-weight: 700;">PREMIUM 🟢</span></td>
+                  <td><strong style="font-family: var(--font-mono); color: #38bdf8;">₹49</strong><span style="font-size: 0.72rem; color: var(--text-dim);">/L</span></td>
+                  <td style="text-align: right;"><strong class="highlight-green" style="font-family: var(--font-mono);">₹1,244.60</strong></td>
+                  <td style="text-align: center;"><span class="badge badge-success" style="font-size: 0.68rem;">PAID</span></td>
+                </tr>
+                <tr>
+                  <td><span class="history-date-badge">03/09</span></td>
+                  <td><strong style="color: #ffffff; font-family: var(--font-mono);">23.8L</strong></td>
+                  <td><span class="history-fat-badge">4.0%</span></td>
+                  <td><span class="history-score-badge good">88</span> <span style="font-size: 0.72rem; color: #10b981; font-weight: 700;">GOOD 🟢</span></td>
+                  <td><strong style="font-family: var(--font-mono); color: #38bdf8;">₹47</strong><span style="font-size: 0.72rem; color: var(--text-dim);">/L</span></td>
+                  <td style="text-align: right;"><strong class="highlight-green" style="font-family: var(--font-mono);">₹1,118.60</strong></td>
+                  <td style="text-align: center;"><span class="badge badge-success" style="font-size: 0.68rem;">PAID</span></td>
+                </tr>
+                <tr>
+                  <td><span class="history-date-badge">02/09</span></td>
+                  <td><strong style="color: #ffffff; font-family: var(--font-mono);">26.1L</strong></td>
+                  <td><span class="history-fat-badge">4.3%</span></td>
+                  <td><span class="history-score-badge premium">94</span> <span style="font-size: 0.72rem; color: #10b981; font-weight: 700;">PREMIUM 🟢</span></td>
+                  <td><strong style="font-family: var(--font-mono); color: #38bdf8;">₹50</strong><span style="font-size: 0.72rem; color: var(--text-dim);">/L</span></td>
+                  <td style="text-align: right;"><strong class="highlight-green" style="font-family: var(--font-mono);">₹1,305.00</strong></td>
+                  <td style="text-align: center;"><span class="badge badge-success" style="font-size: 0.68rem;">PAID</span></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr class="supply-history-total-row">
+                  <td><strong style="color: var(--text-muted); font-size: 0.8rem;">3-Day Aggregate</strong></td>
+                  <td><strong style="color: #38bdf8; font-family: var(--font-mono);">75.3L</strong></td>
+                  <td><span style="color: #facc15; font-family: var(--font-mono); font-weight: 700;">4.17% avg</span></td>
+                  <td><span style="color: #10b981; font-family: var(--font-mono); font-weight: 700;">91.3 avg</span></td>
+                  <td><span style="font-family: var(--font-mono); color: #38bdf8;">₹48.67 avg</span></td>
+                  <td style="text-align: right;"><strong style="font-size: 1.05rem; color: #10b981; font-family: var(--font-mono);">₹3,668.20</strong></td>
+                  <td style="text-align: center;"><span class="badge badge-primary" style="font-size: 0.68rem;">3 SETTLED</span></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <!-- Raw ASCII format display -->
+          <div class="supply-history-ascii-view">
+            <span class="supply-history-ascii-title">CLI TELEMETRY FEED:</span>
+            <pre class="supply-history-pre">Date       Qty     Fat    Score    Rate
+04/09      25.4L   4.2%   92       ₹49
+03/09      23.8L   4.0%   88       ₹47
+02/09      26.1L   4.3%   94       ₹50</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="mobile-simulator-container" style="display: none; margin-bottom: 2.5rem;">
+        <div style="text-align: center; margin-bottom: 1rem;">
+          <span class="badge badge-primary">MOBILE PWA APP VIEW</span>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">Interactive smartphone experience as accessed by the farmer in the field.</p>
+        </div>
+        <div class="mobile-app-wrapper">
+          <div class="mobile-screen">
+            <div class="mobile-notch"><div class="mobile-camera"></div></div>
+            <div class="mobile-content" id="mobile-screen-content"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-4" style="margin-bottom: 1.75rem;">
+        <div class="card-glass">
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Total Milk Sourced</div>
+          <div style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); margin-top: 4px;" id="passbook-stat-milk">75.5 L</div>
+          <div style="font-size: 0.78rem; color: var(--success-light); margin-top: 4px;">Last 7 Days Verified</div>
+        </div>
+        <div class="card-glass">
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Total Payouts Earned</div>
+          <div style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); margin-top: 4px; color: var(--primary-light);" id="passbook-stat-earnings">₹3,957.76</div>
+          <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Direct Bank Transfer (DBT)</div>
+        </div>
+        <div class="card-glass">
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Average Fat Index</div>
+          <div style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); margin-top: 4px; color: var(--success-light);" id="passbook-stat-fat">4.55%</div>
+          <div style="font-size: 0.78rem; color: var(--success-light); margin-top: 4px;">Grade A+ Consistency</div>
+        </div>
+        <div class="card-glass">
+          <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Premium Quality Bonus</div>
+          <div style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); margin-top: 4px; color: #10b981;" id="passbook-stat-bonus">2 Batches</div>
+          <div style="font-size: 0.78rem; color: #10b981; margin-top: 4px;">Grade A+ Elite Tier</div>
+        </div>
+      </div>
+
+      <div class="card-glass" style="margin-bottom: 1.75rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 style="font-size: 1.15rem;">Farmer Quality Consistency Trend</h3>
+          <div style="display: flex; gap: 1rem; font-size: 0.78rem; font-family: var(--font-mono);">
+            <span style="display: inline-flex; align-items: center; gap: 6px;">
+              <span style="width: 10px; height: 10px; border-radius: 50%; background: #0ea5e9;"></span> Fat %
+            </span>
+            <span style="display: inline-flex; align-items: center; gap: 6px;">
+              <span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981;"></span> SNF %
+            </span>
+          </div>
+        </div>
+        <div id="farmer-trend-chart-container" style="min-height: 220px;"></div>
+      </div>
+
+      <div class="card-glass">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h3 style="font-size: 1.15rem;">Collection, Quality &amp; Payment Ledger</h3>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">Permanent Cloud-Synchronized Records</span>
+          </div>
+          <div class="filter-pills-bar">
+            <button class="filter-pill active" data-filter="ALL">All Records</button>
+            <button class="filter-pill" data-filter="GRADE A+">Grade A+ (Elite)</button>
+            <button class="filter-pill" data-filter="GRADE A">Grade A (Standard)</button>
+            <button class="filter-pill" data-filter="GRADE C">Grade C (Diluted)</button>
+            <button class="filter-pill" data-filter="GRADE F">Grade F (Rejected)</button>
+          </div>
+        </div>
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Receipt ID</th>
+                <th>Date &amp; Shift</th>
+                <th>Quantity</th>
+                <th>Fat %</th>
+                <th>SNF %</th>
+                <th>Water Added</th>
+                <th>Purity Score</th>
+                <th>Quality Grade</th>
+                <th>Rate / L</th>
+                <th>Total Payout</th>
+              </tr>
+            </thead>
+            <tbody id="passbook-records-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. DAIRY COOPERATIVE ADMIN DASHBOARD -->
+    <section class="app-section" id="section-admin">
+      <div class="section-header">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="badge badge-primary">COOPERATIVE FEDERATION</span>
+            <span class="live-dot" style="background: #10b981;"></span>
+            <span style="font-size: 0.75rem; color: #10b981; font-family: var(--font-mono);">12 CENTERS CONNECTED</span>
+          </div>
+          <h2 class="section-title">SMART MILK ADMIN</h2>
+          <p class="section-desc">
+            Executive oversight, aggregated intake telemetry, adulteration risk surveillance, and cloud banking ledger settlements.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button class="btn btn-secondary btn-sm" id="btn-toggle-admin-ascii" onclick="window.app.toggleAdminAsciiView()">
+            📋 Toggle ASCII Terminal
+          </button>
+          <button class="btn btn-secondary btn-sm" id="btn-export-csv">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            Export CSV
+          </button>
+          <button class="btn btn-secondary btn-sm" id="btn-reset-db">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Reset Data
+          </button>
+          <button class="btn btn-sm" id="btn-logout-admin" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171;" onclick="window.app.adminLogout()">
+            🔒 Logout Admin
+          </button>
+        </div>
+      </div>
+
+      <!-- ASCII TERMINAL SUMMARY VIEW -->
+      <div class="smart-admin-ascii-card" id="smart-admin-ascii-box">
+        <div class="smart-admin-ascii-header">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="live-dot" style="background: #10b981; width: 6px; height: 6px;"></span>
+            <span style="color: var(--primary-light); font-weight: 800; letter-spacing: 1px; font-size: 0.78rem;">COMMAND TERMINAL SUMMARY</span>
+          </div>
+          <button class="btn btn-sm btn-outline" style="font-size: 0.7rem; padding: 2px 8px;" onclick="window.app.copySmartAdminAscii()">
+            📋 Copy Text
+          </button>
+        </div>
+        <pre class="smart-admin-ascii-pre">SMART MILK ADMIN
+
+Total Farmers       1,245
+Today's Collection  8,420 L
+Premium Milk        4,250 L
+Average Quality     86/100
+Suspicious Samples  38
+Today's Payments    ₹3,84,250</pre>
+      </div>
+
+      <!-- 6-METRIC SMART MILK ADMIN KPI GRID -->
+      <div class="smart-admin-grid-6">
+        <!-- 1. Total Farmers -->
+        <div class="card-glass smart-admin-kpi-card" style="border-left: 4px solid #0ea5e9;">
+          <div class="kpi-header">
+            <span class="kpi-label">Total Farmers</span>
+            <span class="kpi-icon">👨‍🌾</span>
+          </div>
+          <div class="kpi-value highlight-cyan" id="admin-total-farmers">1,245</div>
+          <div class="kpi-sub">Enrolled &bull; KYC &amp; RFID Verified</div>
+        </div>
+
+        <!-- 2. Today's Collection -->
+        <div class="card-glass smart-admin-kpi-card" style="border-left: 4px solid #10b981;">
+          <div class="kpi-header">
+            <span class="kpi-label">Today's Collection</span>
+            <span class="kpi-icon">🥛</span>
+          </div>
+          <div class="kpi-value highlight-green" id="admin-stat-volume">8,420 L</div>
+          <div class="kpi-sub">Morning + Evening Shift Flow</div>
+        </div>
+
+        <!-- 3. Premium Milk -->
+        <div class="card-glass smart-admin-kpi-card" style="border-left: 4px solid #a855f7;">
+          <div class="kpi-header">
+            <span class="kpi-label">Premium Milk</span>
+            <span class="kpi-icon">🏆</span>
+          </div>
+          <div class="kpi-value highlight-purple" id="admin-premium-milk">4,250 L</div>
+          <div class="kpi-sub">50.5% Volume &bull; Grade A+ Bonus</div>
+        </div>
+
+        <!-- 4. Average Quality -->
+        <div class="card-glass smart-admin-kpi-card" style="border-left: 4px solid #22c55e;">
+          <div class="kpi-header">
+            <span class="kpi-label">Average Quality</span>
+            <span class="kpi-icon">🟢</span>
+          </div>
+          <div class="kpi-value highlight-green" id="admin-avg-quality">86/100</div>
+          <div class="kpi-sub">Cooperative Standard &bull; GOOD 🟢</div>
+        </div>
+
+        <!-- 5. Suspicious Samples -->
+        <div class="card-glass smart-admin-kpi-card" style="border-left: 4px solid #ef4444;">
+          <div class="kpi-header">
+            <span class="kpi-label">Suspicious Samples</span>
+            <span class="kpi-icon">⚠️</span>
+          </div>
+          <div class="kpi-value highlight-red" id="admin-stat-adulterations">38</div>
+          <div class="kpi-sub" style="color: #ef4444;">Conductivity / Dilution Alerts</div>
+        </div>
+
+        <!-- 6. Today's Payments -->
+        <div class="card-glass smart-admin-kpi-card" style="border-left: 4px solid #eab308;">
+          <div class="kpi-header">
+            <span class="kpi-label">Today's Payments</span>
+            <span class="kpi-icon">💰</span>
+          </div>
+          <div class="kpi-value highlight-yellow" id="admin-stat-payout">₹3,84,250</div>
+          <div class="kpi-sub">Direct Bank / UPI Transferred</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom: 1.75rem;">
+        <div class="card-glass">
+          <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Quality Trends Across Centers</h3>
+          <div id="admin-trend-chart-container" style="min-height: 200px;"></div>
+        </div>
+        <div class="card-glass">
+          <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Shift-wise Intake Volume</h3>
+          <div id="admin-volume-bar-container" style="min-height: 200px;"></div>
+        </div>
+      </div>
+
+      <div class="card-glass">
+        <h3 style="font-size: 1.15rem; margin-bottom: 1rem;">Recent Milk Intake &amp; Quality Audit Logs</h3>
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Batch / Record</th>
+                <th>Farmer</th>
+                <th>Cattle</th>
+                <th>Quantity</th>
+                <th>Fat / SNF</th>
+                <th>Assigned Grade</th>
+                <th>Total Payout</th>
+              </tr>
+            </thead>
+            <tbody id="admin-recent-intakes-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- REGISTERED FARMERS DIRECTORY WITH 7 KEY FIELDS -->
+      <div class="card-glass" style="margin-top: 1.75rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge badge-primary">FARMER REGISTRY</span>
+              <h3 style="font-size: 1.15rem; margin: 0;">Registered Farmers Directory</h3>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+              Complete ledger of enrolled dairy producers showing Farmer ID, Name, Mobile, Village, District, Milk Type &amp; Payment IDs.
+            </p>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-open-register-modal-admin" onclick="document.getElementById('btn-open-register-modal').click();">
+            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+            + Register New Farmer
+          </button>
+        </div>
+
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Farmer ID</th>
+                <th>Name</th>
+                <th>Mobile Number</th>
+                <th>Village</th>
+                <th>District</th>
+                <th>Milk Type</th>
+                <th>Bank/Payment ID</th>
+                <th>RFID Card UID</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-farmers-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. CONSUMER TRACEABILITY -->
+    <section class="app-section" id="section-traceability">
+      <div class="section-header" style="text-align: center; justify-content: center;">
+        <div style="max-width: 680px; margin: 0 auto;">
+          <span class="badge badge-primary">FARM-TO-GLASS TRANSPARENCY</span>
+          <h2 class="section-title" style="margin-top: 8px;">Verify Milk Quality &amp; Origin</h2>
+          <p class="section-desc" style="margin: 0.5rem auto 0;">
+            Enter the Batch Code on your dairy bottle or milk pouch to inspect the IoT sensor inspection results, farm origin, and certified purity classification.
+          </p>
+        </div>
+      </div>
+
+      <div class="trace-search-bar">
+        <input type="text" class="trace-input" id="trace-input-code" placeholder="Enter Batch Code (e.g., BATCH-DD-2026-9014)" value="BATCH-DD-2026-9014">
+        <button class="btn btn-primary" id="btn-search-trace">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          Verify
+        </button>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <span style="font-size: 0.8rem; color: var(--text-dim); margin-right: 8px;">Try sample batches:</span>
+        <button class="badge badge-primary" style="cursor: pointer; margin-right: 6px;" onclick="document.getElementById('trace-input-code').value='BATCH-DD-2026-9014'; document.getElementById('btn-search-trace').click();">BATCH-DD-2026-9014 (Grade A+ Cow)</button>
+        <button class="badge badge-primary" style="cursor: pointer; margin-right: 6px;" onclick="document.getElementById('trace-input-code').value='BATCH-DD-2026-9013'; document.getElementById('btn-search-trace').click();">BATCH-DD-2026-9013 (Grade A+ Buffalo)</button>
+        <button class="badge badge-warning" style="cursor: pointer;" onclick="document.getElementById('trace-input-code').value='BATCH-DD-2026-9009'; document.getElementById('btn-search-trace').click();">BATCH-DD-2026-9009 (Grade F Adulterated)</button>
+      </div>
+
+      <div class="card-glass" id="trace-result-card" style="max-width: 840px; margin: 0 auto;"></div>
+    </section>
+
+  </main>
+
+  <!-- ==================== REGISTER NEW FARMER MODAL ==================== -->
+  <!-- ==================== MODAL: REGISTER NEW FARMER ==================== -->
+  <div class="modal-backdrop" id="register-farmer-modal">
+    <div class="modal-dialog" style="max-width: 560px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 1.6rem;">📝</span>
+          <div>
+            <h3 class="modal-title">Farmer Registration</h3>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Register dairy producer profile &amp; issue smart RFID member card</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="btn-close-register-modal" title="Close Dialog">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="form-register-farmer">
+        <!-- 1. Farmer ID -->
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <label class="form-label" for="reg-farmer-id" style="margin-bottom: 0;">Farmer ID *</label>
+            <span style="font-size: 0.72rem; color: var(--primary-light); font-family: var(--font-mono);">AUTO-GENERATED / UNIQUE</span>
+          </div>
+          <input type="text" id="reg-farmer-id" class="form-input" style="font-family: var(--font-mono); font-weight: 700; color: var(--primary-light); letter-spacing: 0.5px;" placeholder="e.g., FARM-1085" required>
+        </div>
+
+        <!-- 2. Name -->
+        <div class="form-group">
+          <label class="form-label" for="reg-name">Name *</label>
+          <input type="text" id="reg-name" class="form-input" placeholder="Enter farmer's full name" required>
+        </div>
+
+        <!-- 3. Mobile Number -->
+        <div class="form-group">
+          <label class="form-label" for="reg-phone">Mobile Number *</label>
+          <input type="tel" id="reg-phone" class="form-input" placeholder="+91 98765 43210" required>
+        </div>
+
+        <!-- 4. Village & 5. District -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="reg-village">Village *</label>
+            <input type="text" id="reg-village" class="form-input" placeholder="e.g., Anand, Rampur" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-district">District *</label>
+            <input type="text" id="reg-district" class="form-input" placeholder="e.g., Kheda, Karnal, Warangal" required>
+          </div>
+        </div>
+
+        <!-- 6. Milk Type -->
+        <div class="form-group">
+          <label class="form-label" for="reg-milk-type">Milk Type *</label>
+          <select id="reg-milk-type" class="form-input" style="cursor: pointer;">
+            <option value="Cow Milk">Cow Milk (A2 Gir / Sahiwal / Indigenous)</option>
+            <option value="Buffalo Milk">Buffalo Milk (Murrah / High Fat &amp; SNF)</option>
+            <option value="Mixed Dairy">Mixed Dairy Milk</option>
+          </select>
+        </div>
+
+        <!-- 7. Bank/Payment ID -->
+        <div class="form-group">
+          <label class="form-label" for="reg-bank">Bank/Payment ID (Account / UPI for DBT) *</label>
+          <input type="text" id="reg-bank" class="form-input" placeholder="e.g., SBI ****8842 or farmer@upi" required>
+        </div>
+
+        <!-- Linked RFID Card Preview -->
+        <div class="form-group" style="background: rgba(14, 165, 233, 0.06); border: 1px dashed rgba(14, 165, 233, 0.3); border-radius: var(--radius-md); padding: 0.75rem 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <label class="form-label" for="reg-rfid" style="margin-bottom: 0; font-size: 0.78rem; color: var(--primary-light);">
+              📶 Linked Hardware RFID Card UID
+            </label>
+            <span style="font-size: 0.7rem; color: #10b981; font-weight: 700;">READY TO ENCODE</span>
+          </div>
+          <input type="text" id="reg-rfid" class="form-input" readonly style="font-family: var(--font-mono); font-size: 0.88rem; background: transparent; border: none; padding: 0; color: #ffffff;">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-register">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Complete Registration &amp; Issue RFID
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: MILK VOLUME & LITERS CALCULATION ==================== -->
+  <div class="modal-backdrop" id="modal-volume-calculation">
+    <div class="modal-dialog" style="max-width: 580px; border: 2px solid #10b981; box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 40px rgba(16,185,129,0.35);">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 1rem;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 1.8rem;">🥛</span>
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge badge-success" style="font-size: 0.72rem; padding: 2px 8px;">MILK TEST COMPLETED</span>
+              <span class="live-dot" style="background: #10b981;"></span>
+              <span style="font-size: 0.75rem; color: #10b981; font-family: var(--font-mono); font-weight: 700;">CALCULATION READY</span>
+            </div>
+            <h3 class="modal-title" style="margin-top: 3px; font-size: 1.35rem;">Milk Quantity &amp; Liters Calculation</h3>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="window.app.proceedToFarmerDetailsFromModal()" title="Proceed">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div style="padding: 1.25rem 0;">
+        <!-- Producer Info Row -->
+        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 0.85rem 1.15rem; border-radius: var(--radius-md); margin-bottom: 1.25rem;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.4rem;">👨‍🌾</span>
+            <div>
+              <span style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">MEMBER PRODUCER</span>
+              <div style="font-weight: 800; color: #ffffff; font-size: 1.05rem;" id="calc-modal-farmer-name">Ramesh Patel</div>
+            </div>
+          </div>
+          <span class="badge badge-primary" id="calc-modal-farmer-id" style="font-family: var(--font-mono); font-size: 0.82rem;">FMR-2026-00125</span>
+        </div>
+
+        <!-- Scientifically Defensible Volume Formula Card -->
+        <div style="background: rgba(14, 165, 233, 0.08); border: 1.5px solid rgba(14, 165, 233, 0.35); border-radius: var(--radius-lg); padding: 1.35rem 1.25rem; text-align: center; margin-bottom: 1.25rem; box-shadow: inset 0 0 20px rgba(14,165,233,0.1);">
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.8px; margin-bottom: 10px;">
+            LOAD CELL MASS-TO-VOLUME CONVERSION &bull; V = m / &rho;
+          </div>
+          <div style="display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; font-family: var(--font-mono);">
+            <div style="background: rgba(0,0,0,0.4); padding: 8px 14px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.06);">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Milk Weight (Load Cell)</span>
+              <strong style="font-size: 1.2rem; color: #facc15;" id="calc-modal-mass">26.16 kg</strong>
+            </div>
+            <span style="font-size: 1.5rem; color: #38bdf8; font-weight: 900;">&divide;</span>
+            <div style="background: rgba(0,0,0,0.4); padding: 8px 14px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.06);">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Richmond Density (&rho;)</span>
+              <strong style="font-size: 1.2rem; color: #c084fc;" id="calc-modal-density">1.030 kg/L</strong>
+            </div>
+            <span style="font-size: 1.5rem; color: #10b981; font-weight: 900;">=</span>
+            <div style="background: rgba(16, 185, 129, 0.18); border: 1.5px solid #10b981; padding: 8px 16px; border-radius: var(--radius-md); box-shadow: 0 0 20px rgba(16,185,129,0.3);">
+              <span style="font-size: 0.72rem; color: #10b981; display: block; font-weight: 800;">CALCULATED VOLUME</span>
+              <strong style="font-size: 1.6rem; color: #10b981; font-weight: 900;" id="calc-modal-liters">25.40 LITERS</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quality & Rate Breakdown Grid -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-bottom: 1.25rem;">
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 0.85rem 0.5rem; border-radius: var(--radius-md);">
+            <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 4px;">QUALITY GRADE</span>
+            <strong style="font-size: 1.1rem; color: #34d399;" id="calc-modal-grade">GRADE A+</strong>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 0.85rem 0.5rem; border-radius: var(--radius-md);">
+            <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 4px;">RATE / LITRE</span>
+            <strong style="font-size: 1.1rem; color: #38bdf8;" id="calc-modal-rate">₹49.00 / L</strong>
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.35); padding: 0.85rem 0.5rem; border-radius: var(--radius-md);">
+            <span style="font-size: 0.72rem; color: #10b981; display: block; font-weight: 700; margin-bottom: 4px;">TOTAL PAYOUT</span>
+            <strong style="font-size: 1.2rem; color: #10b981;" id="calc-modal-total">₹1,244.60</strong>
+          </div>
+        </div>
+
+        <!-- Auto-redirect progress card -->
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 0.9rem 1.15rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="diag-spinner" style="width: 16px; height: 16px; border-width: 2px;"></div>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">
+              Going to Farmer's Details in <strong style="color: #ffffff; font-size: 1.05rem;" id="calc-modal-countdown">2</strong> seconds...
+            </span>
+          </div>
+          <button type="button" class="btn btn-success btn-sm" onclick="window.app.proceedToFarmerDetailsFromModal()" style="font-weight: 700;">
+            Go to Farmer Details Now &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: FARMER LOGIN ==================== -->
+  <div class="modal-backdrop" id="modal-farmer-login">
+    <div class="modal-dialog" style="max-width: 540px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 1.6rem;">👨‍🌾</span>
+          <div>
+            <h3 class="modal-title">Farmer Portal Login</h3>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Access your digital milk passbook, quality history &amp; bank payouts</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="window.app.closeFarmerLoginModal()" title="Close">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div style="margin-bottom: 1.25rem;">
+        <label class="form-label" style="display: flex; justify-content: space-between;">
+          <span>Select Farmer Profile:</span>
+          <span style="color: var(--primary-light); font-size: 0.78rem;">Click any profile to sign in</span>
+        </label>
+        <div id="farmer-login-accounts-list" style="display: flex; flex-direction: column; gap: 0.6rem; max-height: 250px; overflow-y: auto; padding-right: 4px;">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+
+      <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-md); padding: 0.85rem 1rem; display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
+        <span style="font-size: 1.4rem;">📶</span>
+        <div style="font-size: 0.82rem; color: var(--text-muted);">
+          <strong style="color: #34d399;">NFC / RFID Tap Ready:</strong> Tap your physical RFID card on the scanner to authenticate instantly.
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="window.app.closeFarmerLoginModal()">Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="window.app.loginActiveFarmerAndSwitch()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+          Open Farmer Passbook
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: ADMIN LOGIN ==================== -->
+  <div class="modal-backdrop" id="modal-admin-login">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 1.6rem;">🏢</span>
+          <div>
+            <h3 class="modal-title">Dairy Admin Login</h3>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Dairy Cooperative Management &amp; Analytics Portal</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="window.app.closeAdminLoginModal()" title="Close">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="admin-login-form" onsubmit="window.app.handleAdminLogin(event)">
+        <div class="form-group">
+          <label class="form-label" for="admin-role-select">Select Administrator Role</label>
+          <select id="admin-role-select" class="form-input" style="cursor: pointer;">
+            <option value="manager">Dairy Cooperative Manager (Full Access)</option>
+            <option value="quality_officer">Quality Control &amp; Lab Supervisor</option>
+            <option value="auditor">Financial &amp; Pricing Auditor</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="admin-pin-input">Security PIN / Password</label>
+          <input type="password" id="admin-pin-input" class="form-input" value="" placeholder="Enter Admin Password" autocomplete="current-password" required>
+          <div id="admin-login-error" style="display: none; background: rgba(239, 68, 68, 0.18); border: 1.5px solid #ef4444; border-radius: 8px; padding: 10px 14px; margin-top: 10px; color: #fee2e2; font-size: 0.9rem; font-weight: 700; align-items: center; gap: 8px;">
+            <span style="font-size: 1.1rem; line-height: 1;">⚠️</span>
+            <span id="admin-login-error-text">Incorrect password! Please try again.</span>
+          </div>
+        </div>
+
+        <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.25); border-radius: var(--radius-md); padding: 0.85rem 1rem; margin-bottom: 1.25rem;">
+          <div style="font-size: 0.82rem; color: #38bdf8; font-weight: 600;">Authorized Cooperative Personnel</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
+            Unlocks pricing engine adjustments, milk quality benchmarks, and transaction ledgers.
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="window.app.closeAdminLoginModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            Sign In to Admin Portal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <img src="assets/logo.svg" alt="Dairy Dova" style="height: 32px;">
+        <div>
+          <div style="font-weight: 700; color: var(--text-main);">DAIRY DOVA Ecosystem</div>
+          <div style="font-size: 0.75rem; color: var(--text-dim);">Smart Milk Quality, Purity and RFID Cloud-Based Pricing System</div>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="#" onclick="window.app.switchSection('testing-station'); return false;">RFID Scan &amp; Milk Test</a>
+        <a href="#" onclick="window.app.switchSection('quality-rules'); return false;">Quality Rules</a>
+        <a href="#" onclick="window.app.switchSection('pricing'); return false;">Pricing Engine</a>
+        <a href="#" onclick="window.app.switchSection('passbook'); return false;">Farmer Passbook</a>
+        <a href="#" onclick="window.app.switchSection('admin'); return false;">Cooperative</a>
+        <a href="#" onclick="window.app.switchSection('traceability'); return false;">Traceability</a>
+      </div>
+      <div style="font-size: 0.78rem; color: var(--text-dim);">
+        IoT Firmware &bull; ESP32 MQTT Protocol &bull; ISO-9622 Compliant
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast-container"></div>
+
+  <script src="js/audio.js"></script>
+  <script src="js/database.js"></script>
+  <script src="js/sensors.js"></script>
+  <script src="js/pricing.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (window.app) window.app.performTraceLookup('BATCH-DD-2026-9014');
+      }, 200);
+    });
+  </script>
+</body>
+</html>
