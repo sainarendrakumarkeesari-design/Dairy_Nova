@@ -464,9 +464,42 @@ class SensorEngine {
     this.recalculateDerivedParameters();
   }
 
+  // Device Hardware Connectivity Management
+  connectDevice() {
+    this.isConnected = true;
+    sessionStorage.setItem('dairy_nova_hardware_connected', 'true');
+    return true;
+  }
+
+  disconnectDevice() {
+    this.isConnected = false;
+    sessionStorage.removeItem('dairy_nova_hardware_connected');
+    return false;
+  }
+
+  isDeviceConnected() {
+    return sessionStorage.getItem('dairy_nova_hardware_connected') === 'true' || this.isConnected;
+  }
+
   // Multi-Wavelength NIR Spectroscopy Spectral Model
+  getNIRSpectra(state = this.state) {
+    return this.getNIRWavelengthReadings(state);
+  }
+
   getNIRWavelengthReadings(state = this.state) {
     const s = state;
+    if (!this.hasTested && s.fat === 0) {
+      return [
+        { wavelength: 970, bandName: "970 nm", component: "Water / Dilution", absorbance: 0.000, unit: "AU", relativePct: 0, status: "⚪ AWAITING TEST", color: "#64748b", badgeClass: "badge-primary" },
+        { wavelength: 1215, bandName: "1215 nm", component: "Fat (Lipid CH₂)", absorbance: 0.000, unit: "AU", relativePct: 0, status: "⚪ AWAITING TEST", color: "#64748b", badgeClass: "badge-primary" },
+        { wavelength: 1440, bandName: "1440 nm", component: "Lactose (Sugar)", absorbance: 0.000, unit: "AU", relativePct: 0, status: "⚪ AWAITING TEST", color: "#64748b", badgeClass: "badge-primary" },
+        { wavelength: 1450, bandName: "1450 nm", component: "Water Matrix", absorbance: 0.000, unit: "AU", relativePct: 0, status: "⚪ AWAITING TEST", color: "#64748b", badgeClass: "badge-primary" },
+        { wavelength: 1510, bandName: "1510 nm", component: "Protein (Casein)", absorbance: 0.000, unit: "AU", relativePct: 0, status: "⚪ AWAITING TEST", color: "#64748b", badgeClass: "badge-primary" },
+        { wavelength: 1730, bandName: "1730 nm", component: "Fat (Key Peak)", absorbance: 0.000, unit: "AU", relativePct: 0, status: "⚪ AWAITING TEST", color: "#64748b", badgeClass: "badge-primary" },
+        { wavelength: 2100, bandName: "2100 nm", component: "Lactose (C-O-C)", absorbance: 0.000, unit: "AU", relativePct: 0, status: "⚪ AWAITING TEST", color: "#64748b", badgeClass: "badge-primary" },
+        { wavelength: 2180, bandName: "2180 nm", component: "Protein (Amide)", absorbance: 0.000, unit: "AU", relativePct: 0, status: "⚪ AWAITING TEST", color: "#64748b", badgeClass: "badge-primary" }
+      ];
+    }
     // Optical NIR absorbance based on Beer-Lambert law & dairy molecular vibration bands:
     // A(lambda) = log10(1/T) in AU (Absorbance Units)
     const fatAU = 0.490 + (s.fat * 0.138);
