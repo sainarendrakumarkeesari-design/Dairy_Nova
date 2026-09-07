@@ -136,10 +136,15 @@
       </nav>
 
       <div class="header-actions">
-        <div class="iot-pill" title="Hardware Controller: ESP32-WROOM Active">
-          <div class="live-dot" style="background: #10b981;"></div>
-          <span>ESP32 SENSORS: ONLINE</span>
+        <!-- Hardware Connectivity Status Pill (Only shows Connected when device is connected) -->
+        <div class="iot-pill" id="iot-status-pill" onclick="toggleHardwareConnection()" style="cursor: pointer;" title="Click to Connect/Disconnect Hardware">
+          <div class="live-dot" id="iot-status-dot" style="background: #ef4444;"></div>
+          <span id="iot-status-text">DEVICE: DISCONNECTED</span>
         </div>
+        <button class="btn btn-sm btn-primary" id="btn-header-connect-device" onclick="toggleHardwareConnection()" style="font-size: 0.78rem; padding: 4px 10px;">
+          🔌 Connect Device
+        </button>
+
         <button class="sound-toggle-btn" id="sound-toggle-btn" title="Toggle Sound">
           <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
         </button>
@@ -156,24 +161,24 @@
   <!-- ==================== MAIN TESTING WORKSTATION ==================== -->
   <main class="testing-page-container">
 
-    <!-- RFID ACTIVE INTAKE SESSION BANNER -->
-    <div class="rfid-session-active-card" id="rfid-session-banner" style="margin-bottom: 1.5rem; background: rgba(16, 185, 129, 0.08); border: 1.5px solid rgba(16, 185, 129, 0.35); border-radius: var(--radius-lg); padding: 1rem 1.4rem;">
+    <!-- RFID INTAKE SESSION BANNER (CLEAN INITIAL STATE) -->
+    <div class="rfid-session-active-card" id="rfid-session-banner" style="margin-bottom: 1.5rem; background: rgba(15, 23, 42, 0.6); border: 1.5px solid var(--border-glass); border-radius: var(--radius-lg); padding: 1rem 1.4rem;">
       <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
         <div style="display: flex; align-items: center; gap: 14px;">
-          <div style="font-size: 2rem;" id="rfid-session-avatar">👨‍🌾</div>
+          <div style="font-size: 2rem;" id="rfid-session-avatar">⏳</div>
           <div>
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span class="badge badge-success" style="font-size: 0.72rem; padding: 2px 8px;">RFID AUTHENTICATED</span>
-              <span class="live-dot" style="background: #10b981;"></span>
-              <span style="font-size: 0.78rem; color: #10b981; font-family: var(--font-mono); font-weight: 700;" id="rfid-session-uid">RFID-88192-A2</span>
+              <span class="badge badge-secondary" id="rfid-badge-status" style="font-size: 0.72rem; padding: 2px 8px;">NO FARMER SCANNED</span>
+              <span class="live-dot" id="rfid-live-dot" style="background: #64748b;"></span>
+              <span style="font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); font-weight: 700;" id="rfid-session-uid">--</span>
             </div>
-            <h3 style="font-size: 1.2rem; margin-top: 3px; color: #ffffff;">
-              Active Intake: <span id="rfid-session-farmer-name" class="highlight-cyan">Ramesh Patel</span> &bull; <span id="rfid-session-village" style="color: var(--text-muted); font-size: 0.85rem; font-weight: normal;">Sabarkantha Dairy</span>
+            <h3 style="font-size: 1.15rem; margin-top: 3px; color: #ffffff;">
+              <span id="rfid-session-farmer-name">No Producer Selected</span> &bull; <span id="rfid-session-village" style="color: var(--text-muted); font-size: 0.85rem; font-weight: normal;">Tap or select a farmer card below to begin</span>
             </h3>
           </div>
         </div>
         <div style="display: flex; gap: 8px; align-items: center;">
-          <span class="hub-pill pill-cyan">FLOW: 1. NIR SCAN &rarr; 2. 5-TIER GRADING &rarr; 3. CLOUD PAYOUT</span>
+          <span class="hub-pill pill-cyan">STEPS: 1. CONNECT DEVICE &rarr; 2. SELECT FARMER &rarr; 3. CHECK MILK</span>
         </div>
       </div>
     </div>
@@ -183,8 +188,8 @@
       <div>
         <div style="display: flex; align-items: center; gap: 8px;">
           <span class="badge badge-primary">INTAKE WORKSTATION</span>
-          <span class="live-dot" style="background: #10b981;"></span>
-          <span style="font-size: 0.75rem; color: #10b981; font-family: var(--font-mono); font-weight: 700;">OPTICAL NIR SPECTROSCOPY</span>
+          <span class="live-dot" id="header-workstation-dot" style="background: #ef4444;"></span>
+          <span style="font-size: 0.75rem; color: #94a3b8; font-family: var(--font-mono); font-weight: 700;" id="header-workstation-text">HARDWARE: DISCONNECTED</span>
         </div>
         <h1 class="section-title" style="font-size: 1.8rem; margin-top: 0.4rem;">
           Milk Quality Testing &amp; <span class="gradient-text">Auto-Grading Station</span>
@@ -195,6 +200,9 @@
       </div>
 
       <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <button class="btn btn-primary" id="btn-workstation-device" onclick="toggleHardwareConnection()">
+          🔌 Connect ESP32 Hardware
+        </button>
         <button class="btn btn-primary" id="btn-run-scan" onclick="runLiveIntakeScan()" style="padding: 0.8rem 1.6rem; font-size: 1rem; box-shadow: 0 4px 20px var(--primary-glow);">
           <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           Check Milk Quality &amp; Auto-Grade
@@ -206,75 +214,38 @@
       </div>
     </div>
 
-    <!-- QUICK PRESETS STRIP -->
-    <div style="margin-bottom: 0.75rem; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px;">
-      Quick Milk Test Samples:
-    </div>
-    <div class="presets-strip" style="margin-bottom: 1.75rem;">
-      <div class="preset-card-btn active" onclick="applyPreset('standardAnalysis', this)">
-        <span class="badge badge-success preset-badge">GRADE A+</span>
-        <div class="preset-name">Standard Pure (4.2% Fat)</div>
-        <div class="preset-specs">4.20% Fat &bull; 3.40% Protein &bull; 6.8°C</div>
-      </div>
-      <div class="preset-card-btn" onclick="applyPreset('pureCow', this)">
-        <span class="badge badge-success preset-badge">GRADE A+</span>
-        <div class="preset-name">Pure Cow Milk (A2 Gir)</div>
-        <div class="preset-specs">4.6% Fat &bull; 8.85% SNF &bull; +12% Premium</div>
-      </div>
-      <div class="preset-card-btn" onclick="applyPreset('pureBuffalo', this)">
-        <span class="badge badge-success preset-badge">GRADE A+</span>
-        <div class="preset-name">Pure Buffalo Milk (Murrah)</div>
-        <div class="preset-specs">7.8% Fat &bull; 9.35% SNF &bull; +12% Premium</div>
-      </div>
-      <div class="preset-card-btn" onclick="applyPreset('waterDiluted', this)">
-        <span class="badge badge-warning preset-badge">GRADE C</span>
-        <div class="preset-name">Water Diluted Sample</div>
-        <div class="preset-specs">2.8% Fat &bull; +22% Water &bull; -25% Penalty</div>
-      </div>
-      <div class="preset-card-btn" onclick="applyPreset('chemicalContaminated', this)">
-        <span class="badge badge-danger preset-badge">GRADE F</span>
-        <div class="preset-name">Neutralizer / Urea</div>
-        <div class="preset-specs">Synthetic Trace &bull; Auto-Confiscated</div>
-      </div>
-      <div class="preset-card-btn" onclick="applyPreset('souredMilk', this)">
-        <span class="badge badge-danger preset-badge">GRADE C</span>
-        <div class="preset-name">High Acidity Souring</div>
-        <div class="preset-specs">pH 5.75 &bull; High Temp &bull; Degraded</div>
-      </div>
-    </div>
-
     <!-- MAIN TWO COLUMN WORKSTATION GRID -->
     <div class="grid-2" style="margin-bottom: 2rem; align-items: start;">
       
-      <!-- LEFT COLUMN: SENSORS & NIR READOUTS -->
+      <!-- LEFT COLUMN: SENSORS & NIR READOUTS (CLEAN INITIAL STATE) -->
       <div style="display: flex; flex-direction: column; gap: 1.5rem;">
         
         <!-- Live Composition Metrics Card -->
         <div class="card-glass">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
             <h3 style="font-size: 1.15rem; color: #ffffff; margin: 0;">Milk Composition Analysis</h3>
-            <span class="badge badge-primary" id="composition-badge">8-BAND OPTICAL NIR</span>
+            <span class="badge badge-secondary" id="composition-badge">READY FOR SAMPLE</span>
           </div>
 
           <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
             <div class="sensor-reading-box" style="border-left: 4px solid #f59e0b;">
               <span class="kpi-label">Fat Content</span>
-              <div class="sensor-val highlight-yellow" id="live-fat-val">4.20%</div>
+              <div class="sensor-val" id="live-fat-val" style="color: #94a3b8;">--</div>
               <div class="kpi-sub">NIR 1730nm Absorption</div>
             </div>
             <div class="sensor-reading-box" style="border-left: 4px solid #0ea5e9;">
               <span class="kpi-label">Solids-Not-Fat (SNF)</span>
-              <div class="sensor-val highlight-cyan" id="live-snf-val">8.75%</div>
+              <div class="sensor-val" id="live-snf-val" style="color: #94a3b8;">--</div>
               <div class="kpi-sub">Density Formula Correlated</div>
             </div>
             <div class="sensor-reading-box" style="border-left: 4px solid #a855f7;">
               <span class="kpi-label">Protein (Casein)</span>
-              <div class="sensor-val highlight-purple" id="live-protein-val">3.40%</div>
+              <div class="sensor-val" id="live-protein-val" style="color: #94a3b8;">--</div>
               <div class="kpi-sub">Amide I &amp; II NIR Bands</div>
             </div>
             <div class="sensor-reading-box" style="border-left: 4px solid #10b981;">
               <span class="kpi-label">Lactose (Sugar)</span>
-              <div class="sensor-val highlight-green" id="live-lactose-val">4.65%</div>
+              <div class="sensor-val" id="live-lactose-val" style="color: #94a3b8;">--</div>
               <div class="kpi-sub">1440nm Peak Absorbance</div>
             </div>
           </div>
@@ -283,18 +254,18 @@
           <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1rem;">
             <div class="sensor-reading-box">
               <span class="kpi-label" style="font-size: 0.72rem;">Temperature</span>
-              <div style="font-size: 1.25rem; font-weight: 700; font-family: var(--font-mono); margin-top: 4px;" id="live-temp-val">6.8°C</div>
-              <div style="font-size: 0.7rem; color: #10b981;">Fresh &amp; Chilled</div>
+              <div style="font-size: 1.25rem; font-weight: 700; font-family: var(--font-mono); margin-top: 4px; color: #94a3b8;" id="live-temp-val">--</div>
+              <div style="font-size: 0.7rem; color: var(--text-dim);" id="live-temp-sub">Chamber Probe</div>
             </div>
             <div class="sensor-reading-box">
               <span class="kpi-label" style="font-size: 0.72rem;">pH Value</span>
-              <div style="font-size: 1.25rem; font-weight: 700; font-family: var(--font-mono); margin-top: 4px;" id="live-ph-val">6.68</div>
-              <div style="font-size: 0.7rem; color: #10b981;">Optimal Neutral</div>
+              <div style="font-size: 1.25rem; font-weight: 700; font-family: var(--font-mono); margin-top: 4px; color: #94a3b8;" id="live-ph-val">--</div>
+              <div style="font-size: 0.7rem; color: var(--text-dim);" id="live-ph-sub">Glass Electrode</div>
             </div>
             <div class="sensor-reading-box">
               <span class="kpi-label" style="font-size: 0.72rem;">Water Added</span>
-              <div style="font-size: 1.25rem; font-weight: 700; font-family: var(--font-mono); margin-top: 4px;" id="live-water-val" class="highlight-green">0.0%</div>
-              <div style="font-size: 0.7rem; color: #10b981;">Pure Undiluted</div>
+              <div style="font-size: 1.25rem; font-weight: 700; font-family: var(--font-mono); margin-top: 4px; color: #94a3b8;" id="live-water-val">--</div>
+              <div style="font-size: 0.7rem; color: var(--text-dim);" id="live-water-sub">Conductivity Meter</div>
             </div>
           </div>
         </div>
@@ -311,13 +282,13 @@
           </div>
 
           <div class="nir-spectrum-container" id="nir-bars-deck">
-            <!-- Dynamically populated 8 bands -->
+            <!-- Populated by renderNIRBars() -->
           </div>
         </div>
 
       </div>
 
-      <!-- RIGHT COLUMN: INTAKE PARAMETERS, GRADING & PAYOUT -->
+      <!-- RIGHT COLUMN: INTAKE PARAMETERS, GRADING & PAYOUT (CLEAN INITIAL STATE) -->
       <div style="display: flex; flex-direction: column; gap: 1.5rem;">
         
         <!-- Intake Parameters & Pricing Card -->
@@ -343,23 +314,23 @@
               <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem;">
                 Intake Volume (Liters)
               </label>
-              <input type="number" step="0.1" min="0.5" max="500" value="25.4" id="input-milk-volume" class="form-input" style="width: 100%; font-weight: 700; font-size: 1.1rem; text-align: center;" oninput="updatePricingCalculation()">
+              <input type="number" step="0.1" min="0.1" max="500" placeholder="0.0" id="input-milk-volume" class="form-input" style="width: 100%; font-weight: 700; font-size: 1.1rem; text-align: center;" oninput="updatePricingCalculation()">
             </div>
           </div>
 
-          <!-- 5-Tier Quality Classification Badge -->
-          <div style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem; text-align: center;" id="quality-classification-box">
+          <!-- 5-Tier Quality Classification Badge (Clean State) -->
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem; text-align: center;" id="quality-classification-box">
             <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);">
               Automated 5-Tier Quality Grade
             </div>
-            <div style="font-size: 2rem; font-weight: 900; color: #10b981; margin: 0.25rem 0;" id="assigned-grade-text">
-              GRADE A+
+            <div style="font-size: 2rem; font-weight: 900; color: #94a3b8; margin: 0.25rem 0;" id="assigned-grade-text">
+              --
             </div>
             <div style="font-size: 0.88rem; color: #ffffff; font-weight: 600;" id="assigned-grade-label">
-              Elite Pure / Premium Milk
+              Awaiting Milk Sample
             </div>
-            <div style="font-size: 0.8rem; color: #34d399; margin-top: 4px;" id="assigned-grade-desc">
-              Purity Score: 95.0/100 &bull; +12% Quality Bonus Applied
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;" id="assigned-grade-desc">
+              Connect hardware device &amp; run scan to analyze milk purity.
             </div>
           </div>
 
@@ -367,26 +338,26 @@
           <div style="background: rgba(0, 0, 0, 0.3); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
               <span style="color: var(--text-muted);">Base Rate per Liter:</span>
-              <strong id="price-base-rate">₹45.00/L</strong>
+              <strong id="price-base-rate" style="color: #94a3b8;">--</strong>
             </div>
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
               <span style="color: var(--text-muted);">Quality Bonus / Adjustment:</span>
-              <strong id="price-quality-bonus" style="color: #34d399;">+₹4.00/L</strong>
+              <strong id="price-quality-bonus" style="color: #94a3b8;">--</strong>
             </div>
             <div style="display: flex; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.08);">
               <span style="font-weight: 700;">Final Net Rate per Liter:</span>
-              <strong id="price-net-rate" class="highlight-cyan" style="font-size: 1.1rem;">₹49.00/L</strong>
+              <strong id="price-net-rate" style="font-size: 1.1rem; color: #94a3b8;">--</strong>
             </div>
           </div>
 
           <!-- Big Total Payout Box -->
-          <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(14, 165, 233, 0.15)); border: 1px solid rgba(16, 185, 129, 0.45); border-radius: var(--radius-md); padding: 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+          <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(14, 165, 233, 0.08)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-md); padding: 1.25rem; display: flex; justify-content: space-between; align-items: center;">
             <div>
               <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">TOTAL FARMER PAYOUT</div>
               <div style="font-size: 0.75rem; color: #34d399;">Direct Bank Transfer (DBT) Ready</div>
             </div>
             <div style="font-size: 2.2rem; font-weight: 900; color: #34d399; font-family: var(--font-mono);" id="price-total-payout">
-              ₹1,244.60
+              ₹0.00
             </div>
           </div>
 
@@ -396,9 +367,9 @@
         <div class="card-glass">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
             <div>
-              <h3 style="font-size: 1.1rem; color: #ffffff; margin: 0;">Scan / Select Producer RFID</h3>
+              <h3 style="font-size: 1.1rem; color: #ffffff; margin: 0;">Select Producer RFID</h3>
               <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
-                Click any enrolled farmer card to bind the test session
+                Click any enrolled farmer card below to bind the test intake session
               </p>
             </div>
             <a href="farmer-auth.html?mode=signup" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; text-decoration: none;">
@@ -459,20 +430,87 @@
       }, 3500);
     }
 
-    function initWorkstation() {
-      const farmers = window.db.getFarmers();
-      if (farmers && farmers.length > 0) {
-        selectFarmer(farmers[0].id);
+    function isHardwareConnected() {
+      return sessionStorage.getItem('dairy_nova_hardware_connected') === 'true';
+    }
+
+    function toggleHardwareConnection() {
+      const currentlyConnected = isHardwareConnected();
+      if (currentlyConnected) {
+        sessionStorage.removeItem('dairy_nova_hardware_connected');
+        if (window.sensorEngine) window.sensorEngine.disconnectDevice();
+        updateHardwareUI(false);
+        if (window.soundCtrl) window.soundCtrl.playTick();
+        showToast("ESP32 Device Disconnected", "info");
+      } else {
+        sessionStorage.setItem('dairy_nova_hardware_connected', 'true');
+        if (window.sensorEngine) window.sensorEngine.connectDevice();
+        updateHardwareUI(true);
+        if (window.soundCtrl) window.soundCtrl.playSuccess();
+        showToast("🟢 ESP32 SENSORS CONNECTED: Hardware Active (COM4 / 115200 baud)", "success");
       }
+    }
+
+    function updateHardwareUI(connected) {
+      const dot = document.getElementById('iot-status-dot');
+      const text = document.getElementById('iot-status-text');
+      const headerBtn = document.getElementById('btn-header-connect-device');
+      const workBtn = document.getElementById('btn-workstation-device');
+      const wsDot = document.getElementById('header-workstation-dot');
+      const wsText = document.getElementById('header-workstation-text');
+
+      if (connected) {
+        if (dot) dot.style.background = '#10b981';
+        if (text) text.innerText = 'ESP32 SENSORS: CONNECTED';
+        if (wsDot) wsDot.style.background = '#10b981';
+        if (wsText) {
+          wsText.innerText = 'HARDWARE: CONNECTED (ESP32-WROOM)';
+          wsText.style.color = '#10b981';
+        }
+        if (headerBtn) {
+          headerBtn.innerText = '⚡ Disconnect Device';
+          headerBtn.className = 'btn btn-sm btn-secondary';
+        }
+        if (workBtn) {
+          workBtn.innerHTML = '⚡ Disconnect Hardware';
+          workBtn.className = 'btn btn-secondary';
+        }
+      } else {
+        if (dot) dot.style.background = '#ef4444';
+        if (text) text.innerText = 'DEVICE: DISCONNECTED';
+        if (wsDot) wsDot.style.background = '#ef4444';
+        if (wsText) {
+          wsText.innerText = 'HARDWARE: DISCONNECTED';
+          wsText.style.color = '#94a3b8';
+        }
+        if (headerBtn) {
+          headerBtn.innerText = '🔌 Connect Device';
+          headerBtn.className = 'btn btn-sm btn-primary';
+        }
+        if (workBtn) {
+          workBtn.innerHTML = '🔌 Connect ESP32 Hardware';
+          workBtn.className = 'btn btn-primary';
+        }
+      }
+    }
+
+    function initWorkstation() {
+      // Sync hardware connection status
+      updateHardwareUI(isHardwareConnected());
+
+      // Reset sensors to clean state (no pre-filled sample numbers)
+      if (window.sensorEngine) {
+        window.sensorEngine.resetToClean();
+      }
+
       renderRfidDeck();
       renderNIRBars();
-      updatePricingCalculation();
     }
 
     function renderRfidDeck() {
       const deck = document.getElementById('farmer-rfid-deck');
       if (!deck) return;
-      const farmers = window.db.getFarmers();
+      const farmers = window.db ? window.db.getFarmers() : [];
       deck.innerHTML = farmers.map(f => `
         <div class="farmer-rfid-card ${activeFarmer && activeFarmer.id === f.id ? 'active' : ''}" 
              onclick="selectFarmer('${f.id}')"
@@ -497,18 +535,31 @@
       const found = farmers.find(f => f.id === farmerId);
       if (found) {
         activeFarmer = found;
+        document.getElementById('rfid-session-avatar').innerText = found.avatar || '👨‍🌾';
         document.getElementById('rfid-session-uid').innerText = found.rfid;
         document.getElementById('rfid-session-farmer-name').innerText = found.name;
         document.getElementById('rfid-session-village').innerText = found.village;
+        
+        const badgeStatus = document.getElementById('rfid-badge-status');
+        if (badgeStatus) {
+          badgeStatus.className = 'badge badge-success';
+          badgeStatus.innerText = 'RFID AUTHENTICATED';
+        }
+        const liveDot = document.getElementById('rfid-live-dot');
+        if (liveDot) liveDot.style.background = '#10b981';
+
         setCattleType(found.cattleType || 'Cow');
         renderRfidDeck();
         if (window.soundCtrl) window.soundCtrl.playScan();
+        showToast(`Farmer Identified: ${found.name} (${found.rfid})`, "info");
       }
     }
 
     function setCattleType(type) {
       currentCattleType = type;
-      window.sensorEngine.state.sampleType = type;
+      if (window.sensorEngine) {
+        window.sensorEngine.state.sampleType = type;
+      }
       const cowBtn = document.getElementById('cattle-cow-btn');
       const bufBtn = document.getElementById('cattle-buffalo-btn');
       if (type === 'Cow') {
@@ -518,37 +569,33 @@
         cowBtn.className = 'btn btn-sm btn-secondary';
         bufBtn.className = 'btn btn-sm btn-primary';
       }
-      updatePricingCalculation();
-    }
-
-    function applyPreset(presetKey, btnEl) {
-      document.querySelectorAll('.preset-card-btn').forEach(b => b.classList.remove('active'));
-      if (btnEl) btnEl.classList.add('active');
-
-      window.sensorEngine.applyPreset(presetKey);
-      const s = window.sensorEngine.state;
-      if (s.sampleType) setCattleType(s.sampleType);
-      
-      document.getElementById('input-milk-volume').value = s.volume || 25.4;
-      updateSensorUI();
-      updatePricingCalculation();
-      if (window.soundCtrl) window.soundCtrl.playTick();
-      showToast(`Loaded test sample: ${window.sensorEngine.presets[presetKey]?.name || presetKey}`, 'info');
+      if (window.sensorEngine && window.sensorEngine.hasTested) {
+        updatePricingCalculation();
+      }
     }
 
     function updateSensorUI() {
       const s = window.sensorEngine.state;
-      document.getElementById('live-fat-val').innerText = `${(s.fat || 0).toFixed(2)}%`;
-      document.getElementById('live-snf-val').innerText = `${(s.snf || 0).toFixed(2)}%`;
-      document.getElementById('live-protein-val').innerText = `${(s.protein || 0).toFixed(2)}%`;
-      document.getElementById('live-lactose-val').innerText = `${(s.lactose || 0).toFixed(2)}%`;
-      document.getElementById('live-temp-val').innerText = `${(s.temperature || 0).toFixed(1)}°C`;
-      document.getElementById('live-ph-val').innerText = `${(s.ph || 0).toFixed(2)}`;
-      
-      const waterEl = document.getElementById('live-water-val');
-      if (waterEl) {
-        waterEl.innerText = `${(s.waterAdded || 0).toFixed(1)}%`;
-        waterEl.className = (s.waterAdded > 0) ? 'sensor-val highlight-red' : 'sensor-val highlight-green';
+      const setVal = (id, val, color = '#ffffff') => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.innerText = val;
+          el.style.color = color;
+        }
+      };
+
+      setVal('live-fat-val', `${(s.fat || 0).toFixed(2)}%`, '#facc15');
+      setVal('live-snf-val', `${(s.snf || 0).toFixed(2)}%`, '#38bdf8');
+      setVal('live-protein-val', `${(s.protein || 0).toFixed(2)}%`, '#c084fc');
+      setVal('live-lactose-val', `${(s.lactose || 0).toFixed(2)}%`, '#34d399');
+      setVal('live-temp-val', `${(s.temperature || 0).toFixed(1)}°C`, '#34d399');
+      setVal('live-ph-val', `${(s.ph || 0).toFixed(2)}`, '#34d399');
+      setVal('live-water-val', `${(s.waterAdded || 0).toFixed(1)}%`, s.waterAdded > 0 ? '#ef4444' : '#34d399');
+
+      const badge = document.getElementById('composition-badge');
+      if (badge) {
+        badge.className = 'badge badge-success';
+        badge.innerText = 'NIR SCANNED & ANALYZED';
       }
 
       renderNIRBars();
@@ -572,7 +619,7 @@
 
     function updatePricingCalculation() {
       const volumeInput = document.getElementById('input-milk-volume');
-      const vol = parseFloat(volumeInput.value) || 25.4;
+      const vol = parseFloat(volumeInput.value) || 0;
       window.sensorEngine.state.volume = vol;
       window.sensorEngine.state.sampleType = currentCattleType;
 
@@ -588,7 +635,7 @@
       if (gradeText) gradeText.innerText = classification.code;
       if (gradeText) gradeText.style.color = classification.color;
       if (gradeLabel) gradeLabel.innerText = classification.label;
-      if (gradeDesc) gradeDesc.innerText = `Purity: ${window.sensorEngine.state.purityScore.toFixed(1)}% &bull; ${classification.description}`;
+      if (gradeDesc) gradeDesc.innerText = classification.description;
       if (gradeBox) {
         gradeBox.style.borderColor = classification.color;
         gradeBox.style.background = `rgba(${classification.code === 'GRADE F' ? '239, 68, 68, 0.15' : '16, 185, 129, 0.12'})`;
@@ -602,28 +649,54 @@
       const netRateEl = document.getElementById('price-net-rate');
       const totalPayoutEl = document.getElementById('price-total-payout');
 
-      if (baseRateEl) baseRateEl.innerText = `₹${currentPricingResult.baseRate.toFixed(2)}/L`;
-      if (bonusEl) {
-        const bonusVal = currentPricingResult.qualityBonusOrDeduction;
-        bonusEl.innerText = bonusVal >= 0 ? `+₹${bonusVal.toFixed(2)}/L` : `-₹${Math.abs(bonusVal).toFixed(2)}/L`;
-        bonusEl.style.color = bonusVal >= 0 ? '#34d399' : '#f87171';
-      }
-      if (netRateEl) netRateEl.innerText = `₹${currentPricingResult.netRatePerLitre.toFixed(2)}/L`;
-      if (totalPayoutEl) {
-        totalPayoutEl.innerText = `₹${currentPricingResult.totalPayout.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      if (currentPricingResult.status === 'AWAITING_TEST') {
+        if (baseRateEl) baseRateEl.innerText = '--';
+        if (bonusEl) bonusEl.innerText = '--';
+        if (netRateEl) netRateEl.innerText = '--';
+        if (totalPayoutEl) totalPayoutEl.innerText = '₹0.00';
+      } else {
+        if (baseRateEl) {
+          baseRateEl.innerText = `₹${currentPricingResult.baseRate.toFixed(2)}/L`;
+          baseRateEl.style.color = '#ffffff';
+        }
+        if (bonusEl) {
+          const bonusVal = currentPricingResult.qualityBonusOrDeduction;
+          bonusEl.innerText = bonusVal >= 0 ? `+₹${bonusVal.toFixed(2)}/L` : `-₹${Math.abs(bonusVal).toFixed(2)}/L`;
+          bonusEl.style.color = bonusVal >= 0 ? '#34d399' : '#f87171';
+        }
+        if (netRateEl) {
+          netRateEl.innerText = `₹${currentPricingResult.netRatePerLitre.toFixed(2)}/L`;
+          netRateEl.style.color = '#38bdf8';
+        }
+        if (totalPayoutEl) {
+          totalPayoutEl.innerText = `₹${currentPricingResult.totalPayout.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
       }
     }
 
     function runLiveIntakeScan() {
+      // 1. Hardware connection check
+      if (!isHardwareConnected()) {
+        if (window.soundCtrl) window.soundCtrl.playError();
+        showToast("⚠️ Device Disconnected! Please connect the ESP32 hardware device first.", "error");
+        return;
+      }
+
+      // 2. Volume check
+      const volumeInput = document.getElementById('input-milk-volume');
+      if (!volumeInput.value || parseFloat(volumeInput.value) <= 0) {
+        volumeInput.value = "10.0"; // Default initial measure if empty
+      }
+
       const scanBtn = document.getElementById('btn-run-scan');
       if (scanBtn) {
-        scanBtn.innerHTML = '⚡ Scanning Sensors...';
+        scanBtn.innerHTML = '⚡ Scanning Optical NIR Sensors...';
         scanBtn.disabled = true;
       }
       if (window.soundCtrl) window.soundCtrl.playScan();
 
       setTimeout(() => {
-        window.sensorEngine.triggerOpticalScan();
+        window.sensorEngine.triggerOpticalScan(currentCattleType);
         updateSensorUI();
         updatePricingCalculation();
         if (window.soundCtrl) window.soundCtrl.playSuccess();
@@ -631,18 +704,25 @@
           scanBtn.innerHTML = `<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Check Milk Quality & Auto-Grade`;
           scanBtn.disabled = false;
         }
-        showToast("Optical NIR scan completed & auto-graded!", "success");
+        showToast("Live optical NIR scan completed! Quality graded.", "success");
       }, 700);
     }
 
     function commitIntakeToCloud() {
-      if (!activeFarmer) {
-        showToast("Please scan or select a farmer first.", "warning");
+      if (!isHardwareConnected()) {
+        showToast("⚠️ Please connect the hardware device before committing.", "error");
         return;
       }
-      if (!currentPricingResult) {
-        updatePricingCalculation();
+      if (!activeFarmer) {
+        showToast("Please select a farmer card first.", "warning");
+        return;
       }
+      if (!window.sensorEngine || !window.sensorEngine.hasTested) {
+        showToast("Please run the milk test scan first before committing to cloud.", "warning");
+        return;
+      }
+
+      updatePricingCalculation();
 
       const s = window.sensorEngine.state;
       const record = {
@@ -656,17 +736,17 @@
         farmerName: activeFarmer.name,
         milkType: `${currentCattleType} Milk`,
         cattleType: currentCattleType,
-        volume: parseFloat(s.volume) || 25.4,
-        fat: parseFloat(s.fat) || 4.2,
-        snf: parseFloat(s.snf) || 8.75,
-        protein: parseFloat(s.protein) || 3.4,
-        lactose: parseFloat(s.lactose) || 4.65,
-        waterAdded: parseFloat(s.waterAdded) || 0.0,
+        volume: parseFloat(s.volume) || 10.0,
+        fat: parseFloat(s.fat) || 0,
+        snf: parseFloat(s.snf) || 0,
+        protein: parseFloat(s.protein) || 0,
+        lactose: parseFloat(s.lactose) || 0,
+        waterAdded: parseFloat(s.waterAdded) || 0,
         density: parseFloat(s.density) || 1.030,
-        ph: parseFloat(s.ph) || 6.68,
-        temp: parseFloat(s.temperature) || 6.8,
-        purityScore: parseFloat(s.purityScore) || 92.0,
-        grade: currentPricingResult.grade || 'GRADE A+',
+        ph: parseFloat(s.ph) || 6.65,
+        temp: parseFloat(s.temperature) || 6.5,
+        purityScore: parseFloat(s.purityScore) || 90.0,
+        grade: currentPricingResult.grade || 'GRADE A',
         status: currentPricingResult.status || 'ACCEPTED',
         ratePerLitre: currentPricingResult.netRatePerLitre || 45.0,
         totalPayout: currentPricingResult.totalPayout || 0.0,
