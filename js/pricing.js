@@ -21,6 +21,32 @@ class PricingEngine {
     const adulterants = sensorState.adulterants || [];
     const classification = sensorState.classification || window.sensorEngine.classifySample(sensorState);
 
+    // Initial Unanalyzed State Check
+    if (classification.code === '--' || (!fat && !volume && !purity)) {
+      return {
+        status: "AWAITING_TEST",
+        badgeClass: "badge-secondary",
+        grade: "--",
+        gradeLabel: "Awaiting Milk Sample",
+        gradeColor: "#94a3b8",
+        reason: "No Milk Sample Analyzed",
+        baseRate: 0,
+        fatDiff: "0.00",
+        fatAdjustment: 0,
+        snfDiff: "0.00",
+        snfAdjustment: 0,
+        qualityMultiplier: 0.0,
+        qualityBonusOrDeduction: 0,
+        waterPenalty: 0,
+        netRatePerLitre: 0.0,
+        volume: 0,
+        grossAmount: 0.0,
+        deductions: 0.0,
+        totalPayout: 0.0,
+        isPayable: false
+      };
+    }
+
     // Severe Rejection Check: Grade F
     if (classification.code === "GRADE F" || purity < 45.0) {
       return {
