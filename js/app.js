@@ -34,6 +34,7 @@ class DairyDovaApp {
     this.refreshPassbook();
     this.refreshAdminDashboard();
     this.updateDeviceStatusUI(sessionStorage.getItem('dairy_nova_hardware_connected') === 'true');
+    this.initViewMode();
 
     document.addEventListener('click', () => {
       if (window.soundCtrl) window.soundCtrl.init();
@@ -138,6 +139,99 @@ class DairyDovaApp {
     const label = document.getElementById('heritage-scene-text');
     if (label) {
       label.textContent = isPasture ? 'Pasture Meadow' : 'Desi Gir Farm';
+    }
+  }
+
+  // --- App vs Web Display Mode Logic ---
+  initViewMode() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const modeParam = urlParams.get('mode');
+    
+    let activeMode = 'web';
+    if (modeParam === 'app') {
+      activeMode = 'app';
+    } else if (modeParam === 'web') {
+      activeMode = 'web';
+    } else if (window.DairyAndroid && typeof window.DairyAndroid.isNativeApp === 'function') {
+      activeMode = 'app';
+    } else if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+      activeMode = 'app';
+    } else if (window.navigator.standalone === true) {
+      activeMode = 'app';
+    } else {
+      const savedMode = localStorage.getItem('dairy_view_mode');
+      if (savedMode) activeMode = savedMode;
+    }
+
+    this.applyViewMode(activeMode);
+  }
+
+  toggleViewMode() {
+    const nextMode = this.viewMode === 'app' ? 'web' : 'app';
+    localStorage.setItem('dairy_view_mode', nextMode);
+    this.applyViewMode(nextMode);
+    this.showToast(nextMode === 'app' ? '📱 Switched to App Mode: Farmer Sign In & Admin Login only' : '🌐 Switched to Web Mode: Full Ecosystem (Sign In/Up, Admin & Start Milk Test)', 'info');
+    if (window.soundCtrl) window.soundCtrl.playTick();
+  }
+
+  applyViewMode(mode) {
+    this.viewMode = mode;
+    const isApp = (mode === 'app');
+    document.body.classList.toggle('mode-app', isApp);
+    document.body.classList.toggle('mode-web', !isApp);
+
+    const modeBtnText = document.getElementById('mode-toggle-text');
+    const modeBtnIcon = document.getElementById('mode-toggle-icon');
+    const badgeText = document.getElementById('overview-badge-text');
+    const portalTitle = document.getElementById('overview-portal-title');
+    const portalSub = document.getElementById('overview-portal-sub');
+
+    const farmerTitle = document.getElementById('farmer-card-title');
+    const farmerDesc = document.getElementById('farmer-card-desc');
+    const farmerBtnText = document.getElementById('farmer-card-btn-text');
+    const farmerPill = document.getElementById('farmer-card-pill');
+
+    const testCard = document.getElementById('card-start-milk-test');
+    const rfidSection = document.getElementById('overview-rfid-section');
+
+    if (isApp) {
+      // APP MODE: Farmer Sign In and Admin Login ONLY
+      if (modeBtnIcon) modeBtnIcon.textContent = '📱';
+      if (modeBtnText) modeBtnText.textContent = 'App Mode';
+      if (badgeText) badgeText.textContent = 'DAIRY NOVA • MOBILE APP';
+      if (portalTitle) portalTitle.innerHTML = 'SMART MILK <span class="gradient-text">MOBILE PORTAL</span>';
+      if (portalSub) portalSub.textContent = 'Welcome to the Dairy Nova Mobile Application. Sign in to access your producer passbook or cooperative administration.';
+
+      if (farmerTitle) farmerTitle.textContent = 'Farmer Sign In';
+      if (farmerDesc) farmerDesc.textContent = 'Sign in with your registered phone number or RFID card to view your milk passbook, daily collections, purity bonuses, and bank payouts.';
+      if (farmerBtnText) farmerBtnText.textContent = 'Farmer Sign In';
+      if (farmerPill) farmerPill.textContent = 'PRODUCER SIGN IN';
+
+      if (testCard) testCard.style.display = 'none';
+      if (rfidSection) rfidSection.style.display = 'none';
+    } else {
+      // WEB SITE MODE: Farmer Sign In & Sign Up + Admin Login + Start Milk Test
+      if (modeBtnIcon) modeBtnIcon.textContent = '🌐';
+      if (modeBtnText) modeBtnText.textContent = 'Web Mode';
+      if (badgeText) badgeText.textContent = 'DAIRY DOVA SMART MILK QUALITY TESTING';
+      if (portalTitle) portalTitle.innerHTML = 'SMART MILK <span class="gradient-text">QUALITY SYSTEM</span>';
+      if (portalSub) portalSub.textContent = 'Welcome to the centralized dairy portal. Access farmer records, cooperative admin management, automated optical milk quality testing, and new producer onboarding.';
+
+      if (farmerTitle) farmerTitle.textContent = 'Farmer Sign In & Sign Up';
+      if (farmerDesc) farmerDesc.textContent = 'Sign in to view milk passbook, purity certificates & payouts, or register as a new producer to receive a smart RFID card.';
+      if (farmerBtnText) farmerBtnText.textContent = 'Sign In / Sign Up';
+      if (farmerPill) farmerPill.textContent = 'PRODUCER PORTAL';
+
+      if (testCard) testCard.style.display = 'flex';
+      if (rfidSection) rfidSection.style.display = 'block';
+    }
+  }
+
+  handleFarmerCardClick() {
+    if (this.viewMode === 'app') {
+      window.location.href = 'farmer-auth.html?mode=signin';
+    } else {
+      window.location.href = 'farmer-auth.html';
     }
   }
 

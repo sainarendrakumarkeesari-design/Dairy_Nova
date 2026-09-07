@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private WebView mWebView;
     private ProgressBar mProgressBar;
-    private static final String DEFAULT_URL = "file:///android_asset/www/index.html";
+    private static final String DEFAULT_URL = "file:///android_asset/www/index.html?mode=app";
 
     @SuppressLint({"SetJavaScriptEnabled"})
     @Override
