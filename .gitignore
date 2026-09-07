@@ -19,4 +19,11 @@ $RECYCLE.BIN/
 
 # Temporary files
 scratch/
-push_to_github.bat
+
+# Android build outputs & caches
+.github/
+android/.gradle/
+android/build/
+android/app/build/
+*.apk
+*.aab
