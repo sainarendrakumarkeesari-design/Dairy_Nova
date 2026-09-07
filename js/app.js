@@ -74,8 +74,8 @@ class DairyDovaApp {
   }
 
   switchSection(sectionId) {
-    if (sectionId === 'admin' && !this.isAdminAuthenticated) {
-      this.openAdminLoginModal();
+    if (sectionId === 'admin') {
+      window.location.href = 'admin.html';
       return;
     }
 
@@ -92,8 +92,6 @@ class DairyDovaApp {
     if (sectionId === 'passbook') {
       this.refreshPassbook();
       this.renderMobilePassbookPreview();
-    } else if (sectionId === 'admin') {
-      this.refreshAdminDashboard();
     } else if (sectionId === 'pricing') {
       this.refreshPricingPreview();
     } else if (sectionId === 'quality-rules') {
