@@ -65,11 +65,27 @@ Simply open `index.html` in any modern web browser.
 │   ├── database.js         # Local database & persistence layer
 │   ├── pricing.js          # Pricing engine calculations
 │   └── sensors.js          # IoT sensor simulations & calibrations
-├── index.html              # Main single-page application entry point
+├── index.html              # Main ecosystem launchpad hub
+├── farmer-auth.html        # Dedicated Farmer Sign In & Sign Up Portal
+├── admin.html              # Dedicated Cooperative Admin Dashboard
+├── testing.html            # Dedicated Milk Testing Station & Intake Workstation
+├── auto_sync_github.ps1    # Continuous auto-deploy watcher (auto commit & push on every save)
+├── start_auto_deploy.bat   # One-click launcher for continuous auto-deploy watcher
+├── push_to_github.bat      # One-click manual push script
 ├── run.bat                 # Quick launcher batch file for Windows
 ├── serve.ps1               # Lightweight local HTTP server script
 └── README.md               # Project documentation
 ```
+
+---
+
+## ⚡ Continuous Auto-Deploy to GitHub
+
+Dairy Nova includes an automated file watcher that automatically stages, commits, and pushes any modifications to GitHub whenever a file is saved:
+
+1. Double-click **`start_auto_deploy.bat`** (or run `powershell -ExecutionPolicy Bypass -File .\auto_sync_github.ps1`).
+2. Any time you edit and save HTML, CSS, JS, or assets, the watcher automatically detects the change and pushes it to GitHub within 3 seconds!
+3. You can also double-click **`push_to_github.bat`** for an immediate 1-click stage, commit, and push.
 
 ---
 
