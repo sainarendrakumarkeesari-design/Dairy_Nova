@@ -569,29 +569,9 @@ class DairyDovaApp {
     this.switchSection('passbook');
   }
 
-  // Admin Login Modal
+  // Admin Portal Navigation (Redirect to dedicated page)
   openAdminLoginModal() {
-    const modal = document.getElementById('modal-admin-login');
-    if (modal) {
-      modal.classList.add('modal-open');
-      const pinInput = document.getElementById('admin-pin-input');
-      const errEl = document.getElementById('admin-login-error');
-      if (errEl) errEl.style.display = 'none';
-      if (pinInput) {
-        pinInput.value = '';
-        pinInput.style.borderColor = '';
-        setTimeout(() => pinInput.focus(), 150);
-
-        if (!pinInput._hasInputListener) {
-          pinInput.addEventListener('input', () => {
-            pinInput.style.borderColor = '';
-            pinInput.style.boxShadow = '';
-            if (errEl) errEl.style.display = 'none';
-          });
-          pinInput._hasInputListener = true;
-        }
-      }
-    }
+    window.location.href = 'admin.html';
   }
 
   closeAdminLoginModal() {
