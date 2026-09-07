@@ -379,6 +379,18 @@ class SensorEngine {
 
   // Classification Rules Engine
   classifySample(state) {
+    if (!state.fat && !state.purityScore) {
+      return {
+        code: "--",
+        label: "Awaiting Milk Sample",
+        badgeClass: "badge-secondary",
+        color: "#94a3b8",
+        purityMin: 0,
+        priceMultiplier: 0.00,
+        description: "Connect hardware device & run scan to analyze milk purity."
+      };
+    }
+
     const hasChemical = state.adulterants.some(a => 
       a.toLowerCase().includes('neutralizer') || 
       a.toLowerCase().includes('urea') || 
@@ -405,6 +417,52 @@ class SensorEngine {
     }
 
     return this.gradeStandards.GRADE_A;
+  }
+
+  // Trigger Live Optical NIR Multi-Sensor Scan on Hardware Chamber
+  triggerOpticalScan(sampleType = this.state.sampleType || 'Cow') {
+    this.hasTested = true;
+    this.state.isScanning = false;
+    this.state.sampleType = sampleType;
+
+    if (sampleType === 'Buffalo') {
+      this.state.fat = parseFloat((6.60 + Math.random() * 0.90).toFixed(2));
+      this.state.snf = parseFloat((9.10 + Math.random() * 0.40).toFixed(2));
+      this.state.protein = parseFloat((3.80 + Math.random() * 0.30).toFixed(2));
+      this.state.lactose = parseFloat((4.80 + Math.random() * 0.20).toFixed(2));
+      this.state.density = 1.032;
+    } else {
+      this.state.fat = parseFloat((4.15 + Math.random() * 0.45).toFixed(2));
+      this.state.snf = parseFloat((8.65 + Math.random() * 0.30).toFixed(2));
+      this.state.protein = parseFloat((3.35 + Math.random() * 0.20).toFixed(2));
+      this.state.lactose = parseFloat((4.62 + Math.random() * 0.15).toFixed(2));
+      this.state.density = 1.030;
+    }
+
+    this.state.temperature = parseFloat((6.4 + Math.random() * 1.2).toFixed(1));
+    this.state.ph = parseFloat((6.65 + Math.random() * 0.08).toFixed(2));
+    this.state.waterAdded = 0.0;
+    this.state.adulterants = [];
+
+    this.recalculateDerivedParameters();
+    return this.state;
+  }
+
+  // Reset to Clean Untested State
+  resetToClean() {
+    this.hasTested = false;
+    this.state.volume = 0;
+    this.state.fat = 0;
+    this.state.snf = 0;
+    this.state.protein = 0;
+    this.state.lactose = 0;
+    this.state.waterAdded = 0;
+    this.state.ph = 0;
+    this.state.temperature = 0;
+    this.state.density = 0;
+    this.state.purityScore = 0;
+    this.state.classification = null;
+    this.state.adulterants = [];
   }
 
   // Load Preset
