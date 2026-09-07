@@ -63,8 +63,8 @@ $watcher.NotifyFilter = [System.IO.NotifyFilters]::FileName -bor [System.IO.Noti
 
 $ignorePatterns = @('\.git', '\.gemini', '\.vscode', 'node_modules', 'auto_sync_github\.log')
 
-$lastTrigger = [DateTime]::MinValue
-$pendingReason = ""
+$global:autoSyncLastTrigger = [DateTime]::MinValue
+$global:autoSyncPendingReason = ""
 
 $action = {
     $path = $Event.SourceEventArgs.FullPath
@@ -75,16 +75,14 @@ $action = {
         if ($path -match $pattern) { return }
     }
 
-    $script:pendingReason = "$name ($changeType)"
-    $script:lastTrigger = [DateTime]::Now
+    $global:autoSyncPendingReason = "$name ($changeType)"
+    $global:autoSyncLastTrigger = [DateTime]::Now
 }
 
-$handlers = @(
-    Register-ObjectEvent $watcher "Changed" -Action $action,
-    Register-ObjectEvent $watcher "Created" -Action $action,
-    Register-ObjectEvent $watcher "Deleted" -Action $action,
-    Register-ObjectEvent $watcher "Renamed" -Action $action
-)
+$h1 = Register-ObjectEvent -InputObject $watcher -EventName "Changed" -Action $action
+$h2 = Register-ObjectEvent -InputObject $watcher -EventName "Created" -Action $action
+$h3 = Register-ObjectEvent -InputObject $watcher -EventName "Deleted" -Action $action
+$h4 = Register-ObjectEvent -InputObject $watcher -EventName "Renamed" -Action $action
 
 Write-Host "Watcher is active and running. Waiting for file changes..." -ForegroundColor Green
 
@@ -92,19 +90,21 @@ try {
     while ($true) {
         Start-Sleep -Milliseconds 500
         
-        if ($script:lastTrigger -ne [DateTime]::MinValue) {
-            $elapsed = ([DateTime]::Now - $script:lastTrigger).TotalSeconds
+        if ($global:autoSyncLastTrigger -ne [DateTime]::MinValue) {
+            $elapsed = ([DateTime]::Now - $global:autoSyncLastTrigger).TotalSeconds
             if ($elapsed -ge $DebounceSeconds) {
-                $reason = $script:pendingReason
-                $script:lastTrigger = [DateTime]::MinValue
-                $script:pendingReason = ""
+                $reason = $global:autoSyncPendingReason
+                $global:autoSyncLastTrigger = [DateTime]::MinValue
+                $global:autoSyncPendingReason = ""
                 Run-GitPush $reason
             }
         }
     }
 }
 finally {
-    $handlers | ForEach-Object { Unregister-Event $_.Id }
+    @($h1, $h2, $h3, $h4) | ForEach-Object { 
+        if ($_) { Unregister-Event -SourceIdentifier $_.Name -ErrorAction SilentlyContinue } 
+    }
     $watcher.Dispose()
     Write-Host "Auto-deploy watcher stopped." -ForegroundColor Yellow
 }
