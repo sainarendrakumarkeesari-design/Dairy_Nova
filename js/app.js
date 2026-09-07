@@ -2373,47 +2373,67 @@ class DairyDovaApp {
     `).join('');
   }
 
-  refreshAdminDashboard() {
-    const records = window.db.getRecords();
-    const farmers = window.db.getFarmers();
+  clearAllAdminData() {
+    if (confirm("Are you sure you want to clear all intake records and data in the Admin page?")) {
+      window.db.clearRecords();
+      this.refreshAdminDashboard();
+      this.refreshPassbook();
+      if (window.soundCtrl) window.soundCtrl.playTrash();
+      this.showToast("All intake records have been cleared from Admin page.", "info");
+    }
+  }
 
-    const totalLitres = records.reduce((acc, r) => acc + r.volume, 0);
-    const totalPayout = records.reduce((acc, r) => acc + r.totalPayout, 0);
-    const avgFat = records.length ? (records.reduce((acc, r) => acc + r.fat, 0) / records.length) : 0;
-    const adulterationCount = records.filter(r => r.status !== 'APPROVED').length;
+  refreshAdminDashboard() {
+    const records = window.db.getRecords() || [];
+    const farmers = window.db.getFarmers() || [];
+
+    const totalLitres = records.reduce((acc, r) => acc + (r.volume || 0), 0);
+    const totalPayout = records.reduce((acc, r) => acc + (r.totalPayout || 0), 0);
+    const premiumLitres = records.filter(r => r.grade === 'GRADE A+').reduce((acc, r) => acc + (r.volume || 0), 0);
+    const avgQuality = records.length ? Math.round(records.reduce((acc, r) => acc + (r.purityScore || 0), 0) / records.length) : 0;
+    const adulterationCount = records.filter(r => r.status === 'REJECTED' || r.status === 'PENALIZED' || (r.adulterantsDetected && r.adulterantsDetected.length > 0)).length;
 
     const setInner = (id, val) => {
       const el = document.getElementById(id);
       if (el) el.innerText = val;
     };
 
-    setInner('admin-total-farmers', '1,245');
-    setInner('admin-stat-volume', '8,420 L');
-    setInner('admin-premium-milk', '4,250 L');
-    setInner('admin-avg-quality', '86/100');
-    setInner('admin-stat-adulterations', '38');
-    setInner('admin-stat-payout', '₹3,84,250');
+    setInner('admin-total-farmers', farmers.length ? farmers.length.toLocaleString() : '0');
+    setInner('admin-stat-volume', records.length ? `${totalLitres.toFixed(1)} L` : '0.0 L');
+    setInner('admin-premium-milk', records.length ? `${premiumLitres.toFixed(1)} L` : '0.0 L');
+    setInner('admin-avg-quality', records.length ? `${avgQuality}/100` : '--');
+    setInner('admin-stat-adulterations', adulterationCount.toString());
+    setInner('admin-stat-payout', `₹${totalPayout.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+
+    const asciiPre = document.querySelector('.smart-admin-ascii-pre');
+    if (asciiPre) {
+      asciiPre.innerText = `SMART MILK ADMIN\n\nTotal Farmers       ${farmers.length}\nToday's Collection  ${records.length ? totalLitres.toFixed(1) + ' L' : '0.0 L'}\nPremium Milk        ${records.length ? premiumLitres.toFixed(1) + ' L' : '0.0 L'}\nAverage Quality     ${records.length ? avgQuality + '/100' : '--'}\nSuspicious Samples  ${adulterationCount}\nToday's Payments    ₹${totalPayout.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
 
     window.chartManager.renderTrendChart('admin-trend-chart-container', records);
     window.chartManager.renderVolumeBars('admin-volume-bar-container', records);
 
     const recentBody = document.getElementById('admin-recent-intakes-body');
     if (recentBody) {
-      recentBody.innerHTML = records.slice(0, 5).map(r => `
-        <tr>
-          <td><strong>${r.batchId || r.id}</strong></td>
-          <td>${r.farmerName}</td>
-          <td>${r.milkType}</td>
-          <td>${r.volume.toFixed(1)} L</td>
-          <td>${r.fat.toFixed(1)}% / ${r.snf.toFixed(1)}%</td>
-          <td>
-            <span class="badge ${r.grade === 'GRADE A+' ? 'badge-success' : r.grade === 'GRADE A' ? 'badge-primary' : r.grade === 'GRADE F' ? 'badge-danger' : 'badge-warning'}">
-              ${r.grade || r.status}
-            </span>
-          </td>
-          <td>₹${r.totalPayout.toFixed(2)}</td>
-        </tr>
-      `).join('');
+      if (!records || records.length === 0) {
+        recentBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 2.5rem 1rem;">No intake records found. New milk tests performed will appear here.</td></tr>`;
+      } else {
+        recentBody.innerHTML = records.slice(0, 5).map(r => `
+          <tr>
+            <td><strong>${r.batchId || r.id}</strong></td>
+            <td>${r.farmerName}</td>
+            <td>${r.milkType}</td>
+            <td>${(r.volume || 0).toFixed(1)} L</td>
+            <td>${(r.fat || 0).toFixed(1)}% / ${(r.snf || 0).toFixed(1)}%</td>
+            <td>
+              <span class="badge ${r.grade === 'GRADE A+' ? 'badge-success' : r.grade === 'GRADE A' ? 'badge-primary' : r.grade === 'GRADE F' ? 'badge-danger' : 'badge-warning'}">
+                ${r.grade || r.status}
+              </span>
+            </td>
+            <td>₹${(r.totalPayout || 0).toFixed(2)}</td>
+          </tr>
+        `).join('');
+      }
     }
 
     const farmersBody = document.getElementById('admin-farmers-table-body');

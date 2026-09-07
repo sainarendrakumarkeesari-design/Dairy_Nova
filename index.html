@@ -2117,9 +2117,9 @@ Manual/Test Data</pre>
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             Export CSV
           </button>
-          <button class="btn btn-secondary btn-sm" id="btn-reset-db">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-            Reset Data
+          <button class="btn btn-secondary btn-sm" id="btn-clear-admin-data" onclick="window.app.clearAllAdminData()" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
+            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            Clear Data
           </button>
           <button class="btn btn-sm" id="btn-logout-admin" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171;" onclick="window.app.adminLogout()">
             🔒 Logout Admin
@@ -2140,12 +2140,12 @@ Manual/Test Data</pre>
         </div>
         <pre class="smart-admin-ascii-pre">SMART MILK ADMIN
 
-Total Farmers       1,245
-Today's Collection  8,420 L
-Premium Milk        4,250 L
-Average Quality     86/100
-Suspicious Samples  38
-Today's Payments    ₹3,84,250</pre>
+Total Farmers       0
+Today's Collection  0.0 L
+Premium Milk        0.0 L
+Average Quality     --
+Suspicious Samples  0
+Today's Payments    ₹0.00</pre>
       </div>
 
       <!-- 6-METRIC SMART MILK ADMIN KPI GRID -->
@@ -2156,7 +2156,7 @@ Today's Payments    ₹3,84,250</pre>
             <span class="kpi-label">Total Farmers</span>
             <span class="kpi-icon">👨‍🌾</span>
           </div>
-          <div class="kpi-value highlight-cyan" id="admin-total-farmers">1,245</div>
+          <div class="kpi-value highlight-cyan" id="admin-total-farmers">0</div>
           <div class="kpi-sub">Enrolled &bull; KYC &amp; RFID Verified</div>
         </div>
 
@@ -2166,7 +2166,7 @@ Today's Payments    ₹3,84,250</pre>
             <span class="kpi-label">Today's Collection</span>
             <span class="kpi-icon">🥛</span>
           </div>
-          <div class="kpi-value highlight-green" id="admin-stat-volume">8,420 L</div>
+          <div class="kpi-value highlight-green" id="admin-stat-volume">0.0 L</div>
           <div class="kpi-sub">Morning + Evening Shift Flow</div>
         </div>
 
@@ -2176,8 +2176,8 @@ Today's Payments    ₹3,84,250</pre>
             <span class="kpi-label">Premium Milk</span>
             <span class="kpi-icon">🏆</span>
           </div>
-          <div class="kpi-value highlight-purple" id="admin-premium-milk">4,250 L</div>
-          <div class="kpi-sub">50.5% Volume &bull; Grade A+ Bonus</div>
+          <div class="kpi-value highlight-purple" id="admin-premium-milk">0.0 L</div>
+          <div class="kpi-sub">Grade A+ Bonus Volume</div>
         </div>
 
         <!-- 4. Average Quality -->
@@ -2186,8 +2186,8 @@ Today's Payments    ₹3,84,250</pre>
             <span class="kpi-label">Average Quality</span>
             <span class="kpi-icon">🟢</span>
           </div>
-          <div class="kpi-value highlight-green" id="admin-avg-quality">86/100</div>
-          <div class="kpi-sub">Cooperative Standard &bull; GOOD 🟢</div>
+          <div class="kpi-value highlight-green" id="admin-avg-quality">--</div>
+          <div class="kpi-sub">Cooperative Standard Purity</div>
         </div>
 
         <!-- 5. Suspicious Samples -->
@@ -2196,7 +2196,7 @@ Today's Payments    ₹3,84,250</pre>
             <span class="kpi-label">Suspicious Samples</span>
             <span class="kpi-icon">⚠️</span>
           </div>
-          <div class="kpi-value highlight-red" id="admin-stat-adulterations">38</div>
+          <div class="kpi-value highlight-red" id="admin-stat-adulterations">0</div>
           <div class="kpi-sub" style="color: #ef4444;">Conductivity / Dilution Alerts</div>
         </div>
 
@@ -2206,7 +2206,7 @@ Today's Payments    ₹3,84,250</pre>
             <span class="kpi-label">Today's Payments</span>
             <span class="kpi-icon">💰</span>
           </div>
-          <div class="kpi-value highlight-yellow" id="admin-stat-payout">₹3,84,250</div>
+          <div class="kpi-value highlight-yellow" id="admin-stat-payout">₹0.00</div>
           <div class="kpi-sub">Direct Bank / UPI Transferred</div>
         </div>
       </div>
@@ -2237,7 +2237,13 @@ Today's Payments    ₹3,84,250</pre>
                 <th>Total Payout</th>
               </tr>
             </thead>
-            <tbody id="admin-recent-intakes-body"></tbody>
+            <tbody id="admin-recent-intakes-body">
+              <tr>
+                <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 2.5rem 1rem;">
+                  No intake records found. Verified tests performed at intake station will appear here.
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
