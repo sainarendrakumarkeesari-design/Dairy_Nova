@@ -1,7 +1,10 @@
-# DAIRY DOVA - Lightweight Local Web Server (PowerShell HttpListener)
-# Serves static files on http://localhost:8080 without requiring Node.js or Python
+param(
+    [int]$port = 3000
+)
 
-$port = 8080
+# DAIRY DOVA - Lightweight Local Web Server (PowerShell HttpListener)
+# Serves static files on http://localhost:3000 without requiring Node.js or Python
+
 $prefix = "http://localhost:$port/"
 $folder = $PSScriptRoot
 

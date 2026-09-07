@@ -32,12 +32,12 @@ Double-click `run.bat` or open PowerShell in the project directory:
 powershell -ExecutionPolicy Bypass -File .\serve.ps1
 ```
 The server will start at:
-👉 **`http://localhost:8080/`**
+👉 **`http://localhost:3000/`**
 
 #### Method 2: Using Python
 ```bash
 # Python 3
-python -m http.server 8080
+python -m http.server 3000
 ```
 
 #### Method 3: Using Node.js (npx)
