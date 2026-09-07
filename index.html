@@ -98,10 +98,10 @@
           </p>
         </div>
 
-        <!-- 4 Primary Action Cards Grid: Farmer Login, Admin Login, Start Milk Test, New Registration -->
-        <div class="overview-cards-grid">
-          <!-- 1. FARMER LOGIN -->
-          <div class="overview-hub-card hub-card-farmer" onclick="window.app.openFarmerLoginModal()" id="card-farmer-login">
+        <!-- 3 Primary Action Cards Grid: Farmer Portal (Sign In & Sign Up), Admin Login, Start Milk Test -->
+        <div class="overview-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+          <!-- 1. FARMER LOGIN & SIGN UP -->
+          <div class="overview-hub-card hub-card-farmer" onclick="window.app.openFarmerLoginModal('signin')" id="card-farmer-login">
             <div>
               <div class="hub-card-top">
                 <div class="hub-card-icon icon-bg-green">
@@ -109,13 +109,13 @@
                 </div>
                 <span class="hub-pill pill-green">PRODUCER PORTAL</span>
               </div>
-              <h3 class="hub-card-title">Farmer Login</h3>
+              <h3 class="hub-card-title">Farmer Portal</h3>
               <p class="hub-card-desc">
-                Log in to view daily milk supply passbook, collection records, quality score certificates, and direct bank settlement (DBT) transfer logs.
+                Sign in to view milk passbook, purity certificates &amp; payouts, or register as a new producer to receive a smart RFID card.
               </p>
             </div>
             <div class="hub-action-btn btn-theme-green">
-              <span>Farmer Login</span>
+              <span>Sign In / Sign Up</span>
               <span>&rarr;</span>
             </div>
           </div>
@@ -157,25 +157,6 @@
             <div class="hub-action-btn btn-theme-cyan">
               <span>Start Milk Test</span>
               <span>&rarr;</span>
-            </div>
-          </div>
-
-          <!-- 4. NEW REGISTRATION -->
-          <div class="overview-hub-card hub-card-register" onclick="window.app.openRegisterFarmerModal()" id="btn-open-register-modal">
-            <div>
-              <div class="hub-card-top">
-                <div class="hub-card-icon icon-bg-purple">
-                  📝
-                </div>
-                <span class="hub-pill pill-purple">FARMER ONBOARDING</span>
-              </div>
-              <h3 class="hub-card-title">New Registration</h3>
-              <p class="hub-card-desc">
-                Register a new dairy producer to the cooperative, auto-generate unique Farmer ID &amp; contactless RFID card, and link direct bank account.
-              </p>
-            </div>
-            <div class="hub-action-btn btn-theme-purple">
-              <span>New Registration</span>
             </div>
           </div>
         </div>
@@ -2332,94 +2313,7 @@ Today's Payments    ₹3,84,250</pre>
 
   </main>
 
-  <!-- ==================== REGISTER NEW FARMER MODAL ==================== -->
-  <!-- ==================== MODAL: REGISTER NEW FARMER ==================== -->
-  <div class="modal-backdrop" id="register-farmer-modal">
-    <div class="modal-dialog" style="max-width: 560px;">
-      <div class="modal-header">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="font-size: 1.6rem;">📝</span>
-          <div>
-            <h3 class="modal-title">Farmer Registration</h3>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">Register dairy producer profile &amp; issue smart RFID member card</div>
-          </div>
-        </div>
-        <button class="modal-close-btn" id="btn-close-register-modal" title="Close Dialog">
-          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
 
-      <form id="form-register-farmer">
-        <!-- 1. Farmer ID -->
-        <div class="form-group">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-            <label class="form-label" for="reg-farmer-id" style="margin-bottom: 0;">Farmer ID *</label>
-            <span style="font-size: 0.72rem; color: var(--primary-light); font-family: var(--font-mono);">AUTO-GENERATED / UNIQUE</span>
-          </div>
-          <input type="text" id="reg-farmer-id" class="form-input" style="font-family: var(--font-mono); font-weight: 700; color: var(--primary-light); letter-spacing: 0.5px;" placeholder="e.g., FARM-1085" required>
-        </div>
-
-        <!-- 2. Name -->
-        <div class="form-group">
-          <label class="form-label" for="reg-name">Name *</label>
-          <input type="text" id="reg-name" class="form-input" placeholder="Enter farmer's full name" required>
-        </div>
-
-        <!-- 3. Mobile Number -->
-        <div class="form-group">
-          <label class="form-label" for="reg-phone">Mobile Number *</label>
-          <input type="tel" id="reg-phone" class="form-input" placeholder="+91 98765 43210" required>
-        </div>
-
-        <!-- 4. Village & 5. District -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-          <div class="form-group">
-            <label class="form-label" for="reg-village">Village *</label>
-            <input type="text" id="reg-village" class="form-input" placeholder="e.g., Anand, Rampur" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="reg-district">District *</label>
-            <input type="text" id="reg-district" class="form-input" placeholder="e.g., Kheda, Karnal, Warangal" required>
-          </div>
-        </div>
-
-        <!-- 6. Milk Type -->
-        <div class="form-group">
-          <label class="form-label" for="reg-milk-type">Milk Type *</label>
-          <select id="reg-milk-type" class="form-input" style="cursor: pointer;">
-            <option value="Cow Milk">Cow Milk (A2 Gir / Sahiwal / Indigenous)</option>
-            <option value="Buffalo Milk">Buffalo Milk (Murrah / High Fat &amp; SNF)</option>
-            <option value="Mixed Dairy">Mixed Dairy Milk</option>
-          </select>
-        </div>
-
-        <!-- 7. Bank/Payment ID -->
-        <div class="form-group">
-          <label class="form-label" for="reg-bank">Bank/Payment ID (Account / UPI for DBT) *</label>
-          <input type="text" id="reg-bank" class="form-input" placeholder="e.g., SBI ****8842 or farmer@upi" required>
-        </div>
-
-        <!-- Linked RFID Card Preview -->
-        <div class="form-group" style="background: rgba(14, 165, 233, 0.06); border: 1px dashed rgba(14, 165, 233, 0.3); border-radius: var(--radius-md); padding: 0.75rem 1rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-            <label class="form-label" for="reg-rfid" style="margin-bottom: 0; font-size: 0.78rem; color: var(--primary-light);">
-              📶 Linked Hardware RFID Card UID
-            </label>
-            <span style="font-size: 0.7rem; color: #10b981; font-weight: 700;">READY TO ENCODE</span>
-          </div>
-          <input type="text" id="reg-rfid" class="form-input" readonly style="font-family: var(--font-mono); font-size: 0.88rem; background: transparent; border: none; padding: 0; color: #ffffff;">
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-register">Cancel</button>
-          <button type="submit" class="btn btn-primary btn-sm">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-            Complete Registration &amp; Issue RFID
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <!-- ==================== MODAL: MILK VOLUME & LITERS CALCULATION ==================== -->
   <div class="modal-backdrop" id="modal-volume-calculation">
@@ -2509,15 +2403,15 @@ Today's Payments    ₹3,84,250</pre>
     </div>
   </div>
 
-  <!-- ==================== MODAL: FARMER LOGIN ==================== -->
+  <!-- ==================== MODAL: FARMER PORTAL (SIGN IN & SIGN UP) ==================== -->
   <div class="modal-backdrop" id="modal-farmer-login">
-    <div class="modal-dialog" style="max-width: 540px;">
+    <div class="modal-dialog" style="max-width: 580px;">
       <div class="modal-header">
         <div style="display: flex; align-items: center; gap: 10px;">
           <span style="font-size: 1.6rem;">👨‍🌾</span>
           <div>
-            <h3 class="modal-title">Farmer Portal Login</h3>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">Access your digital milk passbook, quality history &amp; bank payouts</div>
+            <h3 class="modal-title" id="farmer-modal-header-title">Farmer Portal</h3>
+            <div style="font-size: 0.78rem; color: var(--text-muted);" id="farmer-modal-header-sub">Sign in to your passbook or register as a new producer</div>
           </div>
         </div>
         <button class="modal-close-btn" onclick="window.app.closeFarmerLoginModal()" title="Close">
@@ -2525,29 +2419,129 @@ Today's Payments    ₹3,84,250</pre>
         </button>
       </div>
 
-      <div style="margin-bottom: 1.25rem;">
-        <label class="form-label" style="display: flex; justify-content: space-between;">
-          <span>Select Farmer Profile:</span>
-          <span style="color: var(--primary-light); font-size: 0.78rem;">Click any profile to sign in</span>
-        </label>
-        <div id="farmer-login-accounts-list" style="display: flex; flex-direction: column; gap: 0.6rem; max-height: 250px; overflow-y: auto; padding-right: 4px;">
-          <!-- Dynamically populated by app.js -->
-        </div>
-      </div>
-
-      <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-md); padding: 0.85rem 1rem; display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
-        <span style="font-size: 1.4rem;">📶</span>
-        <div style="font-size: 0.82rem; color: var(--text-muted);">
-          <strong style="color: #34d399;">NFC / RFID Tap Ready:</strong> Tap your physical RFID card on the scanner to authenticate instantly.
-        </div>
-      </div>
-
-      <div class="modal-actions">
-        <button type="button" class="btn btn-secondary btn-sm" onclick="window.app.closeFarmerLoginModal()">Cancel</button>
-        <button type="button" class="btn btn-primary btn-sm" onclick="window.app.loginActiveFarmerAndSwitch()">
-          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
-          Open Farmer Passbook
+      <!-- Segmented Tab Switcher: Sign In vs Sign Up -->
+      <div class="farmer-modal-tab-bar">
+        <button type="button" class="farmer-modal-tab-btn active" id="tab-btn-farmer-signin" onclick="window.app.switchFarmerModalTab('signin')">
+          <span>🔑</span> Sign In
         </button>
+        <button type="button" class="farmer-modal-tab-btn" id="tab-btn-farmer-signup" onclick="window.app.switchFarmerModalTab('signup')">
+          <span>📝</span> Sign Up (New Farmer)
+        </button>
+      </div>
+
+      <!-- PANEL 1: SIGN IN -->
+      <div class="farmer-modal-panel active" id="panel-farmer-signin">
+        <div style="margin-bottom: 1.25rem;">
+          <label class="form-label" style="display: flex; justify-content: space-between;">
+            <span>Select Farmer Profile:</span>
+            <span style="color: var(--primary-light); font-size: 0.78rem;">Click any profile to sign in</span>
+          </label>
+          <div id="farmer-login-accounts-list" style="display: flex; flex-direction: column; gap: 0.6rem; max-height: 250px; overflow-y: auto; padding-right: 4px;">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </div>
+
+        <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-md); padding: 0.85rem 1rem; display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
+          <span style="font-size: 1.4rem;">📶</span>
+          <div style="font-size: 0.82rem; color: var(--text-muted);">
+            <strong style="color: #34d399;">NFC / RFID Tap Ready:</strong> Tap your physical RFID card on the scanner to authenticate instantly.
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 1.25rem; font-size: 0.85rem; color: var(--text-muted);">
+          New to the dairy cooperative?
+          <button type="button" onclick="window.app.switchFarmerModalTab('signup')" style="background: none; border: none; color: #34d399; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0; margin-left: 4px;">
+            Sign Up for an RFID Card &rarr;
+          </button>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="window.app.closeFarmerLoginModal()">Cancel</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="window.app.loginActiveFarmerAndSwitch()">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+            Sign In &amp; Open Passbook
+          </button>
+        </div>
+      </div>
+
+      <!-- PANEL 2: SIGN UP -->
+      <div class="farmer-modal-panel" id="panel-farmer-signup" style="display: none;">
+        <form id="form-register-farmer">
+          <!-- 1. Farmer ID -->
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label class="form-label" for="reg-farmer-id" style="margin-bottom: 0;">Farmer ID *</label>
+              <span style="font-size: 0.72rem; color: var(--primary-light); font-family: var(--font-mono);">AUTO-GENERATED / UNIQUE</span>
+            </div>
+            <input type="text" id="reg-farmer-id" class="form-input" style="font-family: var(--font-mono); font-weight: 700; color: var(--primary-light); letter-spacing: 0.5px;" placeholder="e.g., FARM-1085" required>
+          </div>
+
+          <!-- 2. Name -->
+          <div class="form-group">
+            <label class="form-label" for="reg-name">Full Name *</label>
+            <input type="text" id="reg-name" class="form-input" placeholder="Enter farmer's full name" required>
+          </div>
+
+          <!-- 3. Mobile Number -->
+          <div class="form-group">
+            <label class="form-label" for="reg-phone">Mobile Number *</label>
+            <input type="tel" id="reg-phone" class="form-input" placeholder="+91 98765 43210" required>
+          </div>
+
+          <!-- 4. Village & District -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="reg-village">Village *</label>
+              <input type="text" id="reg-village" class="form-input" placeholder="e.g., Anand, Rampur" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-district">District *</label>
+              <input type="text" id="reg-district" class="form-input" placeholder="e.g., Kheda, Karnal" required>
+            </div>
+          </div>
+
+          <!-- 5. Milk Type -->
+          <div class="form-group">
+            <label class="form-label" for="reg-milk-type">Milk Category *</label>
+            <select id="reg-milk-type" class="form-input" style="cursor: pointer;">
+              <option value="Cow Milk">Cow Milk (A2 Gir / Sahiwal / Indigenous)</option>
+              <option value="Buffalo Milk">Buffalo Milk (Murrah / High Fat &amp; SNF)</option>
+              <option value="Mixed Dairy">Mixed Dairy Milk</option>
+            </select>
+          </div>
+
+          <!-- 6. Bank/Payment ID -->
+          <div class="form-group">
+            <label class="form-label" for="reg-bank">Bank Account / UPI for DBT Settlement *</label>
+            <input type="text" id="reg-bank" class="form-input" placeholder="e.g., SBI ****8842 or farmer@upi" required>
+          </div>
+
+          <!-- Linked RFID Card Preview -->
+          <div class="form-group" style="background: rgba(14, 165, 233, 0.06); border: 1px dashed rgba(14, 165, 233, 0.3); border-radius: var(--radius-md); padding: 0.75rem 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label class="form-label" for="reg-rfid" style="margin-bottom: 0; font-size: 0.78rem; color: var(--primary-light);">
+                📶 Linked Hardware RFID Card UID
+              </label>
+              <span style="font-size: 0.7rem; color: #10b981; font-weight: 700;">READY TO ENCODE</span>
+            </div>
+            <input type="text" id="reg-rfid" class="form-input" readonly style="font-family: var(--font-mono); font-size: 0.88rem; background: transparent; border: none; padding: 0; color: #ffffff;">
+          </div>
+
+          <div style="text-align: center; margin-bottom: 1.25rem; font-size: 0.85rem; color: var(--text-muted);">
+            Already have an account?
+            <button type="button" onclick="window.app.switchFarmerModalTab('signin')" style="background: none; border: none; color: #38bdf8; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0; margin-left: 4px;">
+              Sign In Here &rarr;
+            </button>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="window.app.switchFarmerModalTab('signin')">Back to Sign In</button>
+            <button type="submit" class="btn btn-success btn-sm">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Complete Sign Up &amp; Open Passbook
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

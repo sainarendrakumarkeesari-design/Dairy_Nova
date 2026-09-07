@@ -363,7 +363,7 @@ class DairyDovaApp {
     }, 350);
   }
 
-  // Registration Modal for Adding New Farmers
+  // Registration & Onboarding for Farmers (Unified in Farmer Portal)
   setupFarmerRegistration() {
     const openBtns = [
       document.getElementById('btn-open-register-modal'), 
@@ -371,56 +371,13 @@ class DairyDovaApp {
       document.getElementById('btn-open-register-modal-intake'),
       document.getElementById('btn-open-register-modal-admin')
     ];
-    const modal = document.getElementById('register-farmer-modal');
-    const closeBtn = document.getElementById('btn-close-register-modal');
-    const cancelBtn = document.getElementById('btn-cancel-register');
     const form = document.getElementById('form-register-farmer');
 
-    const openModal = () => {
-      if (modal) {
-        modal.classList.add('modal-open');
-        const farmers = window.db.getFarmers();
-        const nextId = 1080 + farmers.length + 1;
-        
-        // Auto-generate Farmer ID
-        const farmerIdInput = document.getElementById('reg-farmer-id');
-        if (farmerIdInput) farmerIdInput.value = `FARM-${nextId}`;
-
-        // Auto-generate unique RFID Card UID
-        const randomHex = Math.floor(10000 + Math.random() * 90000);
-        const rfidInput = document.getElementById('reg-rfid');
-        if (rfidInput) rfidInput.value = `RFID-${randomHex}-DD`;
-
-        const nameInput = document.getElementById('reg-name');
-        if (nameInput) {
-          nameInput.value = '';
-          nameInput.focus();
-        }
-      }
-    };
-
-    const closeModal = () => {
-      if (modal) modal.classList.remove('modal-open');
-    };
-
     openBtns.forEach(b => {
-      if (b) b.addEventListener('click', openModal);
+      if (b) b.addEventListener('click', () => this.openFarmerLoginModal('signup'));
     });
 
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
-    if (modal) {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-      });
-    }
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal && modal.classList.contains('modal-open')) {
-        closeModal();
-      }
-    });
-
-    // Form Submit
+    // Form Submit inside Sign Up Tab
     if (form) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -457,7 +414,7 @@ class DairyDovaApp {
           rating: "Grade A+ Registered"
         });
 
-        closeModal();
+        this.closeFarmerLoginModal();
         form.reset();
 
         // Refresh lists & select new farmer
@@ -468,18 +425,49 @@ class DairyDovaApp {
         this.refreshAdminDashboard();
 
         if (window.soundCtrl) window.soundCtrl.playSuccessChime();
-        this.showToast(`🎉 Farmer Registered! ID: ${newFarmer.id} • ${newFarmer.name} (${newFarmer.village})`, "success");
+        this.showToast(`🎉 Registration Complete! Welcome, ${newFarmer.name}. Signed into your passbook.`, "success");
+        this.switchSection('passbook');
       });
     }
   }
 
   openRegisterFarmerModal() {
-    const modal = document.getElementById('register-farmer-modal');
+    this.openFarmerLoginModal('signup');
+  }
+
+  // Farmer Portal Modal (Sign In & Sign Up)
+  openFarmerLoginModal(initialTab = 'signin') {
+    const modal = document.getElementById('modal-farmer-login');
     if (modal) {
       modal.classList.add('modal-open');
+      this.switchFarmerModalTab(initialTab);
+    }
+  }
+
+  closeFarmerLoginModal() {
+    const modal = document.getElementById('modal-farmer-login');
+    if (modal) modal.classList.remove('modal-open');
+  }
+
+  switchFarmerModalTab(tab = 'signin') {
+    const btnSignin = document.getElementById('tab-btn-farmer-signin');
+    const btnSignup = document.getElementById('tab-btn-farmer-signup');
+    const panelSignin = document.getElementById('panel-farmer-signin');
+    const panelSignup = document.getElementById('panel-farmer-signup');
+    const title = document.getElementById('farmer-modal-header-title');
+    const sub = document.getElementById('farmer-modal-header-sub');
+
+    if (tab === 'signup') {
+      if (btnSignin) btnSignin.classList.remove('active');
+      if (btnSignup) btnSignup.classList.add('active');
+      if (panelSignin) panelSignin.style.display = 'none';
+      if (panelSignup) panelSignup.style.display = 'block';
+      if (title) title.textContent = 'New Farmer Sign Up';
+      if (sub) sub.textContent = 'Register producer profile & issue smart contactless RFID card';
+
+      // Auto-generate next Farmer ID & RFID
       const farmers = window.db.getFarmers();
       const nextId = 1080 + farmers.length + 1;
-
       const farmerIdInput = document.getElementById('reg-farmer-id');
       if (farmerIdInput) farmerIdInput.value = `FARM-${nextId}`;
 
@@ -492,21 +480,16 @@ class DairyDovaApp {
         nameInput.value = '';
         setTimeout(() => nameInput.focus(), 150);
       }
-    }
-  }
-
-  // Farmer Login Modal
-  openFarmerLoginModal() {
-    const modal = document.getElementById('modal-farmer-login');
-    if (modal) {
+    } else {
+      if (btnSignin) btnSignin.classList.add('active');
+      if (btnSignup) btnSignup.classList.remove('active');
+      if (panelSignin) panelSignin.style.display = 'block';
+      if (panelSignup) panelSignup.style.display = 'none';
+      if (title) title.textContent = 'Farmer Portal Login';
+      if (sub) sub.textContent = 'Access your digital milk passbook, quality history & bank payouts';
       this.renderFarmerLoginList();
-      modal.classList.add('modal-open');
     }
-  }
-
-  closeFarmerLoginModal() {
-    const modal = document.getElementById('modal-farmer-login');
-    if (modal) modal.classList.remove('modal-open');
+    if (window.soundCtrl) window.soundCtrl.playTick();
   }
 
   renderFarmerLoginList() {
