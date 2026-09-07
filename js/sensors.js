@@ -6,22 +6,25 @@
 
 class SensorEngine {
   constructor() {
-    // Current Sensor Live State
+    this.isConnected = sessionStorage.getItem('dairy_nova_hardware_connected') === 'true';
+    this.hasTested = false;
+
+    // Current Sensor Live State - Starts completely clean with NO hardcoded sample data
     this.state = {
-      volume: 25.4,    // Litres (derived from mass / density)
-      netWeightKg: 26.16, // kg (Load Cell Mass)
-      grossWeightKg: 28.31, // kg (Gross weight including milk can tare)
-      tareWeightKg: 2.15,   // kg (Standard stainless steel can tare)
-      fat: 4.20,       // % (NIR Optical Spectrophotometer)
-      snf: 8.75,       // % (Solids-Not-Fat)
-      waterAdded: 0.0, // % (Conductance / Osmometer)
-      ph: 6.68,        // pH units
-      temperature: 6.8, // °C (Chilled freshness)
-      density: 1.030,  // kg/L or g/cm³ (Richmond's Formula)
-      protein: 3.40,   // %
-      lactose: 4.65,   // %
+      volume: 0,          // Litres (empty until weighed/tested)
+      netWeightKg: 0,     // kg (Load Cell Mass)
+      grossWeightKg: 0,   // kg
+      tareWeightKg: 0,    // kg
+      fat: 0,             // % (NIR Optical Spectrophotometer)
+      snf: 0,             // % (Solids-Not-Fat)
+      waterAdded: 0,      // %
+      ph: 0,              // pH units
+      temperature: 0,     // °C
+      density: 0,         // kg/L
+      protein: 0,         // %
+      lactose: 0,         // %
       adulterants: [],
-      purityScore: 92.0,
+      purityScore: 0,
       classification: null,
       isScanning: false,
       sampleType: 'Cow'
