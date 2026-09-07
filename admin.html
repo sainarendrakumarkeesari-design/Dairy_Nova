@@ -413,14 +413,6 @@ Today's Payments    ₹0.00</pre>
       }
     }
 
-    function quickBypassAuth() {
-      sessionStorage.setItem('dairy_nova_admin_auth', 'true');
-      document.getElementById('admin-auth-overlay').style.display = 'none';
-      if (window.soundCtrl) window.soundCtrl.playSuccess();
-      showToast("Admin session unlocked", "success");
-      refreshAdminData();
-    }
-
     function adminLogout() {
       sessionStorage.removeItem('dairy_nova_admin_auth');
       showToast("Admin logged out", "info");
