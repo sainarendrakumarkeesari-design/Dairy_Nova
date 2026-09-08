@@ -36,6 +36,9 @@ class DairyDovaApp {
     this.updateDeviceStatusUI(sessionStorage.getItem('dairy_nova_hardware_connected') === 'true');
     this.initViewMode();
 
+    const staleFooter = document.querySelector('.app-footer');
+    if (staleFooter) staleFooter.remove();
+
     document.addEventListener('click', () => {
       if (window.soundCtrl) window.soundCtrl.init();
     }, { once: true });

@@ -748,14 +748,9 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Footer */
+/* Footer - Removed */
 .app-footer {
-  border-top: 1px solid var(--border-glass);
-  background: var(--bg-surface);
-  padding: 2.5rem 1.5rem 1.5rem;
-  margin-top: 3rem;
-  color: var(--text-muted);
-  font-size: 0.88rem;
+  display: none !important;
 }
 
 .footer-content {

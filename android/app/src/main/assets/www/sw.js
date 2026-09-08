@@ -3,7 +3,7 @@
    Enables offline caching and instant loading on mobile devices
    ========================================================================== */
 
-const CACHE_NAME = 'dairy-nova-v2.5';
+const CACHE_NAME = 'dairy-nova-v2.6';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -53,7 +53,21 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Navigation fallback & cache-first for assets
+  // Navigation: Network-first to always show latest HTML
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseToCache));
+        }
+        return networkResponse;
+      }).catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
+
+  // Static assets: cache-first with network fallback
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
@@ -67,10 +81,6 @@ self.addEventListener('fetch', (event) => {
           });
         }
         return networkResponse;
-      }).catch(() => {
-        if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
       });
     })
   );
