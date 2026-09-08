@@ -129,28 +129,31 @@
     </div>
   </header>
 
-  <!-- ==================== OPTIONAL PIN MODAL / SESSION OVERLAY ==================== -->
-  <div class="auth-overlay" id="admin-auth-overlay" style="display: none;">
+  <!-- ==================== MANDATORY ADMIN PIN MODAL / SECURITY OVERLAY ==================== -->
+  <div class="auth-overlay" id="admin-auth-overlay" style="display: flex;">
     <div class="auth-box">
       <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🏢</div>
       <h2 style="font-size: 1.4rem; font-weight: 800; color: #ffffff; margin-bottom: 0.25rem;">
         Dairy Cooperative <span class="gradient-text">Admin Login</span>
       </h2>
       <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
-        Enter your administrative security PIN to access cooperative telemetry and audit records.
+        Enter your administrative security password to access cooperative telemetry and audit records.
       </p>
 
       <form id="admin-pin-form" onsubmit="handleAdminAuth(event)">
         <div style="margin-bottom: 1.25rem; text-align: left;">
           <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.35rem;">
-            Admin Passcode / PIN
+            Admin Password / Security PIN
           </label>
-          <input type="password" id="admin-pin-input" class="form-input" placeholder="Enter Admin Password" required style="width: 100%; text-align: center; letter-spacing: 2px; font-size: 1.1rem; font-weight: 700;">
+          <input type="password" id="admin-pin-input" class="form-input" placeholder="Enter Admin Password" required autofocus style="width: 100%; text-align: center; letter-spacing: 2px; font-size: 1.1rem; font-weight: 700;">
         </div>
-        <div style="display: flex;">
-          <button type="submit" class="btn btn-primary" style="width: 100%;">
+        <div style="display: flex; gap: 8px;">
+          <button type="submit" class="btn btn-primary" style="flex: 1;">
             🔑 Unlock Admin Portal
           </button>
+          <a href="index.html" class="btn btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; padding: 0.6rem 1rem;">
+            Cancel
+          </a>
         </div>
       </form>
     </div>
@@ -472,39 +475,40 @@ Today's Payments    ₹0.00</pre>
     }
 
     function checkAdminAuth() {
-      const isAuth = sessionStorage.getItem('dairy_nova_admin_auth');
+      // Always enforce password verification every time the admin portal is accessed
+      sessionStorage.removeItem('dairy_nova_admin_auth');
       const overlay = document.getElementById('admin-auth-overlay');
-      if (isAuth === 'true') {
-        if (overlay) overlay.style.display = 'none';
-        refreshAdminData();
-      } else {
-        if (overlay) overlay.style.display = 'flex';
+      const pinInput = document.getElementById('admin-pin-input');
+      if (overlay) overlay.style.display = 'flex';
+      if (pinInput) {
+        pinInput.value = '';
+        setTimeout(() => pinInput.focus(), 150);
       }
     }
 
     function handleAdminAuth(e) {
       if (e) e.preventDefault();
-      const pin = document.getElementById('admin-pin-input').value.trim();
+      const pinInput = document.getElementById('admin-pin-input');
+      const pin = pinInput ? pinInput.value.trim() : '';
       if (pin === 'NANI@2005') {
-        sessionStorage.setItem('dairy_nova_admin_auth', 'true');
-        document.getElementById('admin-auth-overlay').style.display = 'none';
+        const overlay = document.getElementById('admin-auth-overlay');
+        if (overlay) overlay.style.display = 'none';
         if (window.soundCtrl) window.soundCtrl.playSuccess();
         showToast("Authenticated as Dairy Cooperative Admin", "success");
         refreshAdminData();
       } else {
         if (window.soundCtrl) window.soundCtrl.playError();
         showToast("Invalid admin password! Access denied.", "error");
+        if (pinInput) {
+          pinInput.value = '';
+          pinInput.focus();
+        }
       }
     }
 
     function adminLogout() {
-      sessionStorage.removeItem('dairy_nova_admin_auth');
       showToast("Admin logged out", "info");
-      const overlay = document.getElementById('admin-auth-overlay');
-      if (overlay) {
-        document.getElementById('admin-pin-input').value = '';
-        overlay.style.display = 'flex';
-      }
+      checkAdminAuth();
     }
 
     function clearAllAdminData() {
@@ -634,6 +638,11 @@ Today's Payments    ₹0.00</pre>
     document.addEventListener('DOMContentLoaded', () => {
       checkAdminAuth();
       updateAdminDeviceUI(isDeviceConnected());
+
+      // Ensure password is asked every time, even if loaded from back/forward navigation
+      window.addEventListener('pageshow', () => {
+        checkAdminAuth();
+      });
 
       const soundBtn = document.getElementById('sound-toggle-btn');
       if (soundBtn && window.soundCtrl) {
