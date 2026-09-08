@@ -142,10 +142,10 @@
       </nav>
 
       <div class="header-actions">
-        <!-- Hardware Connectivity Status Pill (Only shows Connected when device is connected) -->
-        <div class="iot-pill" id="iot-status-pill" onclick="toggleHardwareConnection()" style="cursor: pointer;" title="Click to Connect/Disconnect Hardware">
-          <div class="live-dot" id="iot-status-dot" style="background: #ef4444;"></div>
-          <span id="iot-status-text">DEVICE: DISCONNECTED</span>
+        <!-- Hardware Connectivity Status Pill (Shows CONNECTED when device is connected, otherwise CONNECTING) -->
+        <div class="iot-pill connecting" id="iot-status-pill" onclick="toggleHardwareConnection()" style="cursor: pointer;" title="Click to Connect/Disconnect Hardware">
+          <div class="live-dot dot-connecting" id="iot-status-dot"></div>
+          <span id="iot-status-text">DEVICE: CONNECTING</span>
         </div>
         <button class="btn btn-sm btn-primary" id="btn-header-connect-device" onclick="toggleHardwareConnection()" style="font-size: 0.78rem; padding: 4px 10px;">
           🔌 Connect Device
@@ -197,8 +197,8 @@
       <div>
         <div style="display: flex; align-items: center; gap: 8px;">
           <span class="badge badge-primary">INTAKE WORKSTATION</span>
-          <span class="live-dot" id="header-workstation-dot" style="background: #ef4444;"></span>
-          <span style="font-size: 0.75rem; color: #94a3b8; font-family: var(--font-mono); font-weight: 700;" id="header-workstation-text">HARDWARE: DISCONNECTED</span>
+          <span class="live-dot dot-connecting" id="header-workstation-dot"></span>
+          <span style="font-size: 0.75rem; color: #fbbf24; font-family: var(--font-mono); font-weight: 700;" id="header-workstation-text">HARDWARE: CONNECTING</span>
         </div>
         <h1 class="section-title" style="font-size: 1.8rem; margin-top: 0.4rem;">
           Milk Quality Testing &amp; <span class="gradient-text">Auto-Grading Station</span>
@@ -450,17 +450,30 @@
         if (window.sensorEngine) window.sensorEngine.disconnectDevice();
         updateHardwareUI(false);
         if (window.soundCtrl) window.soundCtrl.playTick();
-        showToast("ESP32 Device Disconnected", "info");
+        showToast("ESP32 Hardware Disconnected (Status: Connecting)", "info");
       } else {
-        sessionStorage.setItem('dairy_nova_hardware_connected', 'true');
-        if (window.sensorEngine) window.sensorEngine.connectDevice();
-        updateHardwareUI(true);
-        if (window.soundCtrl) window.soundCtrl.playSuccess();
-        showToast("🟢 ESP32 SENSORS CONNECTED: Hardware Active (COM4 / 115200 baud)", "success");
+        const text = document.getElementById('iot-status-text');
+        const wsText = document.getElementById('header-workstation-text');
+        const headerBtn = document.getElementById('btn-header-connect-device');
+        const workBtn = document.getElementById('btn-workstation-device');
+
+        if (text) text.innerText = 'DEVICE: CONNECTING...';
+        if (wsText) wsText.innerText = 'HARDWARE: CONNECTING...';
+        if (headerBtn) headerBtn.innerText = '⏳ Connecting...';
+        if (workBtn) workBtn.innerHTML = '⏳ Establishing Link...';
+
+        setTimeout(() => {
+          sessionStorage.setItem('dairy_nova_hardware_connected', 'true');
+          if (window.sensorEngine) window.sensorEngine.connectDevice();
+          updateHardwareUI(true);
+          if (window.soundCtrl) window.soundCtrl.playSuccess();
+          showToast("🟢 ESP32 SENSORS CONNECTED: Hardware Active (COM4 / 115200 baud)", "success");
+        }, 500);
       }
     }
 
     function updateHardwareUI(connected) {
+      const pill = document.getElementById('iot-status-pill');
       const dot = document.getElementById('iot-status-dot');
       const text = document.getElementById('iot-status-text');
       const headerBtn = document.getElementById('btn-header-connect-device');
@@ -469,9 +482,26 @@
       const wsText = document.getElementById('header-workstation-text');
 
       if (connected) {
-        if (dot) dot.style.background = '#10b981';
-        if (text) text.innerText = 'ESP32 SENSORS: CONNECTED';
-        if (wsDot) wsDot.style.background = '#10b981';
+        if (pill) {
+          pill.classList.remove('connecting');
+          pill.classList.add('connected');
+        }
+        if (dot) {
+          dot.style.background = '#10b981';
+          dot.style.boxShadow = '0 0 10px #10b981';
+          dot.classList.remove('dot-connecting');
+          dot.classList.add('dot-connected');
+        }
+        if (text) {
+          text.innerText = 'DEVICE: CONNECTED';
+          text.style.color = '#10b981';
+        }
+        if (wsDot) {
+          wsDot.style.background = '#10b981';
+          wsDot.style.boxShadow = '0 0 10px #10b981';
+          wsDot.classList.remove('dot-connecting');
+          wsDot.classList.add('dot-connected');
+        }
         if (wsText) {
           wsText.innerText = 'HARDWARE: CONNECTED (ESP32-WROOM)';
           wsText.style.color = '#10b981';
@@ -485,12 +515,29 @@
           workBtn.className = 'btn btn-secondary';
         }
       } else {
-        if (dot) dot.style.background = '#ef4444';
-        if (text) text.innerText = 'DEVICE: DISCONNECTED';
-        if (wsDot) wsDot.style.background = '#ef4444';
+        if (pill) {
+          pill.classList.remove('connected');
+          pill.classList.add('connecting');
+        }
+        if (dot) {
+          dot.style.background = '#f59e0b';
+          dot.style.boxShadow = '0 0 10px #f59e0b';
+          dot.classList.remove('dot-connected');
+          dot.classList.add('dot-connecting');
+        }
+        if (text) {
+          text.innerText = 'DEVICE: CONNECTING';
+          text.style.color = '#fbbf24';
+        }
+        if (wsDot) {
+          wsDot.style.background = '#f59e0b';
+          wsDot.style.boxShadow = '0 0 10px #f59e0b';
+          wsDot.classList.remove('dot-connected');
+          wsDot.classList.add('dot-connecting');
+        }
         if (wsText) {
-          wsText.innerText = 'HARDWARE: DISCONNECTED';
-          wsText.style.color = '#94a3b8';
+          wsText.innerText = 'HARDWARE: CONNECTING';
+          wsText.style.color = '#fbbf24';
         }
         if (headerBtn) {
           headerBtn.innerText = '🔌 Connect Device';
@@ -687,7 +734,7 @@
       // 1. Hardware connection check
       if (!isHardwareConnected()) {
         if (window.soundCtrl) window.soundCtrl.playError();
-        showToast("⚠️ Device Disconnected! Please connect the ESP32 hardware device first.", "error");
+        showToast("⚠️ Device is connecting... Please click 'Connect Device' first.", "error");
         return;
       }
 

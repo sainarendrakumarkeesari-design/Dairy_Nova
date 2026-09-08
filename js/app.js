@@ -572,13 +572,20 @@ class DairyDovaApp {
       if (isConn) {
         window.sensorEngine.disconnectDevice();
         this.updateDeviceStatusUI(false);
-        this.showToast('🔴 ESP32 Sensors disconnected', 'info');
+        this.showToast('🔴 ESP32 Hardware Disconnected (Status: Connecting)', 'info');
         if (window.soundCtrl) window.soundCtrl.playTick();
       } else {
-        window.sensorEngine.connectDevice();
-        this.updateDeviceStatusUI(true);
-        this.showToast('🟢 ESP32 Sensors connected & calibrated successfully!', 'success');
-        if (window.soundCtrl) window.soundCtrl.playSuccessChime();
+        const text = document.getElementById('index-iot-text');
+        const btn = document.getElementById('index-btn-connect-device');
+        if (text) text.innerText = 'DEVICE: CONNECTING...';
+        if (btn) btn.innerText = '⏳ Connecting...';
+
+        setTimeout(() => {
+          window.sensorEngine.connectDevice();
+          this.updateDeviceStatusUI(true);
+          this.showToast('🟢 ESP32 Sensors connected & calibrated successfully!', 'success');
+          if (window.soundCtrl) window.soundCtrl.playSuccessChime();
+        }, 500);
       }
     }
   }
@@ -590,16 +597,32 @@ class DairyDovaApp {
     const text = document.getElementById('index-iot-text');
     const btn = document.getElementById('index-btn-connect-device');
 
+    if (pill) {
+      if (isConn) {
+        pill.classList.remove('connecting');
+        pill.classList.add('connected');
+      } else {
+        pill.classList.remove('connected');
+        pill.classList.add('connecting');
+      }
+    }
     if (dot) {
-      dot.style.background = isConn ? '#10b981' : '#ef4444';
-      dot.style.boxShadow = isConn ? '0 0 10px #10b981' : 'none';
+      dot.style.background = isConn ? '#10b981' : '#f59e0b';
+      dot.style.boxShadow = isConn ? '0 0 10px #10b981' : '0 0 10px #f59e0b';
+      if (isConn) {
+        dot.classList.remove('dot-connecting');
+        dot.classList.add('dot-connected');
+      } else {
+        dot.classList.remove('dot-connected');
+        dot.classList.add('dot-connecting');
+      }
     }
     if (text) {
-      text.innerText = isConn ? 'ESP32 SENSORS: ONLINE' : 'DEVICE: DISCONNECTED';
-      text.style.color = isConn ? '#10b981' : '#ef4444';
+      text.innerText = isConn ? 'DEVICE: CONNECTED' : 'DEVICE: CONNECTING';
+      text.style.color = isConn ? '#10b981' : '#fbbf24';
     }
     if (btn) {
-      btn.innerText = isConn ? '🔌 Disconnect Device' : '🔌 Connect Device';
+      btn.innerText = isConn ? '⚡ Disconnect Device' : '🔌 Connect Device';
       btn.className = isConn ? 'btn btn-sm btn-outline' : 'btn btn-sm btn-primary';
     }
   }

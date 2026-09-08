@@ -109,9 +109,9 @@
       </nav>
 
       <div class="header-actions">
-        <div class="iot-pill" title="Cooperative Network Active">
-          <div class="live-dot" style="background: #10b981;"></div>
-          <span>12 CENTERS CONNECTED</span>
+        <div class="iot-pill connecting" id="admin-iot-pill" onclick="toggleAdminDeviceConnection()" style="cursor: pointer;" title="Hardware Connectivity Status (Click to Toggle)">
+          <div class="live-dot dot-connecting" id="admin-iot-dot"></div>
+          <span id="admin-iot-text">DEVICE: CONNECTING</span>
         </div>
         <button class="heritage-theme-btn" id="heritage-theme-switch-btn" onclick="toggleHeritageWallpaper()" title="Switch Heritage Scenery (Desi Gir Farm / Pasture Meadow)" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(245, 158, 11, 0.14); border: 1px solid rgba(245, 158, 11, 0.35); color: #fbbf24; border-radius: var(--radius-full); padding: 0.35rem 0.8rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.2s;">
           🌾 <span id="heritage-scene-text">Desi Gir Farm</span>
@@ -164,8 +164,8 @@
       <div>
         <div style="display: flex; align-items: center; gap: 8px;">
           <span class="badge badge-primary">COOPERATIVE FEDERATION</span>
-          <span class="live-dot" style="background: #10b981;"></span>
-          <span style="font-size: 0.75rem; color: #10b981; font-family: var(--font-mono); font-weight: 700;">12 CENTERS CONNECTED</span>
+          <span class="live-dot dot-connecting" id="admin-federation-dot"></span>
+          <span id="admin-federation-text" style="font-size: 0.75rem; color: #fbbf24; font-family: var(--font-mono); font-weight: 700;">DEVICE: CONNECTING</span>
         </div>
         <h1 class="section-title" style="font-size: 1.9rem; margin-top: 0.4rem;">
           SMART MILK <span class="gradient-text">ADMIN PORTAL</span>
@@ -396,6 +396,81 @@ Today's Payments    ₹0.00</pre>
       }, 3500);
     }
 
+    function isDeviceConnected() {
+      return sessionStorage.getItem('dairy_nova_hardware_connected') === 'true';
+    }
+
+    function toggleAdminDeviceConnection() {
+      const isConn = isDeviceConnected();
+      if (isConn) {
+        sessionStorage.removeItem('dairy_nova_hardware_connected');
+        updateAdminDeviceUI(false);
+        if (window.soundCtrl) window.soundCtrl.playTick();
+        showToast("Hardware Disconnected (Status: Connecting)", "info");
+      } else {
+        const text = document.getElementById('admin-iot-text');
+        const fedText = document.getElementById('admin-federation-text');
+        if (text) text.innerText = 'DEVICE: CONNECTING...';
+        if (fedText) fedText.innerText = 'DEVICE: CONNECTING...';
+
+        setTimeout(() => {
+          sessionStorage.setItem('dairy_nova_hardware_connected', 'true');
+          updateAdminDeviceUI(true);
+          if (window.soundCtrl) window.soundCtrl.playSuccess();
+          showToast("🟢 Device Connected & Hardware Active!", "success");
+        }, 500);
+      }
+    }
+
+    function updateAdminDeviceUI(connected) {
+      const isConn = connected !== undefined ? connected : isDeviceConnected();
+      const pill = document.getElementById('admin-iot-pill');
+      const dot = document.getElementById('admin-iot-dot');
+      const text = document.getElementById('admin-iot-text');
+      const fedDot = document.getElementById('admin-federation-dot');
+      const fedText = document.getElementById('admin-federation-text');
+
+      if (pill) {
+        if (isConn) {
+          pill.classList.remove('connecting');
+          pill.classList.add('connected');
+        } else {
+          pill.classList.remove('connected');
+          pill.classList.add('connecting');
+        }
+      }
+      if (dot) {
+        dot.style.background = isConn ? '#10b981' : '#f59e0b';
+        dot.style.boxShadow = isConn ? '0 0 10px #10b981' : '0 0 10px #f59e0b';
+        if (isConn) {
+          dot.classList.remove('dot-connecting');
+          dot.classList.add('dot-connected');
+        } else {
+          dot.classList.remove('dot-connected');
+          dot.classList.add('dot-connecting');
+        }
+      }
+      if (text) {
+        text.innerText = isConn ? '12 CENTERS CONNECTED' : 'DEVICE: CONNECTING';
+        text.style.color = isConn ? '#10b981' : '#fbbf24';
+      }
+      if (fedDot) {
+        fedDot.style.background = isConn ? '#10b981' : '#f59e0b';
+        fedDot.style.boxShadow = isConn ? '0 0 10px #10b981' : '0 0 10px #f59e0b';
+        if (isConn) {
+          fedDot.classList.remove('dot-connecting');
+          fedDot.classList.add('dot-connected');
+        } else {
+          fedDot.classList.remove('dot-connected');
+          fedDot.classList.add('dot-connecting');
+        }
+      }
+      if (fedText) {
+        fedText.innerText = isConn ? '12 CENTERS CONNECTED' : 'DEVICE: CONNECTING';
+        fedText.style.color = isConn ? '#10b981' : '#fbbf24';
+      }
+    }
+
     function checkAdminAuth() {
       const isAuth = sessionStorage.getItem('dairy_nova_admin_auth');
       const overlay = document.getElementById('admin-auth-overlay');
@@ -558,6 +633,7 @@ Today's Payments    ₹0.00</pre>
     // Toggle audio & theme
     document.addEventListener('DOMContentLoaded', () => {
       checkAdminAuth();
+      updateAdminDeviceUI(isDeviceConnected());
 
       const soundBtn = document.getElementById('sound-toggle-btn');
       if (soundBtn && window.soundCtrl) {
