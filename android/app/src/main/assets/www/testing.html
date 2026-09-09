@@ -14,6 +14,7 @@
   <link rel="apple-touch-icon" href="assets/icon-192.png">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/sih-deck.css">
   <style>
     .testing-page-container {
       max-width: 1440px;
@@ -109,6 +110,36 @@
       overflow-y: auto;
       position: relative;
     }
+    .adc-channel-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-top: 0.85rem;
+    }
+    .adc-channel-box {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 0.75rem 0.65rem;
+      text-align: center;
+    }
+    .adc-channel-tag {
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #38bdf8;
+      font-family: monospace;
+    }
+    .adc-channel-volt {
+      font-size: 1.15rem;
+      font-weight: 800;
+      font-family: monospace;
+      color: #ffffff;
+      margin: 4px 0 2px;
+    }
+    .adc-channel-raw {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
   </style>
 </head>
 <body>
@@ -118,10 +149,10 @@
     <div class="nav-container">
       <a href="index.html" class="brand-wrapper" style="text-decoration: none;">
         <img src="assets/logo.svg" alt="DAIRY NOVA" class="brand-logo-img">
-        <span class="brand-badge">IoT CLOUD v2.5</span>
+        <span class="brand-badge">SIH 2026 &bull; RPi 5 EDGE</span>
       </a>
 
-      <nav class="nav-tabs" style="display: flex; gap: 8px;">
+      <nav class="nav-tabs" style="display: flex; gap: 8px; align-items: center;">
         <a href="index.html" class="nav-link-btn">
           <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
           Overview
@@ -133,12 +164,12 @@
         <a href="farmer-auth.html" class="nav-link-btn">
           👨‍🌾 Farmer Portal
         </a>
-        <a href="admin.html" class="nav-link-btn">
+        <a href="/admin" class="nav-link-btn">
           🏢 Admin Portal
         </a>
-        <a href="index.html#passbook" class="nav-link-btn">
-          📖 Passbook
-        </a>
+        <button class="nav-link-btn" onclick="window.openSIHDeck(1)" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.4); cursor: pointer;">
+          📊 SIH 2026 Deck (6 Slides)
+        </button>
       </nav>
 
       <div class="header-actions">
@@ -210,11 +241,17 @@
 
       <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
         <button class="btn btn-primary" id="btn-workstation-device" onclick="toggleHardwareConnection()">
-          🔌 Connect ESP32 Hardware
+          🔌 Connect Raspberry Pi 5 Hub
+        </button>
+        <button class="btn btn-outline" id="btn-citric-flush" onclick="runCitricFlushRoutine()" title="Actuate 12V Peristaltic Pump (Citric Acid Wash to clear fat residue)">
+          🔄 12V Citric Flush
+        </button>
+        <button class="btn btn-outline" onclick="window.openSIHDeck(1)" style="border-color: rgba(14, 165, 233, 0.4); color: #38bdf8;">
+          📊 SIH 2026 Deck
         </button>
         <button class="btn btn-primary" id="btn-run-scan" onclick="runLiveIntakeScan()" style="padding: 0.8rem 1.6rem; font-size: 1rem; box-shadow: 0 4px 20px var(--primary-glow);">
           <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          Check Milk Quality &amp; Auto-Grade
+          Check Quality (<8s Edge ML)
         </button>
         <button class="btn btn-success" id="btn-commit-intake" onclick="commitIntakeToCloud()" style="padding: 0.8rem 1.6rem; font-size: 1rem;">
           <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
@@ -232,13 +269,18 @@
         <!-- Live Composition Metrics Card -->
         <div class="card-glass">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-            <h3 style="font-size: 1.15rem; color: #ffffff; margin: 0;">Milk Composition Analysis</h3>
+            <div>
+              <h3 style="font-size: 1.15rem; color: #ffffff; margin: 0;">Milk Composition Analysis</h3>
+              <div style="font-size: 0.76rem; color: #38bdf8; font-family: var(--font-mono); margin-top: 2px;">
+                Raspberry Pi 5 (Quad 2.4GHz) &bull; ADS1115 16-Bit I2C ADC
+              </div>
+            </div>
             <span class="badge badge-secondary" id="composition-badge">READY FOR SAMPLE</span>
           </div>
 
           <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
             <div class="sensor-reading-box" style="border-left: 4px solid #f59e0b;">
-              <span class="kpi-label">Fat Content</span>
+              <span class="kpi-label">Fat Content (Scikit-Learn ML)</span>
               <div class="sensor-val" id="live-fat-val" style="color: #94a3b8;">--</div>
               <div class="kpi-sub">NIR 1730nm Absorption</div>
             </div>
@@ -262,19 +304,67 @@
           <!-- Physical Sensor Probes Row -->
           <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1rem;">
             <div class="sensor-reading-box">
-              <span class="kpi-label" style="font-size: 0.72rem;">Temperature</span>
+              <span class="kpi-label" style="font-size: 0.72rem;">Temperature (DS18B20)</span>
               <div style="font-size: 1.25rem; font-weight: 700; font-family: var(--font-mono); margin-top: 4px; color: #94a3b8;" id="live-temp-val">--</div>
-              <div style="font-size: 0.7rem; color: var(--text-dim);" id="live-temp-sub">Chamber Probe</div>
+              <div style="font-size: 0.7rem; color: var(--text-dim);" id="live-temp-sub">1-Wire Digital Probe</div>
             </div>
             <div class="sensor-reading-box">
-              <span class="kpi-label" style="font-size: 0.72rem;">pH Value</span>
+              <span class="kpi-label" style="font-size: 0.72rem;">pH Value (SEN0161)</span>
               <div style="font-size: 1.25rem; font-weight: 700; font-family: var(--font-mono); margin-top: 4px; color: #94a3b8;" id="live-ph-val">--</div>
-              <div style="font-size: 0.7rem; color: var(--text-dim);" id="live-ph-sub">Glass Electrode</div>
+              <div style="font-size: 0.7rem; color: var(--text-dim);" id="live-ph-sub">ADS1115 Channel A0</div>
             </div>
             <div class="sensor-reading-box">
-              <span class="kpi-label" style="font-size: 0.72rem;">Water Added</span>
+              <span class="kpi-label" style="font-size: 0.72rem;">Conductivity / TDS</span>
               <div style="font-size: 1.25rem; font-weight: 700; font-family: var(--font-mono); margin-top: 4px; color: #94a3b8;" id="live-water-val">--</div>
-              <div style="font-size: 0.7rem; color: var(--text-dim);" id="live-water-sub">Conductivity Meter</div>
+              <div style="font-size: 0.7rem; color: var(--text-dim);" id="live-water-sub">ADS1115 Channel A2</div>
+            </div>
+          </div>
+
+          <!-- ADS1115 16-Bit I2C ADC Live Precision Channels (Slide 1, 2, 3, 4) -->
+          <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-size: 0.76rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.6px;">
+                ADS1115 16-Bit I2C ADC Live Telemetry
+              </span>
+              <span class="badge badge-primary" style="font-size: 0.68rem; padding: 2px 6px;">
+                I2C 0x48 &bull; 860 SPS
+              </span>
+            </div>
+            <div class="adc-channel-grid">
+              <div class="adc-channel-box">
+                <div class="adc-channel-tag">CH A0 &bull; SEN0161 pH</div>
+                <div class="adc-channel-volt" id="adc-a0-val">-- V</div>
+                <div class="adc-channel-raw" id="adc-a0-raw">Raw: --</div>
+              </div>
+              <div class="adc-channel-box">
+                <div class="adc-channel-tag">CH A1 &bull; TS-300B Turb</div>
+                <div class="adc-channel-volt" id="adc-a1-val">-- V</div>
+                <div class="adc-channel-raw" id="adc-a1-raw">Raw: --</div>
+              </div>
+              <div class="adc-channel-box">
+                <div class="adc-channel-tag">CH A2 &bull; TDS / EC</div>
+                <div class="adc-channel-volt" id="adc-a2-val">-- V</div>
+                <div class="adc-channel-raw" id="adc-a2-raw">Raw: --</div>
+              </div>
+              <div class="adc-channel-box">
+                <div class="adc-channel-tag">CH A3 &bull; HX711 Load</div>
+                <div class="adc-channel-volt" id="adc-a3-val">-- V</div>
+                <div class="adc-channel-raw" id="adc-a3-raw">Raw: --</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Raspberry Pi 5 Active Cooler & Hardware Telemetry (Slide 4 Risk Mitigation) -->
+          <div style="margin-top: 1rem; background: rgba(0, 0, 0, 0.3); border-radius: var(--radius-sm); padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.76rem; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span class="live-dot" style="background: #10b981;"></span>
+              <span style="color: #cbd5e1;">Pi 5 Cooler: <strong style="color: #34d399;" id="pi5-temp-text">43.8°C (&lt;55°C Safe)</strong></span>
+            </div>
+            <div style="color: #94a3b8;">
+              Fan: <strong style="color: #ffffff;">2,750 RPM</strong> &bull; Mini UPS: <strong style="color: #38bdf8;">98% (18650)</strong>
+            </div>
+            <div style="color: #94a3b8;">
+              Storage: <strong style="color: #a855f7;">overlayfs Read-Only</strong>
             </div>
           </div>
         </div>
@@ -343,31 +433,71 @@
             </div>
           </div>
 
-          <!-- Dynamic Rate Calculation Breakup -->
-          <div style="background: rgba(0, 0, 0, 0.3); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-              <span style="color: var(--text-muted);">Base Rate per Liter:</span>
-              <strong id="price-base-rate" style="color: #94a3b8;">--</strong>
+          <!-- Dynamic Quality-Indexed Payment Formulation Box (Slide 6) -->
+          <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.35); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 0.72rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; font-family: monospace;">
+                P_Total = V × [ R_Base + w1·Fat% + w2·SNF% ] × (1 - δ)
+              </span>
+              <span class="badge badge-primary" style="font-size: 0.65rem; padding: 2px 6px;">SIH 2026 FORMULA</span>
             </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-              <span style="color: var(--text-muted);">Quality Bonus / Adjustment:</span>
-              <strong id="price-quality-bonus" style="color: #94a3b8;">--</strong>
+            <div style="font-size: 0.8rem; font-family: monospace; color: #cbd5e1; line-height: 1.6; background: rgba(0,0,0,0.4); padding: 8px 10px; border-radius: 6px;" id="live-formula-math-box">
+              Awaiting milk sample scan...
             </div>
-            <div style="display: flex; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid rgba(255, 255, 255, 0.08);">
-              <span style="font-weight: 700;">Final Net Rate per Liter:</span>
-              <strong id="price-net-rate" style="font-size: 1.1rem; color: #94a3b8;">--</strong>
+            
+            <!-- Step-by-step Variable Breakdown -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; font-size: 0.78rem;">
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Base Rate (R_Base):</span>
+                <strong id="price-base-rate" style="color: #94a3b8;">--</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Fat Val (w1·Fat):</span>
+                <strong id="price-fat-adj" style="color: #94a3b8;">--</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">SNF Val (w2·SNF):</span>
+                <strong id="price-snf-adj" style="color: #94a3b8;">--</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Penalty (1 - δ):</span>
+                <strong id="price-delta-factor" style="color: #94a3b8;">--</strong>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; padding-top: 8px; margin-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.88rem;">
+              <span style="font-weight: 700; color: #ffffff;">Final Net Rate per Liter:</span>
+              <strong id="price-net-rate" style="font-size: 1.15rem; color: #38bdf8;">--</strong>
             </div>
           </div>
 
-          <!-- Big Total Payout Box -->
-          <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(14, 165, 233, 0.08)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-md); padding: 1.25rem; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">TOTAL FARMER PAYOUT</div>
-              <div style="font-size: 0.75rem; color: #34d399;">Direct Bank Transfer (DBT) Ready</div>
+          <!-- FSSAI Benchmark Compliance Badges (Slide 6) -->
+          <div style="background: rgba(0, 0, 0, 0.25); border-radius: var(--radius-sm); padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.75rem;">
+            <div style="color: #94a3b8; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.5px;">
+              FSSAI Quality Benchmark Verification
             </div>
-            <div style="font-size: 2.2rem; font-weight: 900; color: #34d399; font-family: var(--font-mono);" id="price-total-payout">
-              ₹0.00
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="fssai-badges-deck">
+              <span class="badge badge-secondary" id="fssai-ph-pill">pH: 6.50–6.75</span>
+              <span class="badge badge-secondary" id="fssai-ec-pill">EC: 4.0–5.5 mS/cm</span>
+              <span class="badge badge-secondary" id="fssai-fat-pill">Min Fat Standard</span>
+              <span class="badge badge-secondary" id="fssai-snf-pill">Min SNF Standard</span>
             </div>
+          </div>
+
+          <!-- Big Total Payout Box & Instant UPI Trigger (Slide 1, 3, 5) -->
+          <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(14, 165, 233, 0.08)); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: var(--radius-md); padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">NET FARMER PAYOUT</div>
+                <div style="font-size: 0.72rem; color: #34d399;">Sandbox UPI &bull; Direct Bank Credit</div>
+              </div>
+              <div style="font-size: 2.2rem; font-weight: 900; color: #34d399; font-family: var(--font-mono);" id="price-total-payout">
+                ₹0.00
+              </div>
+            </div>
+            <button class="btn btn-success" id="btn-instant-upi" onclick="triggerInstantUPI()" style="margin-top: 0.85rem; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0.65rem;">
+              ⚡ Disburse Instant UPI Payout (<span id="btn-upi-target">Farmer</span>)
+            </button>
           </div>
 
         </div>
@@ -418,14 +548,15 @@
   <script src="js/database.js"></script>
   <script src="js/sensors.js"></script>
   <script src="js/pricing.js"></script>
+  <script src="js/sih-deck.js"></script>
 
   <script>
-    // ==================== MILK TESTING WORKSTATION CONTROLLER ====================
+    // ==================== MILK TESTING WORKSTATION CONTROLLER (SIH 2026) ====================
     let activeFarmer = null;
     let currentCattleType = 'Cow';
     let currentPricingResult = null;
 
-    function showToast(msg, type = 'info') {
+    function showToast(msg, type = 'info', duration = 4000) {
       const container = document.getElementById('toast-container');
       if (!container) return;
       const toast = document.createElement('div');
@@ -436,7 +567,7 @@
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(10px)';
         setTimeout(() => toast.remove(), 300);
-      }, 3500);
+      }, duration);
     }
 
     function isHardwareConnected() {
@@ -450,25 +581,25 @@
         if (window.sensorEngine) window.sensorEngine.disconnectDevice();
         updateHardwareUI(false);
         if (window.soundCtrl) window.soundCtrl.playTick();
-        showToast("ESP32 Hardware Disconnected (Status: Connecting)", "info");
+        showToast("Raspberry Pi 5 Edge Hub Disconnected (Offline Mode Active)", "info");
       } else {
         const text = document.getElementById('iot-status-text');
         const wsText = document.getElementById('header-workstation-text');
         const headerBtn = document.getElementById('btn-header-connect-device');
         const workBtn = document.getElementById('btn-workstation-device');
 
-        if (text) text.innerText = 'DEVICE: CONNECTING...';
-        if (wsText) wsText.innerText = 'HARDWARE: CONNECTING...';
-        if (headerBtn) headerBtn.innerText = '⏳ Connecting...';
-        if (workBtn) workBtn.innerHTML = '⏳ Establishing Link...';
+        if (text) text.innerText = 'RPi 5: CONNECTING...';
+        if (wsText) wsText.innerText = 'HARDWARE: LINKING I2C BUS (0x48)...';
+        if (headerBtn) headerBtn.innerText = '⏳ Linking...';
+        if (workBtn) workBtn.innerHTML = '⏳ Initializing ADS1115 ADC...';
 
         setTimeout(() => {
           sessionStorage.setItem('dairy_nova_hardware_connected', 'true');
           if (window.sensorEngine) window.sensorEngine.connectDevice();
           updateHardwareUI(true);
           if (window.soundCtrl) window.soundCtrl.playSuccess();
-          showToast("🟢 ESP32 SENSORS CONNECTED: Hardware Active (COM4 / 115200 baud)", "success");
-        }, 500);
+          showToast("🟢 RASPBERRY PI 5 CONNECTED: ADS1115 16-Bit I2C Bridge Active (860 SPS)", "success");
+        }, 400);
       }
     }
 
@@ -493,7 +624,7 @@
           dot.classList.add('dot-connected');
         }
         if (text) {
-          text.innerText = 'DEVICE: CONNECTED';
+          text.innerText = 'RPi 5: CONNECTED';
           text.style.color = '#10b981';
         }
         if (wsDot) {
@@ -503,15 +634,15 @@
           wsDot.classList.add('dot-connected');
         }
         if (wsText) {
-          wsText.innerText = 'HARDWARE: CONNECTED (ESP32-WROOM)';
+          wsText.innerText = 'HARDWARE: CONNECTED (Raspberry Pi 5 + ADS1115 16-Bit ADC)';
           wsText.style.color = '#10b981';
         }
         if (headerBtn) {
-          headerBtn.innerText = '⚡ Disconnect Device';
+          headerBtn.innerText = '⚡ Disconnect Hub';
           headerBtn.className = 'btn btn-sm btn-secondary';
         }
         if (workBtn) {
-          workBtn.innerHTML = '⚡ Disconnect Hardware';
+          workBtn.innerHTML = '⚡ Disconnect RPi 5';
           workBtn.className = 'btn btn-secondary';
         }
       } else {
@@ -526,7 +657,7 @@
           dot.classList.add('dot-connecting');
         }
         if (text) {
-          text.innerText = 'DEVICE: CONNECTING';
+          text.innerText = 'RPi 5: CONNECTING';
           text.style.color = '#fbbf24';
         }
         if (wsDot) {
@@ -536,31 +667,31 @@
           wsDot.classList.add('dot-connecting');
         }
         if (wsText) {
-          wsText.innerText = 'HARDWARE: CONNECTING';
+          wsText.innerText = 'HARDWARE: CONNECTING (Raspberry Pi 5 Hub)';
           wsText.style.color = '#fbbf24';
         }
         if (headerBtn) {
-          headerBtn.innerText = '🔌 Connect Device';
+          headerBtn.innerText = '🔌 Connect RPi 5';
           headerBtn.className = 'btn btn-sm btn-primary';
         }
         if (workBtn) {
-          workBtn.innerHTML = '🔌 Connect ESP32 Hardware';
+          workBtn.innerHTML = '🔌 Connect Raspberry Pi 5 Hub';
           workBtn.className = 'btn btn-primary';
         }
       }
     }
 
     function initWorkstation() {
-      // Sync hardware connection status
       updateHardwareUI(isHardwareConnected());
 
-      // Reset sensors to clean state (no pre-filled sample numbers)
       if (window.sensorEngine) {
         window.sensorEngine.resetToClean();
       }
 
       renderRfidDeck();
       renderNIRBars();
+      updateSensorUI();
+      updatePricingCalculation();
     }
 
     function renderRfidDeck() {
@@ -582,6 +713,9 @@
               ${f.cattleType}
             </span>
           </div>
+          <div style="font-size: 0.68rem; color: #10b981; margin-top: 4px; font-family: monospace;">
+            UPI: ${f.upiId || (f.id.toLowerCase() + '@upi')}
+          </div>
         </div>
       `).join('');
     }
@@ -599,15 +733,18 @@
         const badgeStatus = document.getElementById('rfid-badge-status');
         if (badgeStatus) {
           badgeStatus.className = 'badge badge-success';
-          badgeStatus.innerText = 'RFID AUTHENTICATED';
+          badgeStatus.innerText = 'RC522 RFID AUTHENTICATED';
         }
         const liveDot = document.getElementById('rfid-live-dot');
         if (liveDot) liveDot.style.background = '#10b981';
 
+        const upiTarget = document.getElementById('btn-upi-target');
+        if (upiTarget) upiTarget.innerText = found.name.split(' ')[0];
+
         setCattleType(found.cattleType || 'Cow');
         renderRfidDeck();
         if (window.soundCtrl) window.soundCtrl.playScan();
-        showToast(`Farmer Identified: ${found.name} (${found.rfid})`, "info");
+        showToast(`Farmer Identified via RC522: ${found.name} (${found.rfid})`, "info");
       }
     }
 
@@ -640,18 +777,60 @@
         }
       };
 
-      setVal('live-fat-val', `${(s.fat || 0).toFixed(2)}%`, '#facc15');
-      setVal('live-snf-val', `${(s.snf || 0).toFixed(2)}%`, '#38bdf8');
-      setVal('live-protein-val', `${(s.protein || 0).toFixed(2)}%`, '#c084fc');
-      setVal('live-lactose-val', `${(s.lactose || 0).toFixed(2)}%`, '#34d399');
-      setVal('live-temp-val', `${(s.temperature || 0).toFixed(1)}°C`, '#34d399');
-      setVal('live-ph-val', `${(s.ph || 0).toFixed(2)}`, '#34d399');
-      setVal('live-water-val', `${(s.waterAdded || 0).toFixed(1)}%`, s.waterAdded > 0 ? '#ef4444' : '#34d399');
+      if (!window.sensorEngine.hasTested && s.fat === 0) {
+        setVal('live-fat-val', '--', '#94a3b8');
+        setVal('live-snf-val', '--', '#94a3b8');
+        setVal('live-protein-val', '--', '#94a3b8');
+        setVal('live-lactose-val', '--', '#94a3b8');
+        setVal('live-temp-val', '--', '#94a3b8');
+        setVal('live-ph-val', '--', '#94a3b8');
+        setVal('live-water-val', '--', '#94a3b8');
+        setVal('adc-a0-val', '-- V');
+        setVal('adc-a1-val', '-- V');
+        setVal('adc-a2-val', '-- V');
+        setVal('adc-a3-val', '-- V');
+      } else {
+        setVal('live-fat-val', `${(s.fat || 0).toFixed(2)}%`, '#facc15');
+        setVal('live-snf-val', `${(s.snf || 0).toFixed(2)}%`, '#38bdf8');
+        setVal('live-protein-val', `${(s.protein || 0).toFixed(2)}%`, '#c084fc');
+        setVal('live-lactose-val', `${(s.lactose || 0).toFixed(2)}%`, '#34d399');
+        setVal('live-temp-val', `${(s.temperature || 0).toFixed(1)}°C`, '#34d399');
+        setVal('live-ph-val', `${(s.ph || 0).toFixed(2)}`, s.ph < 6.4 || s.ph > 6.85 ? '#ef4444' : '#34d399');
+        setVal('live-water-val', `${(s.conductivity || 4.8).toFixed(1)} mS/cm`, s.waterAdded > 0 ? '#ef4444' : '#34d399');
+
+        // ADS1115 ADC Live Channels
+        if (s.adcChannels) {
+          setVal('adc-a0-val', `${s.adcChannels.A0.voltage.toFixed(3)} V`, '#38bdf8');
+          setVal('adc-a1-val', `${s.adcChannels.A1.voltage.toFixed(3)} V`, '#eab308');
+          setVal('adc-a2-val', `${s.adcChannels.A2.voltage.toFixed(3)} V`, '#10b981');
+          setVal('adc-a3-val', `${s.adcChannels.A3.voltage.toFixed(3)} V`, '#c084fc');
+
+          const rawA0 = document.getElementById('adc-a0-raw');
+          const rawA1 = document.getElementById('adc-a1-raw');
+          const rawA2 = document.getElementById('adc-a2-raw');
+          const rawA3 = document.getElementById('adc-a3-raw');
+          if (rawA0) rawA0.innerText = `Raw: ${s.adcChannels.A0.raw}`;
+          if (rawA1) rawA1.innerText = `Raw: ${s.adcChannels.A1.raw} (${s.turbidity} NTU)`;
+          if (rawA2) rawA2.innerText = `Raw: ${s.adcChannels.A2.raw} (${s.conductivity} mS)`;
+          if (rawA3) rawA3.innerText = `Raw: ${s.adcChannels.A3.raw} (${s.grossWeightKg} kg)`;
+        }
+      }
+
+      // Pi 5 Temp & Cooler
+      const pi5Temp = document.getElementById('pi5-temp-text');
+      if (pi5Temp && s.pi5) {
+        pi5Temp.innerText = `${s.pi5.cpuTemp}°C (<55°C Safe)`;
+      }
 
       const badge = document.getElementById('composition-badge');
       if (badge) {
-        badge.className = 'badge badge-success';
-        badge.innerText = 'NIR SCANNED & ANALYZED';
+        if (window.sensorEngine.hasTested) {
+          badge.className = 'badge badge-success';
+          badge.innerText = 'RPi 5 & ADS1115 SCANNED';
+        } else {
+          badge.className = 'badge badge-secondary';
+          badge.innerText = 'READY FOR SAMPLE';
+        }
       }
 
       renderNIRBars();
@@ -697,28 +876,44 @@
         gradeBox.style.background = `rgba(${classification.code === 'GRADE F' ? '239, 68, 68, 0.15' : '16, 185, 129, 0.12'})`;
       }
 
-      // Calculate pricing
+      // Calculate pricing via SIH 2026 Formulation
       currentPricingResult = window.pricingEngine.calculatePricing(window.sensorEngine.state, activeFarmer);
 
+      const mathBox = document.getElementById('live-formula-math-box');
       const baseRateEl = document.getElementById('price-base-rate');
-      const bonusEl = document.getElementById('price-quality-bonus');
+      const fatAdjEl = document.getElementById('price-fat-adj');
+      const snfAdjEl = document.getElementById('price-snf-adj');
+      const deltaFactorEl = document.getElementById('price-delta-factor');
       const netRateEl = document.getElementById('price-net-rate');
       const totalPayoutEl = document.getElementById('price-total-payout');
 
       if (currentPricingResult.status === 'AWAITING_TEST') {
+        if (mathBox) mathBox.innerText = 'P_Total = V_Milk × [ R_Base + w1·Fat% + w2·SNF% ] × (1 - δ)';
         if (baseRateEl) baseRateEl.innerText = '--';
-        if (bonusEl) bonusEl.innerText = '--';
+        if (fatAdjEl) fatAdjEl.innerText = '--';
+        if (snfAdjEl) snfAdjEl.innerText = '--';
+        if (deltaFactorEl) deltaFactorEl.innerText = '--';
         if (netRateEl) netRateEl.innerText = '--';
         if (totalPayoutEl) totalPayoutEl.innerText = '₹0.00';
       } else {
+        if (mathBox) {
+          mathBox.innerHTML = `<strong>P_Total = ${currentPricingResult.volume.toFixed(1)}L</strong> &times; [ ₹${currentPricingResult.rBase.toFixed(1)} + (${currentPricingResult.w1.toFixed(2)}&times;${currentPricingResult.fat.toFixed(2)}%) + (${currentPricingResult.w2.toFixed(2)}&times;${currentPricingResult.snf.toFixed(2)}%) ] &times; (1 - ${currentPricingResult.delta.toFixed(2)}) = <strong>₹${currentPricingResult.totalPayout.toFixed(2)}</strong>`;
+        }
         if (baseRateEl) {
-          baseRateEl.innerText = `₹${currentPricingResult.baseRate.toFixed(2)}/L`;
+          baseRateEl.innerText = `₹${currentPricingResult.rBase.toFixed(2)}/L`;
           baseRateEl.style.color = '#ffffff';
         }
-        if (bonusEl) {
-          const bonusVal = currentPricingResult.qualityBonusOrDeduction;
-          bonusEl.innerText = bonusVal >= 0 ? `+₹${bonusVal.toFixed(2)}/L` : `-₹${Math.abs(bonusVal).toFixed(2)}/L`;
-          bonusEl.style.color = bonusVal >= 0 ? '#34d399' : '#f87171';
+        if (fatAdjEl) {
+          fatAdjEl.innerText = `+₹${currentPricingResult.fatVal.toFixed(2)} (${currentPricingResult.w1}×)`;
+          fatAdjEl.style.color = '#34d399';
+        }
+        if (snfAdjEl) {
+          snfAdjEl.innerText = `+₹${currentPricingResult.snfVal.toFixed(2)} (${currentPricingResult.w2}×)`;
+          snfAdjEl.style.color = '#34d399';
+        }
+        if (deltaFactorEl) {
+          deltaFactorEl.innerText = `${currentPricingResult.penaltyMultiplier.toFixed(2)} (${(currentPricingResult.delta * 100).toFixed(0)}% pen)`;
+          deltaFactorEl.style.color = currentPricingResult.delta > 0 ? '#f87171' : '#34d399';
         }
         if (netRateEl) {
           netRateEl.innerText = `₹${currentPricingResult.netRatePerLitre.toFixed(2)}/L`;
@@ -728,45 +923,120 @@
           totalPayoutEl.innerText = `₹${currentPricingResult.totalPayout.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         }
       }
+
+      // Update FSSAI Verification Badges
+      const f = currentPricingResult.fssai || {};
+      const phPill = document.getElementById('fssai-ph-pill');
+      const ecPill = document.getElementById('fssai-ec-pill');
+      const fatPill = document.getElementById('fssai-fat-pill');
+      const snfPill = document.getElementById('fssai-snf-pill');
+
+      if (window.sensorEngine.hasTested) {
+        if (phPill) {
+          phPill.className = f.phValid ? 'badge badge-success' : 'badge badge-danger';
+          phPill.innerText = `pH: ${(window.sensorEngine.state.ph || 6.68).toFixed(2)} (${f.phValid ? 'Pass' : 'Anomaly'})`;
+        }
+        if (ecPill) {
+          ecPill.className = f.conductivityValid ? 'badge badge-success' : 'badge badge-warning';
+          ecPill.innerText = `EC: ${(window.sensorEngine.state.conductivity || 4.8).toFixed(1)} mS (${f.conductivityValid ? 'Pass' : 'Spike'})`;
+        }
+        if (fatPill) {
+          fatPill.className = f.fatValid ? 'badge badge-success' : 'badge badge-warning';
+          fatPill.innerText = `Fat ≥ ${f.fatMin}% (${f.fatValid ? 'Pass' : 'Low'})`;
+        }
+        if (snfPill) {
+          snfPill.className = f.snfValid ? 'badge badge-success' : 'badge badge-warning';
+          snfPill.innerText = `SNF ≥ ${f.snfMin}% (${f.snfValid ? 'Pass' : 'Low'})`;
+        }
+      }
     }
 
+    // Run On-Device Scikit-Learn Edge ML Inference (< 8s Latency)
     function runLiveIntakeScan() {
-      // 1. Hardware connection check
       if (!isHardwareConnected()) {
         if (window.soundCtrl) window.soundCtrl.playError();
-        showToast("⚠️ Device is connecting... Please click 'Connect Device' first.", "error");
+        showToast("⚠️ Raspberry Pi 5 Hub is connecting... Please click 'Connect RPi 5' first.", "error");
         return;
       }
 
-      // 2. Volume check
       const volumeInput = document.getElementById('input-milk-volume');
       if (!volumeInput.value || parseFloat(volumeInput.value) <= 0) {
-        volumeInput.value = "10.0"; // Default initial measure if empty
+        volumeInput.value = "10.0";
       }
 
       const scanBtn = document.getElementById('btn-run-scan');
-      if (scanBtn) {
-        scanBtn.innerHTML = '⚡ Scanning Optical NIR Sensors...';
-        scanBtn.disabled = true;
-      }
+      if (scanBtn) scanBtn.disabled = true;
       if (window.soundCtrl) window.soundCtrl.playScan();
 
-      setTimeout(() => {
+      // Simulate On-Device Edge ML Inference (<8s latency)
+      window.sensorEngine.runEdgeMLInference((progress, remainingSec) => {
+        if (scanBtn) {
+          scanBtn.innerHTML = `⚡ On-Device ML Inferencing (${remainingSec}s)...`;
+        }
+      }, () => {
         window.sensorEngine.triggerOpticalScan(currentCattleType);
         updateSensorUI();
         updatePricingCalculation();
+
         if (window.soundCtrl) window.soundCtrl.playSuccess();
         if (scanBtn) {
-          scanBtn.innerHTML = `<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Check Milk Quality & Auto-Grade`;
+          scanBtn.innerHTML = `<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Check Quality (<8s Edge ML)`;
           scanBtn.disabled = false;
         }
-        showToast("Live optical NIR scan completed! Quality graded.", "success");
-      }, 700);
+
+        const lat = window.sensorEngine.state.pi5.lastInferenceLatencyMs;
+        showToast(`✅ Scikit-Learn regression inferenced on Pi 5 in ${lat}ms! Quality graded.`, "success");
+      });
+    }
+
+    // Actuate 12V Peristaltic Citric Acid Reverse Flush Pump (Slide 4 Risk Mitigation)
+    function runCitricFlushRoutine() {
+      if (!isHardwareConnected()) {
+        showToast("⚠️ Connect Raspberry Pi 5 hub to control 12V relay flush pump.", "error");
+        return;
+      }
+
+      const flushBtn = document.getElementById('btn-citric-flush');
+      if (flushBtn) {
+        flushBtn.innerHTML = '🔄 Citric Flush: Active...';
+        flushBtn.disabled = true;
+      }
+
+      window.sensorEngine.triggerCitricFlush((pct) => {
+        showToast(`🔄 12V Solenoid Flush: Warm citric acid wash at ${pct}%...`, "info", 1000);
+      }, () => {
+        if (flushBtn) {
+          flushBtn.innerHTML = '🔄 12V Citric Flush';
+          flushBtn.disabled = false;
+        }
+        updateSensorUI();
+        updatePricingCalculation();
+        if (window.soundCtrl) window.soundCtrl.playSuccess();
+        showToast("✨ Probe Chamber Flushed: Citric-acid reverse wash cleared fat residues!", "success");
+      });
+    }
+
+    // Trigger Instant Sandbox UPI Payout
+    function triggerInstantUPI() {
+      if (!currentPricingResult || !window.sensorEngine.hasTested) {
+        showToast("Please scan milk sample before disbursing payout.", "warning");
+        return;
+      }
+      if (currentPricingResult.totalPayout <= 0 || currentPricingResult.status === 'REJECTED') {
+        showToast("❌ Rejected Sample: δ=1.0. Payout cannot be disbursed for adulterated milk.", "error");
+        return;
+      }
+
+      const farmerName = activeFarmer ? activeFarmer.name : 'Ramesh Patel';
+      const farmerId = activeFarmer ? activeFarmer.id : 'DD-1082';
+      const amt = currentPricingResult.totalPayout.toFixed(2);
+
+      window.pricingEngine.triggerInstantUPIPayout(farmerName, amt, farmerId);
     }
 
     function commitIntakeToCloud() {
       if (!isHardwareConnected()) {
-        showToast("⚠️ Please connect the hardware device before committing.", "error");
+        showToast("⚠️ Please connect the Raspberry Pi 5 hub before committing.", "error");
         return;
       }
       if (!activeFarmer) {
@@ -790,6 +1060,7 @@
         shift: (new Date().getHours() < 14) ? 'Morning' : 'Evening',
         farmerId: activeFarmer.id,
         farmerName: activeFarmer.name,
+        upiId: activeFarmer.upiId || (activeFarmer.id.toLowerCase() + '@upi'),
         milkType: `${currentCattleType} Milk`,
         cattleType: currentCattleType,
         volume: parseFloat(s.volume) || 10.0,
@@ -800,8 +1071,14 @@
         waterAdded: parseFloat(s.waterAdded) || 0,
         density: parseFloat(s.density) || 1.030,
         ph: parseFloat(s.ph) || 6.65,
+        conductivity: parseFloat(s.conductivity) || 4.8,
         temp: parseFloat(s.temperature) || 6.5,
         purityScore: parseFloat(s.purityScore) || 90.0,
+        // Formula variables
+        rBase: currentPricingResult.rBase,
+        w1: currentPricingResult.w1,
+        w2: currentPricingResult.w2,
+        delta: currentPricingResult.delta,
         grade: currentPricingResult.grade || 'GRADE A',
         status: currentPricingResult.status || 'ACCEPTED',
         ratePerLitre: currentPricingResult.netRatePerLitre || 45.0,
@@ -812,7 +1089,7 @@
 
       window.db.addRecord(record);
       if (window.soundCtrl) window.soundCtrl.playSuccess();
-      showToast(`Batch ${record.batchId} committed to Cloud DB! Total payout: ₹${record.totalPayout.toFixed(2)}`, "success");
+      showToast(`Batch ${record.batchId} committed to SQLite / Cloud PostgreSQL! Total payout: ₹${record.totalPayout.toFixed(2)}`, "success");
 
       // Open Instant Thermal Receipt Slip
       const slipHtml = window.pricingEngine.generateThermalSlip(record);
@@ -857,6 +1134,10 @@
       if (savedHeritage === 'pasture') {
         document.body.classList.add('theme-heritage-pasture');
         updateHeritageButtonText(true);
+      }
+
+      if (window.location.protocol === 'file:') {
+        document.querySelectorAll('a[href="/admin"]').forEach(el => el.setAttribute('href', 'admin.html'));
       }
 
       const themeBtn = document.getElementById('theme-toggle-btn');

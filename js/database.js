@@ -64,38 +64,54 @@ const DEFAULT_QUALITY_RULES = [
   }
 ];
 
-// Cooperative Pricing Standards Configuration
+// Cooperative Pricing Standards Configuration & SIH 2026 Regression Weights
 const DEFAULT_CONFIG = {
   cow: {
-    baseRatePerLitre: 45.0,
+    baseRatePerLitre: 32.0, // R_Base
+    w1_fat: 3.20,           // w1: Fat regression coefficient (₹ / Fat%)
+    w2_snf: 2.40,           // w2: SNF regression coefficient (₹ / SNF%)
     stdFat: 3.5,
     stdSnf: 8.5,
     fatPremiumPerPoint: 3.8,
     snfPremiumPerPoint: 2.5,
-    minFat: 3.0,
-    minSnf: 8.0
+    minFat: 3.2,            // FSSAI standard (min 3.2% Fat)
+    minSnf: 8.3             // FSSAI standard (min 8.3% SNF)
   },
   buffalo: {
-    baseRatePerLitre: 56.0,
+    baseRatePerLitre: 40.0, // R_Base
+    w1_fat: 3.80,           // w1: Fat regression coefficient
+    w2_snf: 2.80,           // w2: SNF regression coefficient
     stdFat: 6.5,
     stdSnf: 9.0,
     fatPremiumPerPoint: 4.5,
     snfPremiumPerPoint: 3.2,
-    minFat: 5.5,
-    minSnf: 8.5
+    minFat: 6.0,            // FSSAI standard (min 6.0% Fat)
+    minSnf: 9.0             // FSSAI standard (min 9.0% SNF)
+  },
+  fssai: {
+    phMin: 6.50,
+    phMax: 6.75,
+    conductivityMin: 4.0,   // mS/cm at 25°C
+    conductivityMax: 5.5,   // mS/cm at 25°C
+    cowMinFat: 3.2,
+    cowMinSnf: 8.3,
+    buffaloMinFat: 6.0,
+    buffaloMinSnf: 9.0
   },
   penalties: {
-    waterDeductionPercent: 2.5
+    waterDeductionPercent: 2.5,
+    deltaMax: 1.0
   }
 };
 
-// Initial Seed Farmers
+// Initial Seed Farmers (SIH 2026 Smart Milk System)
 const DEFAULT_FARMERS = [
   {
     id: "DD-1082",
     rfid: "RFID-88192-A2",
     name: "Ramesh Patel",
     phone: "+91 98251 40912",
+    upiId: "9825140912@upi",
     village: "Anand, Gujarat",
     cattleType: "Cow",
     breed: "A2 Gir Indigenous",
@@ -110,6 +126,7 @@ const DEFAULT_FARMERS = [
     rfid: "RFID-77102-MB",
     name: "Sunita Devi",
     phone: "+91 94160 82103",
+    upiId: "9416082103@paytm",
     village: "Karnal, Haryana",
     cattleType: "Buffalo",
     breed: "Murrah High-Yield",
@@ -124,6 +141,7 @@ const DEFAULT_FARMERS = [
     rfid: "RFID-33491-SW",
     name: "Suresh Yadav",
     phone: "+91 97182 33491",
+    upiId: "9718233491@okaxis",
     village: "Etawah, UP",
     cattleType: "Cow",
     breed: "Sahiwal Dairy",

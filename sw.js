@@ -3,22 +3,25 @@
    Enables offline caching and instant loading on mobile devices
    ========================================================================== */
 
-const CACHE_NAME = 'dairy-nova-v2.6';
+const CACHE_NAME = 'dairy-nova-v2.7';
 const STATIC_ASSETS = [
   './',
   './index.html',
   './admin.html',
+  './admin',
   './testing.html',
   './farmer-auth.html',
   './manifest.json',
   './css/style.css',
   './css/components.css',
+  './css/sih-deck.css',
   './js/app.js',
   './js/audio.js',
   './js/charts.js',
   './js/database.js',
   './js/pricing.js',
   './js/sensors.js',
+  './js/sih-deck.js',
   './assets/logo.svg',
   './assets/heritage-dairy-bg.jpg',
   './assets/pasture-heritage-bg.jpg',

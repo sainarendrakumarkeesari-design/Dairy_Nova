@@ -44,7 +44,22 @@ try {
 
             # URL decode path to handle spaces and encoded characters
             $urlPath = [System.Uri]::UnescapeDataString($urlPath)
-            $filePath = Join-Path $folder $urlPath
+
+            # Route clean URLs: /admin -> admin.html (or admin/index.html)
+            if ($urlPath -eq "admin" -or $urlPath -eq "admin/") {
+                if (Test-Path (Join-Path $folder "admin\index.html") -PathType Leaf) {
+                    $filePath = Join-Path $folder "admin\index.html"
+                } else {
+                    $filePath = Join-Path $folder "admin.html"
+                }
+            } elseif (Test-Path (Join-Path $folder "$urlPath.html") -PathType Leaf) {
+                $filePath = Join-Path $folder "$urlPath.html"
+            } else {
+                $filePath = Join-Path $folder $urlPath
+                if ((Test-Path $filePath -PathType Container) -and (Test-Path (Join-Path $filePath "index.html") -PathType Leaf)) {
+                    $filePath = Join-Path $filePath "index.html"
+                }
+            }
 
             if (Test-Path $filePath -PathType Leaf) {
                 $extension = [System.IO.Path]::GetExtension($filePath).ToLower()

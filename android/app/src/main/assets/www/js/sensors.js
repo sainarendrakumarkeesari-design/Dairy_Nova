@@ -1,33 +1,62 @@
 /**
- * DAIRY DOVA - Embedded IoT Sensors & Controller Simulator
- * Simulates Ultrasonic Level, Optical NIR Fat/SNF, Conductance Adulteration, and pH/Temp Probes
- * Enhanced with automated 5-Tier Quality Classification Engine
+ * DAIRY NOVA - Embedded IoT Sensors & Raspberry Pi 5 Edge Terminal Simulator
+ * Simulates:
+ * - Compute Hub: Raspberry Pi 5 (Quad-Core 2.4GHz, 8GB)
+ * - ADC Interfacing: ADS1115 16-Bit Precision I2C ADC (Channels A0, A1, A2, A3)
+ * - Sensor Array: SEN0161 pH, TS-300B Turbidity, TDS/Conductivity, DS18B20 1-Wire, HX711 Load Cell
+ * - Actuation: Relay-controlled 12V peristaltic flush pump (citric-acid reverse wash)
+ * - On-Device Edge AI: Scikit-Learn ML regression (<8s inference latency)
+ * - Local SQLite Purity Ledger with offline resilience
  */
 
 class SensorEngine {
   constructor() {
     this.isConnected = sessionStorage.getItem('dairy_nova_hardware_connected') === 'true';
     this.hasTested = false;
+    this.isFlushing = false;
+    this.isOfflineResilient = true;
 
-    // Current Sensor Live State - Starts completely clean with NO hardcoded sample data
+    // Current Sensor Live State
     this.state = {
-      volume: 0,          // Litres (empty until weighed/tested)
+      volume: 0,          // Litres (HX711 Load Cell mass-to-volume)
       netWeightKg: 0,     // kg (Load Cell Mass)
       grossWeightKg: 0,   // kg
-      tareWeightKg: 0,    // kg
-      fat: 0,             // % (NIR Optical Spectrophotometer)
+      tareWeightKg: 2.15, // kg
+      fat: 0,             // % (On-Device ML Regression & Optical NIR)
       snf: 0,             // % (Solids-Not-Fat)
-      waterAdded: 0,      // %
-      ph: 0,              // pH units
-      temperature: 0,     // °C
-      density: 0,         // kg/L
+      waterAdded: 0,      // % (Conductance dilution)
+      ph: 0,              // pH units (SEN0161 via ADS1115 A0)
+      conductivity: 0,    // mS/cm at 25°C (TDS & EC via ADS1115 A2)
+      turbidity: 0,       // NTU (TS-300B Turbidity via ADS1115 A1)
+      temperature: 0,     // °C (DS18B20 1-Wire Digital Temp)
+      density: 0,         // kg/L (Richmond formula)
       protein: 0,         // %
       lactose: 0,         // %
       adulterants: [],
       purityScore: 0,
       classification: null,
       isScanning: false,
-      sampleType: 'Cow'
+      sampleType: 'Cow',
+      
+      // ADS1115 16-Bit I2C ADC Converter Channels
+      adcChannels: {
+        A0: { name: 'SEN0161 Analog pH', voltage: 0.0, raw: 0, unit: 'V' },
+        A1: { name: 'TS-300B Turbidity', voltage: 0.0, raw: 0, unit: 'V' },
+        A2: { name: 'TDS / Conductivity', voltage: 0.0, raw: 0, unit: 'V' },
+        A3: { name: 'HX711 Strain Gauge', voltage: 0.0, raw: 0, unit: 'V' }
+      },
+
+      // Raspberry Pi 5 Edge Hub Telemetry
+      pi5: {
+        model: "Raspberry Pi 5 (Quad-Core 2.4GHz Cortex-A76, 8GB)",
+        cpuTemp: 43.8,
+        fanRpm: 2750,
+        activeCoolerStatus: "OPTIMAL (<55°C)",
+        upsBatteryPct: 98,
+        overlayfs: "Active (Read-Only)",
+        offlineAutonomy: true,
+        lastInferenceLatencyMs: 640
+      }
     };
 
     // 5-Tier Predefined Quality Classification Standards
@@ -38,7 +67,7 @@ class SensorEngine {
         badgeClass: "badge-success",
         color: "#10b981",
         purityMin: 95.0,
-        priceMultiplier: 1.12, // +12% Premium Bonus
+        priceMultiplier: 1.12,
         description: "Optimal biological composition, 0% added water, zero chemicals, exceptional freshness."
       },
       GRADE_A: {
@@ -47,7 +76,7 @@ class SensorEngine {
         badgeClass: "badge-primary",
         color: "#0ea5e9",
         purityMin: 85.0,
-        priceMultiplier: 1.00, // 100% standard rate
+        priceMultiplier: 1.00,
         description: "Fully compliant with FSSAI & Cooperative purity benchmarks. No adulterants detected."
       },
       GRADE_B: {
@@ -56,7 +85,7 @@ class SensorEngine {
         badgeClass: "badge-warning",
         color: "#f59e0b",
         purityMin: 70.0,
-        priceMultiplier: 0.90, // -10% deduction
+        priceMultiplier: 0.90,
         description: "Minor compositional deficit or slight dilution (1–5%). Requires herd nutrition review."
       },
       GRADE_C: {
@@ -65,7 +94,7 @@ class SensorEngine {
         badgeClass: "badge-warning",
         color: "#f97316",
         purityMin: 50.0,
-        priceMultiplier: 0.75, // -25% penalty
+        priceMultiplier: 0.75,
         description: "Excessive water dilution detected (>5%). Significant rate deduction applied."
       },
       GRADE_F: {
@@ -74,7 +103,7 @@ class SensorEngine {
         badgeClass: "badge-danger",
         color: "#ef4444",
         purityMin: 0.0,
-        priceMultiplier: 0.00, // ₹0 Payout
+        priceMultiplier: 0.00,
         description: "Chemical adulterant contamination (Urea, Soda, Starch, or Detergent). Batch confiscated."
       }
     };
@@ -82,7 +111,7 @@ class SensorEngine {
     // Realistic Simulation Presets
     this.presets = {
       standardAnalysis: {
-        name: "Standard Pure Milk (4.2% Fat)",
+        name: "Standard Pure Cow Milk (4.2% Fat)",
         badge: "GRADE A+ OPTIMAL",
         badgeClass: "badge-success",
         sampleType: "Cow",
@@ -94,6 +123,8 @@ class SensorEngine {
         snf: 8.75,
         waterAdded: 0.0,
         ph: 6.68,
+        conductivity: 4.85,
+        turbidity: 2150,
         temp: 6.8,
         adulterants: []
       },
@@ -110,6 +141,8 @@ class SensorEngine {
         snf: 8.85,
         waterAdded: 0.0,
         ph: 6.68,
+        conductivity: 4.75,
+        turbidity: 2200,
         temp: 18.2,
         adulterants: []
       },
@@ -123,6 +156,8 @@ class SensorEngine {
         snf: 9.35,
         waterAdded: 0.0,
         ph: 6.64,
+        conductivity: 4.90,
+        turbidity: 2450,
         temp: 19.0,
         adulterants: []
       },
@@ -136,8 +171,10 @@ class SensorEngine {
         snf: 7.4,
         waterAdded: 22.5,
         ph: 6.72,
+        conductivity: 3.40,
+        turbidity: 1100,
         temp: 22.0,
-        adulterants: ["Added Water (+22.5%)", "Conductivity Anomaly"]
+        adulterants: ["Added Water (+22.5%)", "Conductivity Anomaly (<4.0 mS/cm)"]
       },
       chemicalContaminated: {
         name: "Synthetic / Neutralizer Sample",
@@ -149,8 +186,10 @@ class SensorEngine {
         snf: 7.1,
         waterAdded: 18.0,
         ph: 7.85,
+        conductivity: 8.40,
+        turbidity: 1650,
         temp: 24.5,
-        adulterants: ["Neutralizer (Sodium Bicarbonate)", "Urea / Detergent Trace", "High pH (7.85)"]
+        adulterants: ["Neutralizer (Sodium Bicarbonate)", "Urea / Detergent Trace", "High pH (7.85)", "High Conductivity (8.4 mS/cm)"]
       },
       souredMilk: {
         name: "Soured / Bacterial Degradation",
@@ -162,33 +201,86 @@ class SensorEngine {
         snf: 8.3,
         waterAdded: 0.0,
         ph: 5.75,
+        conductivity: 5.80,
+        turbidity: 2050,
         temp: 31.0,
-        adulterants: ["High Lactic Acidity (pH 5.75)", "High Temperature (31°C)"]
+        adulterants: ["High Lactic Acidity (pH 5.75)", "Elevated Temp (31°C)"]
       }
     };
 
     this.recalculateDerivedParameters();
   }
 
-  // Calculate secondary parameters & assign 5-tier classification
+  // Recalculate secondary parameters, ADS1115 ADC voltages, and 5-tier classification
   recalculateDerivedParameters() {
     const s = this.state;
 
-    // Scientifically Defensible Density via Richmond's Formula + Temperature Compensation:
-    // Milk is denser than water (1.000 kg/L). 1 kg of milk != 1 Liter.
-    // Standard milk density is ~1.028 to 1.034 kg/L.
-    const tempCorrection = (20.0 - s.temperature) * 0.00025;
+    // Density via Richmond's Formula + Temp Compensation
+    const tempCorrection = (20.0 - (s.temperature || 20.0)) * 0.00025;
     const clr = (s.snf - (0.21 * s.fat) - 0.36) / 0.25;
     const baseDensity = 1 + (clr / 1000);
     s.density = parseFloat((baseDensity + tempCorrection).toFixed(3));
 
-    // Scientifically compute Load Cell Mass (kg) = Volume (L) × Density (kg/L)
+    // Mass via HX711 Load Cell = Volume × Density
     s.netWeightKg = parseFloat((s.volume * s.density).toFixed(2));
     s.grossWeightKg = parseFloat((s.netWeightKg + (s.tareWeightKg || 2.15)).toFixed(2));
 
-    // Protein & Lactose calculation
+    // Protein & Lactose estimation
     s.protein = parseFloat((s.snf * 0.385).toFixed(2));
     s.lactose = parseFloat((s.snf * 0.535).toFixed(2));
+
+    // Physical Conductivity & Turbidity modeling
+    if (!s.conductivity || s.conductivity === 0) {
+      if (s.waterAdded > 0) {
+        s.conductivity = parseFloat(Math.max(2.5, 4.80 - (s.waterAdded * 0.05)).toFixed(2));
+      } else {
+        s.conductivity = 4.85;
+      }
+    }
+    if (!s.turbidity || s.turbidity === 0) {
+      if (s.waterAdded > 0) {
+        s.turbidity = Math.max(700, Math.round(2100 - (s.waterAdded * 45)));
+      } else {
+        s.turbidity = 2150;
+      }
+    }
+
+    // ADS1115 16-Bit I2C ADC Voltage Converter Simulation (0 - 3.3V / 4.096V Gain)
+    // Channel A0: SEN0161 Analog pH Probe
+    const phVolt = parseFloat((1.50 + ((7.0 - (s.ph || 7.0)) * 0.22)).toFixed(3));
+    s.adcChannels.A0 = {
+      name: 'SEN0161 Analog pH Probe',
+      voltage: Math.max(0, phVolt),
+      raw: Math.round((phVolt / 4.096) * 32767),
+      unit: 'V'
+    };
+
+    // Channel A1: TS-300B Turbidity Sensor (0-4.5V)
+    const turbVolt = parseFloat((1.10 + ((s.turbidity / 3000) * 2.8)).toFixed(3));
+    s.adcChannels.A1 = {
+      name: 'TS-300B Turbidity Sensor',
+      voltage: Math.max(0, turbVolt),
+      raw: Math.round((turbVolt / 4.096) * 32767),
+      unit: 'V'
+    };
+
+    // Channel A2: TDS & Electrical Conductivity Probe
+    const ecVolt = parseFloat((0.45 + ((s.conductivity / 10.0) * 2.4)).toFixed(3));
+    s.adcChannels.A2 = {
+      name: 'TDS / Conductivity Probe',
+      voltage: Math.max(0, ecVolt),
+      raw: Math.round((ecVolt / 4.096) * 32767),
+      unit: 'V'
+    };
+
+    // Channel A3: HX711 Load Cell Strain Gauge Bridge
+    const loadVolt = parseFloat((0.25 + ((s.grossWeightKg / 50.0) * 2.2)).toFixed(3));
+    s.adcChannels.A3 = {
+      name: 'HX711 Strain Gauge Bridge',
+      voltage: Math.max(0, loadVolt),
+      raw: Math.round((loadVolt / 4.096) * 32767),
+      unit: 'V'
+    };
 
     // Purity Score calculation (0 - 100)
     let score = 100.0;
@@ -205,176 +297,34 @@ class SensorEngine {
       score -= (s.ph - 6.85) * 45;
     }
 
+    // Penalty for conductivity deviation
+    if (s.conductivity > 5.5) {
+      score -= (s.conductivity - 5.5) * 15;
+    } else if (s.conductivity < 4.0 && s.conductivity > 0) {
+      score -= (4.0 - s.conductivity) * 12;
+    }
+
     // Penalty for chemical adulterants
     if (s.adulterants.length > 0) {
       const hasChemicals = s.adulterants.some(a => 
         a.toLowerCase().includes('neutralizer') || 
         a.toLowerCase().includes('urea') || 
         a.toLowerCase().includes('detergent') ||
-        a.toLowerCase().includes('synthetic')
+        a.toLowerCase().includes('synthetic') ||
+        a.toLowerCase().includes('starch')
       );
       score -= hasChemicals ? 60 : (s.adulterants.length * 20);
     }
 
-    // Penalty for temperature out of fresh delivery bounds
+    // Penalty for temperature out of fresh bounds
     if (s.temperature > 25) {
       score -= (s.temperature - 25) * 1.5;
     }
 
     s.purityScore = Math.max(0.0, Math.min(100.0, parseFloat(score.toFixed(1))));
 
-    // Assign Predefined Milk Quality Classification
+    // Assign Predefined Classification
     s.classification = this.classifySample(s);
-  }
-
-  // 4-Tier Quality Score Classification Rule:
-  // 90–100 → PREMIUM 🟢
-  // 75–89  → GOOD 🟢
-  // 60–74  → AVERAGE 🟡
-  // <60    → POOR 🔴
-  getQualityScoreTier(score) {
-    const s = typeof score === 'number' ? score : parseFloat(score);
-    if (s >= 90.0) {
-      return {
-        code: "PREMIUM",
-        label: "PREMIUM",
-        icon: "🟢",
-        badge: "PREMIUM 🟢",
-        badgeClass: "badge-success",
-        color: "#10b981",
-        range: "90–100",
-        payoutMultiplier: 1.12,
-        desc: "Highest quality milk, full composition bonus applied."
-      };
-    } else if (s >= 75.0) {
-      return {
-        code: "GOOD",
-        label: "GOOD",
-        icon: "🟢",
-        badge: "GOOD 🟢",
-        badgeClass: "badge-success",
-        color: "#10b981",
-        range: "75–89",
-        payoutMultiplier: 1.00,
-        desc: "Standard high quality compliant milk."
-      };
-    } else if (s >= 60.0) {
-      return {
-        code: "AVERAGE",
-        label: "AVERAGE",
-        icon: "🟡",
-        badge: "AVERAGE 🟡",
-        badgeClass: "badge-warning",
-        color: "#f59e0b",
-        range: "60–74",
-        payoutMultiplier: 0.85,
-        desc: "Moderate quality or slight dilution penalty."
-      };
-    } else {
-      return {
-        code: "POOR",
-        label: "POOR",
-        icon: "🔴",
-        badge: "POOR 🔴",
-        badgeClass: "badge-danger",
-        color: "#ef4444",
-        range: "<60",
-        payoutMultiplier: 0.00,
-        desc: "Substandard or contaminated, rejected intake."
-      };
-    }
-  }
-
-  // 100-Point Quality Scoring Breakdown:
-  // Fat             20 points
-  // Protein         20 points
-  // Density         15 points
-  // pH              15 points
-  // Adulteration    20 points
-  // Temperature     10 points
-  // -------------------------
-  // Total           100 points
-  calculateQualityPoints(state = this.state) {
-    const s = state;
-
-    // 1. Fat (20 points max)
-    const fatBenchmark = s.sampleType === 'Buffalo' ? 6.5 : 4.0;
-    let fatPts = 20;
-    if (s.fat < fatBenchmark) {
-      fatPts = Math.max(0, Math.round((s.fat / fatBenchmark) * 20));
-    }
-
-    // 2. Protein (20 points max)
-    let proteinPts = 20;
-    if (s.protein < 3.2) {
-      proteinPts = Math.max(0, Math.round((s.protein / 3.2) * 20));
-    }
-
-    // 3. Density (15 points max)
-    let densityPts = 15;
-    if (s.density < 1.026 || s.density > 1.034) {
-      densityPts = 6;
-    } else if (s.density < 1.028) {
-      densityPts = 11;
-    }
-
-    // 4. pH (15 points max)
-    let phPts = 15;
-    if (s.ph < 6.4 || s.ph > 7.2) {
-      phPts = 0;
-    } else if (s.ph < 6.55 || s.ph > 6.85) {
-      phPts = 10;
-    } else if (s.ph < 6.60 || s.ph > 6.75) {
-      phPts = 14;
-    }
-
-    // 5. Adulteration (20 points max)
-    let adultPts = 20;
-    const hasChemical = s.adulterants.some(a => 
-      a.toLowerCase().includes('neutralizer') || 
-      a.toLowerCase().includes('urea') || 
-      a.toLowerCase().includes('detergent') ||
-      a.toLowerCase().includes('synthetic')
-    );
-    if (hasChemical) {
-      adultPts = 0;
-    } else if (s.waterAdded > 0) {
-      adultPts = Math.max(0, Math.round(20 - (s.waterAdded * 1.5)));
-    }
-
-    // 6. Temperature (10 points max)
-    let tempPts = 10;
-    if (s.temperature > 25.0) {
-      tempPts = 2;
-    } else if (s.temperature > 15.0) {
-      tempPts = 6;
-    } else if (s.temperature > 10.0) {
-      tempPts = 8;
-    }
-
-    let total = fatPts + proteinPts + densityPts + phPts + adultPts + tempPts;
-    if (s.waterAdded === 0 && !hasChemical && s.lactose <= 4.65 && s.fat === 4.20) {
-      phPts = 14;
-      adultPts = 19;
-      tempPts = 9;
-      total = 92;
-    }
-
-    return {
-      fat: fatPts,
-      fatMax: 20,
-      protein: proteinPts,
-      proteinMax: 20,
-      density: densityPts,
-      densityMax: 15,
-      ph: phPts,
-      phMax: 15,
-      adulteration: adultPts,
-      adulterationMax: 20,
-      temperature: tempPts,
-      temperatureMax: 10,
-      total: Math.min(100, Math.max(0, total))
-    };
   }
 
   // Classification Rules Engine
@@ -387,7 +337,7 @@ class SensorEngine {
         color: "#94a3b8",
         purityMin: 0,
         priceMultiplier: 0.00,
-        description: "Connect hardware device & run scan to analyze milk purity."
+        description: "Connect Raspberry Pi 5 terminal & run scan to analyze milk purity."
       };
     }
 
@@ -395,10 +345,11 @@ class SensorEngine {
       a.toLowerCase().includes('neutralizer') || 
       a.toLowerCase().includes('urea') || 
       a.toLowerCase().includes('detergent') ||
-      a.toLowerCase().includes('synthetic')
+      a.toLowerCase().includes('synthetic') ||
+      a.toLowerCase().includes('starch')
     );
 
-    if (hasChemical || state.purityScore < 50.0 || state.ph > 7.4 || state.ph < 6.0) {
+    if (hasChemical || state.purityScore < 50.0 || state.ph > 7.4 || state.ph < 6.0 || state.conductivity > 7.0) {
       return this.gradeStandards.GRADE_F;
     }
 
@@ -419,7 +370,7 @@ class SensorEngine {
     return this.gradeStandards.GRADE_A;
   }
 
-  // Trigger Live Optical NIR Multi-Sensor Scan on Hardware Chamber
+  // Trigger Live Optical NIR Multi-Sensor Scan on Raspberry Pi 5 Chamber
   triggerOpticalScan(sampleType = this.state.sampleType || 'Cow') {
     this.hasTested = true;
     this.state.isScanning = false;
@@ -431,12 +382,16 @@ class SensorEngine {
       this.state.protein = parseFloat((3.80 + Math.random() * 0.30).toFixed(2));
       this.state.lactose = parseFloat((4.80 + Math.random() * 0.20).toFixed(2));
       this.state.density = 1.032;
+      this.state.conductivity = parseFloat((4.80 + Math.random() * 0.25).toFixed(2));
+      this.state.turbidity = Math.round(2300 + Math.random() * 200);
     } else {
       this.state.fat = parseFloat((4.15 + Math.random() * 0.45).toFixed(2));
       this.state.snf = parseFloat((8.65 + Math.random() * 0.30).toFixed(2));
       this.state.protein = parseFloat((3.35 + Math.random() * 0.20).toFixed(2));
       this.state.lactose = parseFloat((4.62 + Math.random() * 0.15).toFixed(2));
       this.state.density = 1.030;
+      this.state.conductivity = parseFloat((4.75 + Math.random() * 0.20).toFixed(2));
+      this.state.turbidity = Math.round(2100 + Math.random() * 150);
     }
 
     this.state.temperature = parseFloat((6.4 + Math.random() * 1.2).toFixed(1));
@@ -444,8 +399,65 @@ class SensorEngine {
     this.state.waterAdded = 0.0;
     this.state.adulterants = [];
 
+    // Simulate Pi 5 Active Cooler temperature variation
+    this.state.pi5.cpuTemp = parseFloat((42.0 + Math.random() * 4.5).toFixed(1));
+    this.state.pi5.lastInferenceLatencyMs = Math.round(580 + Math.random() * 320);
+
     this.recalculateDerivedParameters();
     return this.state;
+  }
+
+  // Actuate 12V Peristaltic Citric Acid Flush Pump (Slide 4 Risk Mitigation)
+  triggerCitricFlush(onProgress, onComplete) {
+    this.isFlushing = true;
+    if (window.soundCtrl && window.soundCtrl.playTick) window.soundCtrl.playTick();
+
+    let step = 0;
+    const interval = setInterval(() => {
+      step++;
+      const progress = Math.min(100, step * 25);
+      if (onProgress) onProgress(progress);
+
+      if (step >= 4) {
+        clearInterval(interval);
+        this.isFlushing = false;
+        // Reset chamber sensors to pristine baseline
+        this.state.waterAdded = 0;
+        this.state.adulterants = [];
+        this.state.ph = 6.68;
+        this.state.conductivity = 4.80;
+        this.recalculateDerivedParameters();
+        if (onComplete) onComplete();
+      }
+    }, 600);
+  }
+
+  // On-Device Scikit-Learn ML Inference Simulation (< 8s Latency)
+  runEdgeMLInference(onProgress, onComplete) {
+    let elapsedMs = 0;
+    const targetLatency = 1200; // Fast UI feedback (~1.2s realistic simulation)
+    const stepMs = 150;
+
+    const timer = setInterval(() => {
+      elapsedMs += stepMs;
+      const progress = Math.min(100, Math.round((elapsedMs / targetLatency) * 100));
+      const remainingSec = ((targetLatency - elapsedMs) / 1000).toFixed(1);
+
+      if (onProgress) onProgress(progress, remainingSec);
+
+      if (elapsedMs >= targetLatency) {
+        clearInterval(timer);
+        this.state.pi5.lastInferenceLatencyMs = Math.round(680 + Math.random() * 240);
+        if (onComplete) onComplete(this.state);
+      }
+    }, stepMs);
+  }
+
+  // Toggle Offline Autonomy Resilience (Pi 5 Local SQLite vs Cloud PostgreSQL)
+  toggleOfflineResilience() {
+    this.isOfflineResilient = !this.isOfflineResilient;
+    this.state.pi5.offlineAutonomy = this.isOfflineResilient;
+    return this.isOfflineResilient;
   }
 
   // Reset to Clean Untested State
@@ -458,11 +470,14 @@ class SensorEngine {
     this.state.lactose = 0;
     this.state.waterAdded = 0;
     this.state.ph = 0;
+    this.state.conductivity = 0;
+    this.state.turbidity = 0;
     this.state.temperature = 0;
     this.state.density = 0;
     this.state.purityScore = 0;
     this.state.classification = null;
     this.state.adulterants = [];
+    this.recalculateDerivedParameters();
   }
 
   // Load Preset
@@ -476,6 +491,8 @@ class SensorEngine {
     this.state.snf = p.snf;
     this.state.waterAdded = p.waterAdded;
     this.state.ph = p.ph;
+    this.state.conductivity = p.conductivity;
+    this.state.turbidity = p.turbidity;
     this.state.temperature = p.temp;
     this.state.adulterants = [...p.adulterants];
 
@@ -516,6 +533,8 @@ class SensorEngine {
         this.state.adulterants.splice(phIndex, 1);
       }
     }
+    if (key === 'conductivity') this.state.conductivity = num;
+    if (key === 'turbidity') this.state.turbidity = num;
     if (key === 'temperature') this.state.temperature = num;
     if (key === 'sampleType') this.state.sampleType = value;
 
@@ -558,8 +577,7 @@ class SensorEngine {
         { wavelength: 2180, bandName: "2180 nm", component: "Protein (Amide)", absorbance: 0.000, unit: "AU", relativePct: 0, status: "⚪ AWAITING TEST", color: "#64748b", badgeClass: "badge-primary" }
       ];
     }
-    // Optical NIR absorbance based on Beer-Lambert law & dairy molecular vibration bands:
-    // A(lambda) = log10(1/T) in AU (Absorbance Units)
+
     const fatAU = 0.490 + (s.fat * 0.138);
     const fat2ndAU = 0.420 + (s.fat * 0.082);
     const proteinAU = 0.380 + (s.protein * 0.115);
@@ -669,20 +687,15 @@ class SensorEngine {
     ];
   }
 
-  // Scientifically Defensible kg -> Litres conversion using measured density:
-  // Volume (L) = Mass (kg) / Density (kg/L)
   convertKgToLiters(netWeightKg, density = this.state.density) {
     const d = (density && density > 0.5) ? density : 1.030;
     return parseFloat((netWeightKg / d).toFixed(2));
   }
 
-  // Scientifically Defensible Litres -> kg conversion using measured density:
-  // Mass (kg) = Volume (L) × Density (kg/L)
   convertLitersToKg(volumeLiters, density = this.state.density) {
     const d = (density && density > 0.5) ? density : 1.030;
     return parseFloat((volumeLiters * d).toFixed(2));
   }
 }
-
 
 window.sensorEngine = new SensorEngine();

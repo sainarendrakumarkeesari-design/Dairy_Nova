@@ -17,7 +17,7 @@ if (-not (Test-Path $androidAssetWww)) {
     New-Item -ItemType Directory -Path $androidAssetWww -Force | Out-Null
 }
 
-$foldersToCopy = @("css", "js", "assets")
+$foldersToCopy = @("css", "js", "assets", "admin")
 foreach ($folder in $foldersToCopy) {
     $srcPath = Join-Path $root $folder
     $destPath = Join-Path $androidAssetWww $folder

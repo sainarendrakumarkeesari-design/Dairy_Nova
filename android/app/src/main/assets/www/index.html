@@ -14,6 +14,7 @@
   <link rel="apple-touch-icon" href="assets/icon-192.png">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/sih-deck.css">
 </head>
 <body>
 
@@ -21,14 +22,17 @@
   <header class="header-glass">
     <div class="nav-container">
       <div class="brand-wrapper" onclick="window.app.switchSection('overview')">
-        <img src="assets/logo.svg" alt="DAIRY DOVA" class="brand-logo-img">
-        <span class="brand-badge">IoT CLOUD v2.5</span>
+        <img src="assets/logo.svg" alt="DAIRY NOVA" class="brand-logo-img">
+        <span class="brand-badge">SIH 2026 &bull; RPi 5 EDGE</span>
       </div>
 
       <nav class="nav-tabs" role="tablist">
         <button class="nav-btn active" data-section="overview" role="tab" id="nav-overview">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
           Overview
+        </button>
+        <button class="nav-btn" onclick="window.openSIHDeck(1)" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.4); font-weight: 700;">
+          📊 SIH 2026 Deck
         </button>
         <a href="testing.html" class="nav-btn" style="text-decoration: none; display: inline-flex; align-items: center;" id="nav-testing-link">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
@@ -37,7 +41,7 @@
         <a href="farmer-auth.html" class="nav-btn" style="text-decoration: none; display: inline-flex; align-items: center;" id="nav-farmer-link">
           👨‍🌾 Farmer Portal
         </a>
-        <a href="admin.html" class="nav-btn" style="text-decoration: none; display: inline-flex; align-items: center;" id="nav-admin-link">
+        <a href="/admin" class="nav-btn" style="text-decoration: none; display: inline-flex; align-items: center;" id="nav-admin-link">
           🏢 Admin Portal
         </a>
         <button class="nav-btn" data-section="quality-rules" role="tab" id="nav-quality-rules">
@@ -67,7 +71,7 @@
           <a href="testing.html" class="portal-switch-btn active" style="text-decoration: none;" title="Go to Milk Testing Station">
             🏭 Testing Station
           </a>
-          <a href="admin.html" class="portal-switch-btn" style="text-decoration: none;" title="Go to Admin Portal">
+          <a href="/admin" class="portal-switch-btn" style="text-decoration: none;" title="Go to Admin Portal">
             🏢 Admin
           </a>
         </div>
@@ -105,18 +109,18 @@
         <div class="overview-launchpad-header">
           <div class="overview-portal-badge">
             <span class="live-dot" style="background: #10b981;"></span>
-            <span>DAIRY DOVA SMART MILK QUALITY TESTING</span>
+            <span>SIH 2026 &bull; TEAM PURELACTO &bull; IDEA SUBMISSION</span>
           </div>
           <h1 class="overview-portal-title">
-            SMART MILK <span class="gradient-text">QUALITY SYSTEM</span>
+            SMART MILK QUALITY, PURITY &amp; <span class="gradient-text">CLOUD PRICING</span>
           </h1>
           <p class="overview-portal-sub">
-            Welcome to the centralized dairy portal. Access farmer records, cooperative admin management, automated optical milk quality testing, and new producer onboarding.
+            An intelligent Raspberry Pi 5 powered multi-sensor edge terminal for real-time milk purity assessment, on-device ML scoring, and instant cloud-linked farmer payments.
           </p>
         </div>
 
-        <!-- 3 Primary Action Cards Grid: Farmer Portal (Sign In & Sign Up), Admin Login, Start Milk Test -->
-        <div class="overview-cards-grid" id="overview-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+        <!-- Primary Action Cards Grid: Farmer Portal, Admin Login, Start Milk Test, SIH 2026 Pitch Deck -->
+        <div class="overview-cards-grid" id="overview-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
           <!-- 1. FARMER LOGIN & SIGN UP -->
           <div class="overview-hub-card hub-card-farmer" onclick="window.app && window.app.handleFarmerCardClick ? window.app.handleFarmerCardClick() : window.location.href='farmer-auth.html'" id="card-farmer-login" style="cursor: pointer;">
             <div>
@@ -138,7 +142,7 @@
           </div>
 
           <!-- 2. ADMIN LOGIN -->
-          <div class="overview-hub-card hub-card-admin" onclick="window.location.href='admin.html'" id="card-admin-login" style="cursor: pointer;">
+          <div class="overview-hub-card hub-card-admin" onclick="window.location.href='/admin'" id="card-admin-login" style="cursor: pointer;">
             <div>
               <div class="hub-card-top">
                 <div class="hub-card-icon icon-bg-blue">
@@ -158,21 +162,41 @@
           </div>
 
           <!-- 3. START MILK TEST -->
-          <div class="overview-hub-card hub-card-test" onclick="window.location.href='testing.html'" id="card-start-milk-test" style="cursor: pointer;">
+          <div class="overview-hub-card hub-card-test" onclick="window.location.href='testing.html'" id="card-milk-test" style="cursor: pointer;">
             <div>
               <div class="hub-card-top">
-                <div class="hub-card-icon icon-bg-cyan">
-                  🔬
+                <div class="hub-card-icon icon-bg-purple">
+                  🧪
                 </div>
-                <span class="hub-pill pill-cyan">INTAKE STATION</span>
+                <span class="hub-pill pill-purple">RPi 5 KIOSK</span>
               </div>
               <h3 class="hub-card-title">Start Milk Test</h3>
               <p class="hub-card-desc">
-                Launch the dedicated milk testing station with 8-channel optical NIR spectroscopy, RFID farmer scanning, 5-tier grading &amp; instant receipts.
+                Launch the Raspberry Pi 5 intake kiosk with ADS1115 16-bit ADC, SEN0161 pH, TS-300B turbidity, and instant UPI payout calculation.
               </p>
             </div>
-            <div class="hub-action-btn btn-theme-cyan">
-              <span>Start Milk Test</span>
+            <div class="hub-action-btn btn-theme-purple">
+              <span>Launch Kiosk</span>
+              <span>&rarr;</span>
+            </div>
+          </div>
+
+          <!-- 4. SIH 2026 PRESENTATION DECK -->
+          <div class="overview-hub-card" onclick="window.openSIHDeck(1)" id="card-sih-deck" style="cursor: pointer; border: 1px solid rgba(14, 165, 233, 0.35); background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), rgba(15, 23, 42, 0.75));">
+            <div>
+              <div class="hub-card-top">
+                <div class="hub-card-icon icon-bg-blue" style="background: rgba(14, 165, 233, 0.2); color: #38bdf8;">
+                  📑
+                </div>
+                <span class="hub-pill pill-cyan">SIH 2026 DECK</span>
+              </div>
+              <h3 class="hub-card-title" style="color: #ffffff;">SIH Presentation (6 Slides)</h3>
+              <p class="hub-card-desc">
+                Interactive view of all 6 slides: Registration Details, Pi 5 Solution, System Architecture, Risk Mitigation, Metrics, and Dynamic Pricing Formula.
+              </p>
+            </div>
+            <div class="hub-action-btn btn-theme-blue" style="background: #0284c7; color: #ffffff;">
+              <span>Open Presentation (Slides 01–06)</span>
               <span>&rarr;</span>
             </div>
           </div>
@@ -372,17 +396,17 @@
           </div>
         </div>
 
-        <!-- 5-Step Horizontal Flow Pipeline -->
+        <!-- 5-Step Horizontal Flow Pipeline (SIH 2026 Slide 3 System Architecture) -->
         <div class="iot-pipeline-flow-container">
-          <!-- Step 1: NIR Analyzer -->
-          <div class="iot-node-step" style="border-top: 3px solid #a855f7;">
-            <div class="iot-node-badge">STEP 1 &bull; SENSOR</div>
-            <div class="iot-node-icon">🌈</div>
-            <h4 class="iot-node-title highlight-purple">NIR Analyzer</h4>
-            <div class="iot-node-sub">8-Band Optical Spectrophotometer</div>
+          <!-- Step 1: Farmer Intake -->
+          <div class="iot-node-step" style="border-top: 3px solid #f97316;">
+            <div class="iot-node-badge">STEP 1 &bull; INTAKE</div>
+            <div class="iot-node-icon">👨‍🌾</div>
+            <h4 class="iot-node-title" style="color: #f97316;">Farmer Intake</h4>
+            <div class="iot-node-sub">RC522 Contactless RFID &bull; Mass Deposition</div>
             <div class="iot-node-specs">
-              <span>Bands: <strong>900–2250nm</strong></span>
-              <span>Absorption: <strong>A(λ) = log(1/T)</strong></span>
+              <span>Reader: <strong>RC522 RFID 13.56MHz</strong></span>
+              <span>Weighing: <strong>HX711 24-bit ADC</strong></span>
             </div>
           </div>
 
@@ -390,18 +414,18 @@
           <div class="iot-pipe-connector">
             <div class="iot-pipe-line"></div>
             <div class="iot-pipe-arrow">&rarr;</div>
-            <span class="iot-pipe-protocol">I2C / SPI</span>
+            <span class="iot-pipe-protocol">SPI / Bridge</span>
           </div>
 
-          <!-- Step 2: ESP32 -->
+          <!-- Step 2: Sensors + ADS1115 -->
           <div class="iot-node-step" style="border-top: 3px solid #0ea5e9;">
-            <div class="iot-node-badge">STEP 2 &bull; MCU</div>
+            <div class="iot-node-badge">STEP 2 &bull; ADC BRIDGE</div>
             <div class="iot-node-icon">📟</div>
-            <h4 class="iot-node-title highlight-cyan">ESP32</h4>
-            <div class="iot-node-sub">Dual-Core 240MHz Microcontroller</div>
+            <h4 class="iot-node-title highlight-cyan">Sensors + ADS1115</h4>
+            <div class="iot-node-sub">16-Bit I2C Multi-Sensor Array</div>
             <div class="iot-node-specs">
-              <span>Sampling: <strong>12-bit ADC</strong></span>
-              <span>Modules: <strong>RFID + Temp</strong></span>
+              <span>Probes: <strong>SEN0161 pH &bull; TS-300B</strong></span>
+              <span>Bus: <strong>ADS1115 I2C (0x48)</strong></span>
             </div>
           </div>
 
@@ -409,18 +433,18 @@
           <div class="iot-pipe-connector">
             <div class="iot-pipe-line"></div>
             <div class="iot-pipe-arrow">&rarr;</div>
-            <span class="iot-pipe-protocol">802.11 b/g/n</span>
+            <span class="iot-pipe-protocol">I2C Fast Mode</span>
           </div>
 
-          <!-- Step 3: Wi-Fi -->
-          <div class="iot-node-step" style="border-top: 3px solid #eab308;">
-            <div class="iot-node-badge">STEP 3 &bull; NETWORK</div>
-            <div class="iot-node-icon">📶</div>
-            <h4 class="iot-node-title highlight-yellow">Wi-Fi</h4>
-            <div class="iot-node-sub">Collection Center Gateway</div>
+          <!-- Step 3: Raspberry Pi 5 -->
+          <div class="iot-node-step" style="border-top: 3px solid #a855f7; background: rgba(168, 85, 247, 0.05);">
+            <div class="iot-node-badge">STEP 3 &bull; EDGE HUB</div>
+            <div class="iot-node-icon">🍓</div>
+            <h4 class="iot-node-title highlight-purple">Raspberry Pi 5 (8GB)</h4>
+            <div class="iot-node-sub">Quad-Core 2.4GHz Cortex-A76</div>
             <div class="iot-node-specs">
-              <span>Band: <strong>2.4 GHz WPA3</strong></span>
-              <span>Latency: <strong>4–6 ms</strong></span>
+              <span>Edge AI: <strong>Scikit-Learn Regression</strong></span>
+              <span>Resilience: <strong>Local SQLite Purity Ledger</strong></span>
             </div>
           </div>
 
@@ -428,18 +452,18 @@
           <div class="iot-pipe-connector">
             <div class="iot-pipe-line"></div>
             <div class="iot-pipe-arrow">&rarr;</div>
-            <span class="iot-pipe-protocol">HTTPS / WS</span>
+            <span class="iot-pipe-protocol">HTTPS / Sync</span>
           </div>
 
-          <!-- Step 4: API -->
-          <div class="iot-node-step" style="border-top: 3px solid #10b981;">
-            <div class="iot-node-badge">STEP 4 &bull; BACKEND</div>
-            <div class="iot-node-icon">⚙️</div>
-            <h4 class="iot-node-title highlight-green">API</h4>
-            <div class="iot-node-sub">Node.js Express &amp; FastAPI</div>
+          <!-- Step 4: Cloud Central Ledger -->
+          <div class="iot-node-step" style="border-top: 3px solid #3b82f6;">
+            <div class="iot-node-badge">STEP 4 &bull; CLOUD</div>
+            <div class="iot-node-icon">☁️</div>
+            <h4 class="iot-node-title" style="color: #60a5fa;">Cloud Ledger</h4>
+            <div class="iot-node-sub">PostgreSQL / Supabase Sync</div>
             <div class="iot-node-specs">
-              <span>Endpoint: <strong>/api/v1/milk-test</strong></span>
-              <span>AI Engine: <strong>PLS / SVR</strong></span>
+              <span>Features: <strong>Federation Dashboard</strong></span>
+              <span>Security: <strong>Regional Fraud Alerts</strong></span>
             </div>
           </div>
 
@@ -447,18 +471,18 @@
           <div class="iot-pipe-connector">
             <div class="iot-pipe-line"></div>
             <div class="iot-pipe-arrow">&rarr;</div>
-            <span class="iot-pipe-protocol">Reactive State</span>
+            <span class="iot-pipe-protocol">UPI / Webhook</span>
           </div>
 
-          <!-- Step 5: Website -->
-          <div class="iot-node-step" style="border-top: 3px solid #38bdf8;">
-            <div class="iot-node-badge">STEP 5 &bull; UI</div>
-            <div class="iot-node-icon">💻</div>
-            <h4 class="iot-node-title highlight-cyan">Website</h4>
-            <div class="iot-node-sub">Real-Time PWA &amp; Receipt UI</div>
+          <!-- Step 5: Disbursement & App -->
+          <div class="iot-node-step" style="border-top: 3px solid #10b981;">
+            <div class="iot-node-badge">STEP 5 &bull; PAYOUT</div>
+            <div class="iot-node-icon">⚡</div>
+            <h4 class="iot-node-title highlight-green">Disbursement &amp; App</h4>
+            <div class="iot-node-sub">Real-Time Instant Banking</div>
             <div class="iot-node-specs">
-              <span>Client: <strong>Desktop &amp; Mobile</strong></span>
-              <span>Render: <strong>Continuous Curve</strong></span>
+              <span>Payout: <strong>Sandbox Instant UPI</strong></span>
+              <span>Receipt: <strong>Mobile Passbook &bull; SMS</strong></span>
             </div>
           </div>
         </div>
@@ -467,18 +491,18 @@
         <div class="iot-status-bar">
           <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem;">
             <span class="live-dot" style="background: #10b981;"></span>
-            <span>Link Telemetry: <strong style="color: #ffffff;" id="iot-status-text">Synchronized &bull; NIR 1730nm Lipids &amp; 2180nm Amide Bands Active</strong></span>
+            <span>SIH 2026 Telemetry: <strong style="color: #ffffff;" id="iot-status-text">Raspberry Pi 5 Hub (Quad 2.4GHz) &bull; ADS1115 16-Bit I2C Active &bull; Offline SQLite Ready</strong></span>
           </div>
           <div class="iot-ascii-mini">
-            <pre class="iot-ascii-pre">NIR Analyzer
+            <pre class="iot-ascii-pre">RC522 RFID
      ↓
-ESP32
+ADS1115 I2C
      ↓
-Wi-Fi
+Raspberry Pi 5
      ↓
-API
+Cloud Ledger
      ↓
-Website</pre>
+Instant UPI</pre>
           </div>
         </div>
       </div>
@@ -2243,11 +2267,15 @@ Manual/Test Data</pre>
   <script src="js/database.js"></script>
   <script src="js/sensors.js"></script>
   <script src="js/pricing.js"></script>
+  <script src="js/sih-deck.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/app.js"></script>
 
   <script>
     window.addEventListener('load', () => {
+      if (window.location.protocol === 'file:') {
+        document.querySelectorAll('a[href="/admin"]').forEach(el => el.setAttribute('href', 'admin.html'));
+      }
       setTimeout(() => {
         if (window.app) window.app.performTraceLookup('BATCH-DD-2026-9014');
       }, 200);

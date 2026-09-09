@@ -91,7 +91,7 @@ class DairyDovaApp {
 
   switchSection(sectionId) {
     if (sectionId === 'admin') {
-      window.location.href = 'admin.html';
+      window.location.href = window.location.protocol === 'file:' ? 'admin.html' : '/admin';
       return;
     }
 
@@ -716,7 +716,7 @@ class DairyDovaApp {
 
   // Admin Portal Navigation (Redirect to dedicated page)
   openAdminLoginModal() {
-    window.location.href = 'admin.html';
+    window.location.href = window.location.protocol === 'file:' ? 'admin.html' : '/admin';
   }
 
   closeAdminLoginModal() {

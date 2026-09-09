@@ -14,6 +14,7 @@
   <link rel="apple-touch-icon" href="assets/icon-192.png">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/sih-deck.css">
   <style>
     .admin-page-container {
       max-width: 1440px;
@@ -85,10 +86,10 @@
     <div class="nav-container">
       <a href="index.html" class="brand-wrapper" style="text-decoration: none;">
         <img src="assets/logo.svg" alt="DAIRY NOVA" class="brand-logo-img">
-        <span class="brand-badge">IoT CLOUD v2.5</span>
+        <span class="brand-badge">SIH 2026 &bull; RPi 5 EDGE</span>
       </a>
 
-      <nav class="nav-tabs" style="display: flex; gap: 8px;">
+      <nav class="nav-tabs" style="display: flex; gap: 8px; align-items: center;">
         <a href="index.html" class="nav-link-btn">
           <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
           Overview
@@ -100,12 +101,12 @@
         <a href="farmer-auth.html" class="nav-link-btn">
           👨‍🌾 Farmer Portal
         </a>
-        <a href="admin.html" class="nav-link-btn active">
+        <a href="/admin" class="nav-link-btn active">
           🏢 Admin Portal
         </a>
-        <a href="index.html#passbook" class="nav-link-btn">
-          📖 Passbook
-        </a>
+        <button class="nav-link-btn" onclick="window.openSIHDeck(1)" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.4); cursor: pointer;">
+          📊 SIH 2026 Deck
+        </button>
       </nav>
 
       <div class="header-actions">
@@ -381,6 +382,7 @@ Today's Payments    ₹0.00</pre>
   <script src="js/audio.js"></script>
   <script src="js/database.js"></script>
   <script src="js/charts.js"></script>
+  <script src="js/sih-deck.js"></script>
 
   <script>
     // ==================== ADMIN PORTAL CONTROLLER ====================
@@ -636,6 +638,14 @@ Today's Payments    ₹0.00</pre>
 
     // Toggle audio & theme
     document.addEventListener('DOMContentLoaded', () => {
+      // Canonicalize address bar URL to /admin when served over HTTP/HTTPS
+      if (window.location.protocol.startsWith('http') && window.location.pathname.endsWith('/admin.html')) {
+        window.history.replaceState(null, '', '/admin');
+      }
+      if (window.location.protocol === 'file:') {
+        document.querySelectorAll('a[href="/admin"]').forEach(el => el.setAttribute('href', 'admin.html'));
+      }
+
       checkAdminAuth();
       updateAdminDeviceUI(isDeviceConnected());
 
