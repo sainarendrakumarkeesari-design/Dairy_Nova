@@ -105,7 +105,7 @@
         <div class="overview-launchpad-header">
           <div class="overview-portal-badge">
             <span class="live-dot" style="background: #10b981;"></span>
-            <span>SIH 2026 &bull; TEAM PURELACTO &bull; IDEA SUBMISSION</span>
+            <span>TEAM PURELACTO &bull; SMART MILK AUTOMATION</span>
           </div>
           <h1 class="overview-portal-title">
             SMART MILK QUALITY, PURITY &amp; <span class="gradient-text">CLOUD PRICING</span>
@@ -115,8 +115,8 @@
           </p>
         </div>
 
-        <!-- Primary Action Cards Grid: Farmer Portal, Admin Login, Start Milk Test, SIH 2026 Pitch Deck -->
-        <div class="overview-cards-grid" id="overview-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+        <!-- Primary Action Cards Grid: Farmer Portal, Admin Login, Start Milk Test -->
+        <div class="overview-cards-grid" id="overview-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
           <!-- 1. FARMER LOGIN & SIGN UP -->
           <div class="overview-hub-card hub-card-farmer" onclick="window.app && window.app.handleFarmerCardClick ? window.app.handleFarmerCardClick() : window.location.href='farmer-auth.html'" id="card-farmer-login" style="cursor: pointer;">
             <div>
@@ -158,41 +158,21 @@
           </div>
 
           <!-- 3. START MILK TEST -->
-          <div class="overview-hub-card hub-card-test" onclick="window.location.href='testing.html'" id="card-milk-test" style="cursor: pointer;">
+          <div class="overview-hub-card hub-card-testing" onclick="window.location.href='testing.html'" id="card-testing-station" style="cursor: pointer;">
             <div>
               <div class="hub-card-top">
                 <div class="hub-card-icon icon-bg-purple">
-                  🧪
+                  🏭
                 </div>
-                <span class="hub-pill pill-purple">RPi 5 KIOSK</span>
+                <span class="hub-pill pill-purple">INTAKE TERMINAL</span>
               </div>
-              <h3 class="hub-card-title">Start Milk Test</h3>
+              <h3 class="hub-card-title">Milk Testing Station</h3>
               <p class="hub-card-desc">
                 Launch the Raspberry Pi 5 intake kiosk with ADS1115 16-bit ADC, SEN0161 pH, TS-300B turbidity, and instant UPI payout calculation.
               </p>
             </div>
             <div class="hub-action-btn btn-theme-purple">
               <span>Launch Kiosk</span>
-              <span>&rarr;</span>
-            </div>
-          </div>
-
-          <!-- 4. SIH 2026 PRESENTATION DECK -->
-          <div class="overview-hub-card" onclick="window.openSIHDeck(1)" id="card-sih-deck" style="cursor: pointer; border: 1px solid rgba(14, 165, 233, 0.35); background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), rgba(15, 23, 42, 0.75));">
-            <div>
-              <div class="hub-card-top">
-                <div class="hub-card-icon icon-bg-blue" style="background: rgba(14, 165, 233, 0.2); color: #38bdf8;">
-                  📑
-                </div>
-                <span class="hub-pill pill-cyan">SIH 2026 DECK</span>
-              </div>
-              <h3 class="hub-card-title" style="color: #ffffff;">SIH Presentation (6 Slides)</h3>
-              <p class="hub-card-desc">
-                Interactive view of all 6 slides: Registration Details, Pi 5 Solution, System Architecture, Risk Mitigation, Metrics, and Dynamic Pricing Formula.
-              </p>
-            </div>
-            <div class="hub-action-btn btn-theme-blue" style="background: #0284c7; color: #ffffff;">
-              <span>Open Presentation (Slides 01–06)</span>
               <span>&rarr;</span>
             </div>
           </div>
