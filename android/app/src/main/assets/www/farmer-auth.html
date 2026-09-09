@@ -380,6 +380,7 @@
         return;
       }
       const farmer = window.db.getFarmerById(selectedFarmerId);
+      localStorage.setItem('dairy_nova_active_farmer', JSON.stringify(farmer));
       localStorage.setItem('dairy_dova_active_farmer', JSON.stringify(farmer));
       if (window.soundCtrl) window.soundCtrl.playSuccessChime();
       window.location.href = 'index.html#passbook';
@@ -415,6 +416,7 @@
         rating: "Grade A+ Registered"
       });
 
+      localStorage.setItem('dairy_nova_active_farmer', JSON.stringify(newFarmer));
       localStorage.setItem('dairy_dova_active_farmer', JSON.stringify(newFarmer));
       if (window.soundCtrl) window.soundCtrl.playSuccessChime();
       alert(`🎉 Welcome to Dairy Nova, ${name}! Your RFID Card UID: ${rfid} has been issued.`);
