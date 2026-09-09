@@ -1,4 +1,4 @@
-# DAIRY NOVA (DAIRY DOVA) 🥛
+# DAIRY NOVA 🥛
 ### Smart Milk Quality, Purity & RFID Cloud-Based Pricing System
 
 An automated milk quality testing, IoT sensor simulation, interactive RFID farmer identification, 5-tier purity grading, and transparent cloud pricing platform.
