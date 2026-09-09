@@ -1,13 +1,23 @@
 /**
- * DAIRY DOVA - Cloud Database & LocalStorage Persistence Ledger
+ * DAIRY NOVA - Cloud Database & LocalStorage Persistence Ledger
  * Enhanced with Predefined Quality-Based Pricing Rules, Farmer Registration & Management
  */
 
+// Seamless migration from legacy dairy_dova keys to dairy_nova keys
+['farmers', 'records', 'config', 'quality_rules'].forEach(k => {
+  try {
+    const oldVal = localStorage.getItem('dairy_dova_' + k);
+    if (oldVal && !localStorage.getItem('dairy_nova_' + k)) {
+      localStorage.setItem('dairy_nova_' + k, oldVal);
+    }
+  } catch (e) {}
+});
+
 const STORAGE_KEYS = {
-  FARMERS: 'dairy_dova_farmers',
-  RECORDS: 'dairy_dova_records',
-  CONFIG: 'dairy_dova_config',
-  QUALITY_RULES: 'dairy_dova_quality_rules'
+  FARMERS: 'dairy_nova_farmers',
+  RECORDS: 'dairy_nova_records',
+  CONFIG: 'dairy_nova_config',
+  QUALITY_RULES: 'dairy_nova_quality_rules'
 };
 
 // Predefined Quality-Based Pricing Rules Matrix
@@ -324,7 +334,7 @@ class DatabaseManager {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.setAttribute('href', url);
-    link.setAttribute('download', `DairyDova_Quality_Passbook_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `DairyNova_Quality_Passbook_${new Date().toISOString().split('T')[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
