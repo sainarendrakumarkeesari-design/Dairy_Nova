@@ -575,7 +575,7 @@ class DairyDovaApp {
       if (isConn) {
         window.sensorEngine.disconnectDevice();
         this.updateDeviceStatusUI(false);
-        this.showToast('🔴 ESP32 Hardware Disconnected (Status: Connecting)', 'info');
+        this.showToast('🔴 Raspberry Pi 5 Hub Disconnected (Status: Connecting)', 'info');
         if (window.soundCtrl) window.soundCtrl.playTick();
       } else {
         const text = document.getElementById('index-iot-text');
@@ -586,7 +586,7 @@ class DairyDovaApp {
         setTimeout(() => {
           window.sensorEngine.connectDevice();
           this.updateDeviceStatusUI(true);
-          this.showToast('🟢 ESP32 Sensors connected & calibrated successfully!', 'success');
+          this.showToast('🟢 Raspberry Pi 5 Hub & ADS1115 Sensors connected successfully!', 'success');
           if (window.soundCtrl) window.soundCtrl.playSuccessChime();
         }, 500);
       }
@@ -2700,7 +2700,7 @@ class DairyDovaApp {
         </div>
         <div class="timeline-step done">
           <strong>2. Automated Smart Sensor Inspection</strong>
-          <div style="font-size: 0.82rem; color: var(--text-muted);">ESP32 Ultrasonic &amp; Optical Spectrophotometer tested ${record.volume.toFixed(1)}L. Assigned ${record.grade || 'GRADE A'}.</div>
+          <div style="font-size: 0.82rem; color: var(--text-muted);">Raspberry Pi 5 Hub &amp; ADS1115 16-Bit Array tested ${record.volume.toFixed(1)}L. Assigned ${record.grade || 'GRADE A'}.</div>
         </div>
         <div class="timeline-step done">
           <strong>3. Quality-Based Pricing &amp; Instant Bank Credit</strong>
@@ -2868,9 +2868,9 @@ class DairyDovaApp {
   }
 
   copyIotTelemetryFlowAscii() {
-    const text = `NIR Analyzer\n     ↓\nESP32\n     ↓\nWi-Fi\n     ↓\nAPI\n     ↓\nWebsite`;
+    const text = `ADS1115 Sensors\n     ↓\nRaspberry Pi 5\n     ↓\nWi-Fi / 4G\n     ↓\nCloud Ledger\n     ↓\nPortal`;
     navigator.clipboard.writeText(text).then(() => {
-      this.showToast('✅ IoT Telemetry Flow (NIR Analyzer ↓ ESP32 ↓ Wi-Fi ↓ API ↓ Website) copied!', 'success');
+      this.showToast('✅ IoT Telemetry Flow (Sensors ↓ Raspberry Pi 5 ↓ Cloud Ledger ↓ Portal) copied!', 'success');
     }).catch(() => {
       this.showToast('Telemetry flow: ' + text, 'info');
     });
@@ -2891,13 +2891,13 @@ class DairyDovaApp {
     if (window.soundCtrl) window.soundCtrl.playBeep();
 
     const textEl = document.getElementById('iot-status-text');
-    if (textEl) textEl.innerText = 'Transmitting packet: NIR Sensor (2ms) → ESP32 SPI (1ms) → Wi-Fi AP (5ms) → API Ingestion (4ms) → Website (2ms)...';
+    if (textEl) textEl.innerText = 'Transmitting packet: ADS1115 Sensors (2ms) → Raspberry Pi 5 I2C (1ms) → Cloud Ledger (5ms) → Portal (2ms)...';
 
     setTimeout(() => {
-      if (btn) btn.innerText = '⚡ Ping Pipeline (14ms)';
-      if (textEl) textEl.innerText = 'Packet Delivered: 14ms Total Latency • NIR Bands 900–2250nm Synchronized • 0% Packet Loss';
+      if (btn) btn.innerText = '⚡ Ping Pipeline (10ms)';
+      if (textEl) textEl.innerText = 'Packet Delivered: 10ms Total Latency • Raspberry Pi 5 Hub & ADS1115 Synchronized • 0% Packet Loss';
       if (window.soundCtrl) window.soundCtrl.playSuccess();
-      this.showToast('🚀 IoT Telemetry Link Ping: 14ms (NIR Analyzer → ESP32 → Wi-Fi → API → Website: Synchronized)', 'success');
+      this.showToast('🚀 IoT Telemetry Link Ping: 10ms (Sensors → Raspberry Pi 5 → Cloud Ledger → Portal: Synchronized)', 'success');
     }, 450);
   }
 
