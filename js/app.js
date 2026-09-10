@@ -63,17 +63,9 @@ class DairyDovaApp {
       themeBtn.addEventListener('click', () => this.toggleTheme());
     }
 
-    const heritageBtn = document.getElementById('heritage-theme-switch-btn');
-    if (heritageBtn) {
-      heritageBtn.addEventListener('click', () => this.toggleHeritageWallpaper());
-    }
-
-    // Restore saved heritage wallpaper
-    const savedWallpaper = localStorage.getItem('dairy_heritage_wallpaper');
-    if (savedWallpaper === 'pasture') {
-      document.body.classList.add('theme-heritage-pasture');
-      this.updateHeritageBtnLabel(true);
-    }
+    // Clean up any legacy heritage wallpaper settings
+    localStorage.removeItem('dairy_heritage_wallpaper');
+    document.body.classList.remove('theme-heritage-pasture');
 
     const soundBtn = document.getElementById('sound-toggle-btn');
     if (soundBtn) {
@@ -130,20 +122,6 @@ class DairyDovaApp {
     }
   }
 
-  toggleHeritageWallpaper() {
-    const isPasture = document.body.classList.toggle('theme-heritage-pasture');
-    localStorage.setItem('dairy_heritage_wallpaper', isPasture ? 'pasture' : 'desi');
-    this.updateHeritageBtnLabel(isPasture);
-    this.showToast(isPasture ? "Heritage Scenery: Golden Pasture Meadow" : "Heritage Scenery: Desi Gir Dairy Farm", "info");
-    if (window.soundCtrl) window.soundCtrl.playTick();
-  }
-
-  updateHeritageBtnLabel(isPasture) {
-    const label = document.getElementById('heritage-scene-text');
-    if (label) {
-      label.textContent = isPasture ? 'Pasture Meadow' : 'Desi Gir Farm';
-    }
-  }
 
   // --- App vs Web Display Mode Logic ---
   initViewMode() {
