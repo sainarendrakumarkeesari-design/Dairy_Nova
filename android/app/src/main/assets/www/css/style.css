@@ -111,43 +111,20 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   background-image: 
-    linear-gradient(180deg, rgba(5, 11, 22, 0.82) 0%, rgba(8, 18, 36, 0.86) 35%, rgba(5, 9, 18, 0.94) 100%),
-    radial-gradient(circle at 18% 12%, rgba(245, 158, 11, 0.14) 0%, transparent 48%),
-    radial-gradient(circle at 82% 82%, rgba(16, 185, 129, 0.12) 0%, transparent 48%),
-    url('../assets/heritage-dairy-bg.jpg');
-  background-size: cover;
-  background-position: center 25%;
-  background-repeat: no-repeat;
+    radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.06) 0%, transparent 40%),
+    linear-gradient(to bottom, transparent, rgba(7, 14, 27, 0.8));
   background-attachment: fixed;
-  transition: background-image 0.4s ease, background-color var(--transition-normal);
+  transition: background-color var(--transition-normal);
 }
 
-/* Heritage Pasture Meadow Background Alternate */
-body.theme-heritage-pasture {
-  background-image: 
-    linear-gradient(180deg, rgba(5, 11, 22, 0.82) 0%, rgba(8, 18, 36, 0.86) 35%, rgba(5, 9, 18, 0.94) 100%),
-    radial-gradient(circle at 18% 12%, rgba(245, 158, 11, 0.14) 0%, transparent 48%),
-    radial-gradient(circle at 82% 82%, rgba(16, 185, 129, 0.12) 0%, transparent 48%),
-    url('../assets/pasture-heritage-bg.jpg');
-}
-
-/* Light Theme Heritage Background */
+/* Light Theme Background */
 [data-theme="light"] body,
 body.light-theme {
   background-image: 
-    linear-gradient(180deg, rgba(248, 250, 252, 0.85) 0%, rgba(241, 245, 249, 0.9) 40%, rgba(248, 250, 252, 0.96) 100%),
-    radial-gradient(circle at 20% 15%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
-    url('../assets/heritage-dairy-bg.jpg');
-}
-
-[data-theme="light"] body.theme-heritage-pasture,
-body.light-theme.theme-heritage-pasture {
-  background-image: 
-    linear-gradient(180deg, rgba(248, 250, 252, 0.85) 0%, rgba(241, 245, 249, 0.9) 40%, rgba(248, 250, 252, 0.96) 100%),
-    radial-gradient(circle at 20% 15%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
-    url('../assets/pasture-heritage-bg.jpg');
+    radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.06) 0%, transparent 40%),
+    linear-gradient(to bottom, transparent, rgba(240, 244, 248, 0.8));
 }
 
 /* App Header & Navigation */

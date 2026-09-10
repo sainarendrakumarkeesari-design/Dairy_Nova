@@ -157,9 +157,6 @@
       </nav>
 
       <div class="header-actions">
-        <button class="heritage-theme-btn" id="heritage-theme-switch-btn" onclick="toggleHeritageWallpaper()" title="Switch Heritage Scenery (Desi Gir Farm / Pasture Meadow)" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(245, 158, 11, 0.14); border: 1px solid rgba(245, 158, 11, 0.35); color: #fbbf24; border-radius: var(--radius-full); padding: 0.35rem 0.8rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.2s;">
-          🌾 <span id="heritage-scene-text">Desi Gir Farm</span>
-        </button>
         <a href="index.html" class="btn btn-secondary btn-sm" style="text-decoration: none;">
           &larr; Back to Hub
         </a>
@@ -423,26 +420,9 @@
       window.location.href = 'index.html#passbook';
     }
 
-    // Heritage wallpaper switcher
-    window.toggleHeritageWallpaper = function() {
-      const isPasture = document.body.classList.toggle('theme-heritage-pasture');
-      localStorage.setItem('dairy_heritage_wallpaper', isPasture ? 'pasture' : 'desi');
-      updateHeritageButtonText(isPasture);
-    };
-
-    function updateHeritageButtonText(isPasture) {
-      const label = document.getElementById('heritage-scene-text');
-      if (label) {
-        label.textContent = isPasture ? 'Pasture Meadow' : 'Desi Gir Farm';
-      }
-    }
-
     window.addEventListener('DOMContentLoaded', () => {
-      const savedHeritage = localStorage.getItem('dairy_heritage_wallpaper');
-      if (savedHeritage === 'pasture') {
-        document.body.classList.add('theme-heritage-pasture');
-        updateHeritageButtonText(true);
-      }
+      localStorage.removeItem('dairy_heritage_wallpaper');
+      document.body.classList.remove('theme-heritage-pasture');
 
       if (window.location.protocol === 'file:') {
         document.querySelectorAll('a[href="/admin"]').forEach(el => el.setAttribute('href', 'admin.html'));
