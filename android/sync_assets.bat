@@ -1,6 +1,6 @@
 @echo off
-title Sync Dairy Dova Assets to Android App
-color 0A
+title Sync Dairy Nova Assets to Android App
+color 0E
 cd /d "%~dp0"
 
 echo ================================================================

@@ -1,9 +1,9 @@
 /* ==========================================================================
-   DAIRY DOVA - Progressive Web App Service Worker
+   DAIRY NOVA - Progressive Web App Service Worker
    Enables offline caching and instant loading on mobile devices
    ========================================================================== */
 
-const CACHE_NAME = 'dairy-dova-v2.8';
+const CACHE_NAME = 'dairy-nova-v2.9';
 const STATIC_ASSETS = [
   './',
   './index.html',

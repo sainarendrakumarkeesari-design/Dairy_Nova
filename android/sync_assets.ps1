@@ -1,5 +1,5 @@
 # ==============================================================================
-# DAIRY DOVA - Android Asset Synchronizer & Icon Generator
+# DAIRY NOVA - Android Asset Synchronizer & Icon Generator
 # Copies all root web files into the Android WebView asset directory
 # ==============================================================================
 
@@ -7,7 +7,7 @@ $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 $androidAssetWww = Join-Path $PSScriptRoot "app\src\main\assets\www"
 
 Write-Host "================================================================" -ForegroundColor Cyan
-Write-Host "  DAIRY DOVA - SYNCING ASSETS TO ANDROID APP" -ForegroundColor Green
+Write-Host "  DAIRY NOVA - SYNCING ASSETS TO ANDROID APP" -ForegroundColor Green
 Write-Host "================================================================" -ForegroundColor Cyan
 Write-Host "  Source: $root"
 Write-Host "  Destination: $androidAssetWww"

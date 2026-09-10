@@ -1,5 +1,5 @@
 /**
- * DAIRY DOVA - Dynamic SVG Data Visualizations
+ * DAIRY NOVA - Dynamic SVG Data Visualizations
  * Lightweight, zero-dependency charts for quality trends, volume analysis, and purity ratios
  */
 

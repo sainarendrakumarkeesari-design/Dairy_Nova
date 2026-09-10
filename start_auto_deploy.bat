@@ -1,5 +1,5 @@
 @echo off
-title Dairy Dova - Auto Deploy Watcher to GitHub
+title Dairy Nova - Auto Deploy Watcher to GitHub
 color 0B
 cd /d "%~dp0"
 

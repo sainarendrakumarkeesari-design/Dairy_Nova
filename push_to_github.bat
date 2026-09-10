@@ -1,10 +1,10 @@
 @echo off
 setlocal enabledelayedexpansion
-title Push Dairy Dova to GitHub
+title Push Dairy Nova to GitHub
 color 0A
 
 echo ================================================================
-echo   DAIRY DOVA - AUTOMATIC GITHUB DEPLOYMENT
+echo   DAIRY NOVA - AUTOMATIC GITHUB DEPLOYMENT
 echo ================================================================
 echo.
 

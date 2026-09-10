@@ -1,6 +1,6 @@
 {
-  "name": "Dairy Dova - Smart Milk Quality & Pricing",
-  "short_name": "Dairy Dova",
+  "name": "Dairy Nova - Smart Milk Quality & Pricing",
+  "short_name": "Dairy Nova",
   "description": "Smart Milk Quality, Purity & RFID Cloud-Based Pricing Mobile System",
   "start_url": "./index.html?mode=app",
   "display": "standalone",
