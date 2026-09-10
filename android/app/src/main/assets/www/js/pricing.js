@@ -1,5 +1,5 @@
 /**
- * DAIRY NOVA - Cloud-Based Dynamic Pricing Engine & Receipt Slip Generator
+ * DAIRY DOVA - Cloud-Based Dynamic Pricing Engine & Receipt Slip Generator
  * Implements SIH 2026 Dynamic Quality-Indexed Payment Formulation:
  * P_Total = V_Milk × [ R_Base + w_1 × Fat% + w_2 × SNF% ] × (1 - δ_Adulteration)
  * Key Research Literature & Citations: FSSAI, IEEE Agri-Food Electronics, NDDB AMCU
@@ -227,7 +227,7 @@ class PricingEngine {
     return `
       <div class="receipt-slip-container" id="printable-receipt">
         <div class="receipt-header">
-          <div class="receipt-brand">TEAM PURELACTO &bull; DAIRY NOVA</div>
+          <div class="receipt-brand">TEAM PURELACTO &bull; DAIRY DOVA</div>
           <div class="receipt-sub">SMART MILK QUALITY, PURITY &amp; CLOUD PRICING TERMINAL</div>
           <div style="font-size: 0.72rem; color: #38bdf8; font-family: var(--font-mono); margin-top: 2px;">
             SIH 2026 &bull; RASPBERRY PI 5 EDGE HUB &bull; ADS1115 16-BIT ADC

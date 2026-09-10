@@ -1,5 +1,5 @@
 /**
- * DAIRY NOVA - Web Audio API Sound Synthesizer
+ * DAIRY DOVA - Web Audio API Sound Synthesizer
  * Provides rich auditory feedback for RFID scanner, IoT sensor probing, alerts, and receipt printing
  */
 

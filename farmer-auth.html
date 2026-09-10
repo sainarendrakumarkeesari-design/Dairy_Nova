@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Farmer Sign In &amp; Sign Up | DAIRY NOVA Smart Milk System</title>
-  <meta name="description" content="Dedicated Farmer Authentication & Registration Portal for Dairy Nova Smart Milk System.">
+  <title>Farmer Sign In &amp; Sign Up | DAIRY DOVA Smart Milk System</title>
+  <meta name="description" content="Dedicated Farmer Authentication & Registration Portal for Dairy Dova Smart Milk System.">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#070e1b">
@@ -131,8 +131,8 @@
   <!-- ==================== HEADER & GLOBAL NAVIGATION ==================== -->
   <header class="header-glass">
     <div class="nav-container">
-      <a href="index.html" class="brand-wrapper" style="text-decoration: none;">
-        <img src="assets/logo.svg" alt="DAIRY NOVA" class="brand-logo-img">
+      <a href="index.html" class="brand-wrapper" title="DAIRY DOVA" style="text-decoration: none;">
+        <img src="assets/logo.svg" alt="DAIRY DOVA" class="brand-logo-img">
         <span class="brand-badge">IoT CLOUD v2.5</span>
       </a>
 
@@ -419,7 +419,7 @@
       localStorage.setItem('dairy_nova_active_farmer', JSON.stringify(newFarmer));
       localStorage.setItem('dairy_dova_active_farmer', JSON.stringify(newFarmer));
       if (window.soundCtrl) window.soundCtrl.playSuccessChime();
-      alert(`🎉 Welcome to Dairy Nova, ${name}! Your RFID Card UID: ${rfid} has been issued.`);
+      alert(`🎉 Welcome to Dairy Dova, ${name}! Your RFID Card UID: ${rfid} has been issued.`);
       window.location.href = 'index.html#passbook';
     }
 

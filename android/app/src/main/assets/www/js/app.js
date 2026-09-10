@@ -1,9 +1,9 @@
 /**
- * DAIRY NOVA - Main Application Coordinator
+ * DAIRY DOVA - Main Application Coordinator
  * Enhanced with Interactive RFID Scanner, Farmer Registration Modal, 2-Step Milk Quality Flow, and Mobile Simulator
  */
 
-class DairyNovaApp {
+class DairyDovaApp {
   constructor() {
     this.currentSection = 'overview';
     this.activeFarmer = null;
@@ -33,7 +33,7 @@ class DairyNovaApp {
     this.updateLiveSensorUI();
     this.refreshPassbook();
     this.refreshAdminDashboard();
-    this.updateDeviceStatusUI(sessionStorage.getItem('dairy_nova_hardware_connected') === 'true');
+    this.updateDeviceStatusUI(sessionStorage.getItem('dairy_dova_hardware_connected') === 'true' || sessionStorage.getItem('dairy_nova_hardware_connected') === 'true');
     this.initViewMode();
 
     const staleFooter = document.querySelector('.app-footer');
@@ -43,7 +43,7 @@ class DairyNovaApp {
       if (window.soundCtrl) window.soundCtrl.init();
     }, { once: true });
 
-    console.log("DAIRY NOVA initialized successfully with Farmer Registration & RFID Engine.");
+    console.log("DAIRY DOVA initialized successfully with Farmer Registration & RFID Engine.");
   }
 
   setupNavigation() {
@@ -201,9 +201,9 @@ class DairyNovaApp {
       // APP MODE: Farmer Sign In and Admin Login ONLY
       if (modeBtnIcon) modeBtnIcon.textContent = '📱';
       if (modeBtnText) modeBtnText.textContent = 'App Mode';
-      if (badgeText) badgeText.textContent = 'DAIRY NOVA • MOBILE APP';
+      if (badgeText) badgeText.textContent = 'DAIRY DOVA • MOBILE APP';
       if (portalTitle) portalTitle.innerHTML = 'SMART MILK <span class="gradient-text">MOBILE PORTAL</span>';
-      if (portalSub) portalSub.textContent = 'Welcome to the Dairy Nova Mobile Application. Sign in to access your producer passbook or cooperative administration.';
+      if (portalSub) portalSub.textContent = 'Welcome to the Dairy Dova Mobile Application. Sign in to access your producer passbook or cooperative administration.';
 
       if (farmerTitle) farmerTitle.textContent = 'Farmer Sign In';
       if (farmerDesc) farmerDesc.textContent = 'Sign in with your registered phone number or RFID card to view your milk passbook, daily collections, purity bonuses, and bank payouts.';
@@ -216,7 +216,7 @@ class DairyNovaApp {
       // WEB SITE MODE: Farmer Sign In & Sign Up + Admin Login + Start Milk Test
       if (modeBtnIcon) modeBtnIcon.textContent = '🌐';
       if (modeBtnText) modeBtnText.textContent = 'Web Mode';
-      if (badgeText) badgeText.textContent = 'DAIRY NOVA SMART MILK QUALITY TESTING';
+      if (badgeText) badgeText.textContent = 'DAIRY DOVA SMART MILK QUALITY TESTING';
       if (portalTitle) portalTitle.innerHTML = 'SMART MILK <span class="gradient-text">QUALITY SYSTEM</span>';
       if (portalSub) portalSub.textContent = 'Welcome to the centralized dairy portal. Access farmer records, cooperative admin management, automated optical milk quality testing, and new producer onboarding.';
 
@@ -2407,7 +2407,7 @@ class DairyNovaApp {
     container.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <div>
-          <div style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">DAIRY NOVA FARMER APP</div>
+          <div style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">DAIRY DOVA FARMER APP</div>
           <div style="font-size: 1.15rem; font-weight: 800;">${farmer.name}</div>
         </div>
         <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem;">
@@ -2642,7 +2642,7 @@ class DairyNovaApp {
           <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin: 0 auto 1rem;"><circle cx="12" cy="12" r="10" stroke-width="2"/><line x1="12" y1="8" x2="12" y2="12" stroke-width="2"/><line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2"/></svg>
           <h3>Batch "${code}" Not Found</h3>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
-            No matching certified records in the Dairy Nova Cloud Network. Please verify the batch number on your pouch.
+            No matching certified records in the Dairy Dova Cloud Network. Please verify the batch number on your pouch.
           </p>
         </div>
       `;
@@ -2741,7 +2741,7 @@ class DairyNovaApp {
     const latency = Math.floor(Math.random() * 8) + 12;
     const connEl = document.getElementById('atlas-conn-status');
     if (connEl) {
-      connEl.innerHTML = `mongodb+srv://cluster0.dairynova.mongodb.net (<span style="color: #10b981;">Connected &bull; ${latency}ms latency &bull; Primary M10 Replica</span>)`;
+      connEl.innerHTML = `mongodb+srv://cluster0.dairydova.mongodb.net (<span style="color: #10b981;">Connected &bull; ${latency}ms latency &bull; Primary M10 Replica</span>)`;
     }
     if (window.soundCtrl) window.soundCtrl.playSuccess();
     this.showToast(`⚡ MongoDB Atlas Cluster Ping: ${latency}ms (Connected: AWS Mumbai ap-south-1)`, 'success');
@@ -3070,8 +3070,9 @@ class DairyNovaApp {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  window.app = new DairyNovaApp();
-  window.DairyDovaApp = DairyNovaApp;
+  window.app = new DairyDovaApp();
+  window.DairyDovaApp = DairyDovaApp;
+  window.DairyNovaApp = DairyDovaApp;
   window.app.init();
 
   // Mobile Progressive Web App Service Worker Registration

@@ -2,7 +2,7 @@ param(
     [int]$port = 3000
 )
 
-# DAIRY NOVA - Lightweight Local Web Server (PowerShell HttpListener)
+# DAIRY DOVA - Lightweight Local Web Server (PowerShell HttpListener)
 # Serves static files on http://localhost:3000 without requiring Node.js or Python
 
 $prefix = "http://localhost:$port/"
@@ -19,7 +19,7 @@ try {
 try {
     $listener.Start()
     Write-Host "=================================================" -ForegroundColor Cyan
-    Write-Host " DAIRY NOVA Local Web Server Running!" -ForegroundColor Green
+    Write-Host " DAIRY DOVA Local Web Server Running!" -ForegroundColor Green
     Write-Host " URL: $prefix" -ForegroundColor Yellow
     Write-Host " Press Ctrl+C in this terminal to stop the server." -ForegroundColor Gray
     Write-Host "=================================================" -ForegroundColor Cyan

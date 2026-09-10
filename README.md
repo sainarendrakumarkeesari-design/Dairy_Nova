@@ -1,4 +1,4 @@
-# DAIRY NOVA 🥛
+# DAIRY DOVA 🥛
 ### Smart Milk Quality, Purity & RFID Cloud-Based Pricing System
 
 An automated milk quality testing, IoT sensor simulation, interactive RFID farmer identification, 5-tier purity grading, and transparent cloud pricing platform.
@@ -81,7 +81,7 @@ Simply open `index.html` in any modern web browser.
 
 ## ⚡ Continuous Auto-Deploy to GitHub
 
-Dairy Nova includes an automated file watcher that automatically stages, commits, and pushes any modifications to GitHub whenever a file is saved:
+Dairy Dova includes an automated file watcher that automatically stages, commits, and pushes any modifications to GitHub whenever a file is saved:
 
 1. Double-click **`start_auto_deploy.bat`** (or run `powershell -ExecutionPolicy Bypass -File .\auto_sync_github.ps1`).
 2. Any time you edit and save HTML, CSS, JS, or assets, the watcher automatically detects the change and pushes it to GitHub within 3 seconds!

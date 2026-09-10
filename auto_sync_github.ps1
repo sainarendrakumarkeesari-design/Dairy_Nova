@@ -1,5 +1,5 @@
 # ==============================================================================
-# DAIRY NOVA - Continuous Auto-Deploy File Watcher for GitHub
+# DAIRY DOVA - Continuous Auto-Deploy File Watcher for GitHub
 # Watches all project files and automatically commits & pushes changes to GitHub
 # ==============================================================================
 
@@ -13,7 +13,7 @@ $repoPath = $PSScriptRoot
 Set-Location $repoPath
 
 Write-Host "================================================================" -ForegroundColor Cyan
-Write-Host "  DAIRY NOVA - CONTINUOUS AUTO-DEPLOY FILE WATCHER" -ForegroundColor Green
+Write-Host "  DAIRY DOVA - CONTINUOUS AUTO-DEPLOY FILE WATCHER" -ForegroundColor Green
 Write-Host "================================================================" -ForegroundColor Cyan
 Write-Host "  Repository: https://github.com/sainarendrakumarkeesari-design/Dairy_Nova" -ForegroundColor White
 Write-Host "  Watching directory: $repoPath" -ForegroundColor White

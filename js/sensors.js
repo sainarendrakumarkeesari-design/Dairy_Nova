@@ -1,5 +1,5 @@
 /**
- * DAIRY NOVA - Embedded IoT Sensors & Raspberry Pi 5 Edge Terminal Simulator
+ * DAIRY DOVA - Embedded IoT Sensors & Raspberry Pi 5 Edge Terminal Simulator
  * Simulates:
  * - Compute Hub: Raspberry Pi 5 (Quad-Core 2.4GHz, 8GB)
  * - ADC Interfacing: ADS1115 16-Bit Precision I2C ADC (Channels A0, A1, A2, A3)
