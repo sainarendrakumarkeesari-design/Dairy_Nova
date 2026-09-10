@@ -745,6 +745,9 @@
         renderRfidDeck();
         if (window.soundCtrl) window.soundCtrl.playScan();
         showToast(`Farmer Identified via RC522: ${found.name} (${found.rfid})`, "info");
+      }
+    }
+
     function handleManualTestingRfid(value) {
       if (!value || !value.trim()) {
         showToast("⚠️ Please enter an RFID number (e.g. RFID-88192-A2)", "warning");
