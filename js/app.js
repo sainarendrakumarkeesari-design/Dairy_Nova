@@ -319,13 +319,13 @@ class DairyNovaApp {
     if (countBadge) countBadge.innerText = `${farmers.length} Cards Active`;
 
     container.innerHTML = farmers.map(f => `
-      <div class="overview-rfid-chip ${this.activeFarmer && this.activeFarmer.id === f.id ? 'active' : ''}" onclick="window.app.scanAndStartMilkTestFlow('${f.id}')" title="Scan RFID for ${f.name}">
+      <div class="overview-rfid-chip ${this.activeFarmer && this.activeFarmer.id === f.id ? 'active' : ''}" onclick="const inp = document.getElementById('overview-rfid-input'); if(inp) inp.value = '${f.rfid}'; window.app.enterManualRFID('${f.rfid}')" title="Click to view Farmer Details for ${f.name} (${f.rfid})">
         <div class="rfid-chip-icon">${f.cattleType === 'Buffalo' ? '🐃' : '🐄'}</div>
         <div class="rfid-chip-info">
           <strong class="rfid-chip-name">${f.name}</strong>
           <span class="rfid-chip-uid">${f.rfid} &bull; ${f.village}</span>
         </div>
-        <span class="rfid-chip-arrow">&rarr;</span>
+        <span class="rfid-chip-arrow" style="font-size: 0.72rem; color: #38bdf8; font-weight: 700;">Details &rarr;</span>
       </div>
     `).join('');
   }
