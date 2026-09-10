@@ -21,8 +21,6 @@ const STATIC_ASSETS = [
   './js/pricing.js',
   './js/sensors.js',
   './assets/logo.svg',
-  './assets/heritage-dairy-bg.jpg',
-  './assets/pasture-heritage-bg.jpg',
   './assets/icon-192.png',
   './assets/icon-512.png'
 ];
