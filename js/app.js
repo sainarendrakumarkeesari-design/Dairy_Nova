@@ -1,9 +1,9 @@
 /**
- * DAIRY DOVA - Main Application Coordinator
+ * DAIRY NOVA - Main Application Coordinator
  * Enhanced with Interactive RFID Scanner, Farmer Registration Modal, 2-Step Milk Quality Flow, and Mobile Simulator
  */
 
-class DairyDovaApp {
+class DairyNovaApp {
   constructor() {
     this.currentSection = 'overview';
     this.activeFarmer = null;
@@ -33,7 +33,7 @@ class DairyDovaApp {
     this.updateLiveSensorUI();
     this.refreshPassbook();
     this.refreshAdminDashboard();
-    this.updateDeviceStatusUI(sessionStorage.getItem('dairy_dova_hardware_connected') === 'true' || sessionStorage.getItem('dairy_nova_hardware_connected') === 'true');
+    this.updateDeviceStatusUI(sessionStorage.getItem('dairy_nova_hardware_connected') === 'true');
     this.initViewMode();
 
     const staleFooter = document.querySelector('.app-footer');
@@ -43,7 +43,7 @@ class DairyDovaApp {
       if (window.soundCtrl) window.soundCtrl.init();
     }, { once: true });
 
-    console.log("DAIRY DOVA initialized successfully with Farmer Registration & RFID Engine.");
+    console.log("DAIRY NOVA initialized successfully with Farmer Registration & RFID Engine.");
   }
 
   setupNavigation() {
@@ -63,9 +63,17 @@ class DairyDovaApp {
       themeBtn.addEventListener('click', () => this.toggleTheme());
     }
 
-    // Clean up any legacy heritage wallpaper settings
-    localStorage.removeItem('dairy_heritage_wallpaper');
-    document.body.classList.remove('theme-heritage-pasture');
+    const heritageBtn = document.getElementById('heritage-theme-switch-btn');
+    if (heritageBtn) {
+      heritageBtn.addEventListener('click', () => this.toggleHeritageWallpaper());
+    }
+
+    // Restore saved heritage wallpaper
+    const savedWallpaper = localStorage.getItem('dairy_heritage_wallpaper');
+    if (savedWallpaper === 'pasture') {
+      document.body.classList.add('theme-heritage-pasture');
+      this.updateHeritageBtnLabel(true);
+    }
 
     const soundBtn = document.getElementById('sound-toggle-btn');
     if (soundBtn) {
@@ -88,7 +96,7 @@ class DairyDovaApp {
     }
 
     this.currentSection = sectionId;
-    
+
     document.querySelectorAll('.nav-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.section === sectionId);
     });
@@ -122,12 +130,26 @@ class DairyDovaApp {
     }
   }
 
+  toggleHeritageWallpaper() {
+    const isPasture = document.body.classList.toggle('theme-heritage-pasture');
+    localStorage.setItem('dairy_heritage_wallpaper', isPasture ? 'pasture' : 'desi');
+    this.updateHeritageBtnLabel(isPasture);
+    this.showToast(isPasture ? "Heritage Scenery: Golden Pasture Meadow" : "Heritage Scenery: Desi Gir Dairy Farm", "info");
+    if (window.soundCtrl) window.soundCtrl.playTick();
+  }
+
+  updateHeritageBtnLabel(isPasture) {
+    const label = document.getElementById('heritage-scene-text');
+    if (label) {
+      label.textContent = isPasture ? 'Pasture Meadow' : 'Desi Gir Farm';
+    }
+  }
 
   // --- App vs Web Display Mode Logic ---
   initViewMode() {
     const urlParams = new URLSearchParams(window.location.search);
     const modeParam = urlParams.get('mode');
-    
+
     let activeMode = 'web';
     if (modeParam === 'app') {
       activeMode = 'app';
@@ -179,9 +201,9 @@ class DairyDovaApp {
       // APP MODE: Farmer Sign In and Admin Login ONLY
       if (modeBtnIcon) modeBtnIcon.textContent = '📱';
       if (modeBtnText) modeBtnText.textContent = 'App Mode';
-      if (badgeText) badgeText.textContent = 'DAIRY DOVA • MOBILE APP';
+      if (badgeText) badgeText.textContent = 'DAIRY NOVA • MOBILE APP';
       if (portalTitle) portalTitle.innerHTML = 'SMART MILK <span class="gradient-text">MOBILE PORTAL</span>';
-      if (portalSub) portalSub.textContent = 'Welcome to the Dairy Dova Mobile Application. Sign in to access your producer passbook or cooperative administration.';
+      if (portalSub) portalSub.textContent = 'Welcome to the Dairy Nova Mobile Application. Sign in to access your producer passbook or cooperative administration.';
 
       if (farmerTitle) farmerTitle.textContent = 'Farmer Sign In';
       if (farmerDesc) farmerDesc.textContent = 'Sign in with your registered phone number or RFID card to view your milk passbook, daily collections, purity bonuses, and bank payouts.';
@@ -194,7 +216,7 @@ class DairyDovaApp {
       // WEB SITE MODE: Farmer Sign In & Sign Up + Admin Login + Start Milk Test
       if (modeBtnIcon) modeBtnIcon.textContent = '🌐';
       if (modeBtnText) modeBtnText.textContent = 'Web Mode';
-      if (badgeText) badgeText.textContent = 'DAIRY DOVA SMART MILK QUALITY TESTING';
+      if (badgeText) badgeText.textContent = 'DAIRY NOVA SMART MILK QUALITY TESTING';
       if (portalTitle) portalTitle.innerHTML = 'SMART MILK <span class="gradient-text">QUALITY SYSTEM</span>';
       if (portalSub) portalSub.textContent = 'Welcome to the centralized dairy portal. Access farmer records, cooperative admin management, automated optical milk quality testing, and new producer onboarding.';
 
@@ -342,8 +364,8 @@ class DairyDovaApp {
     }
     const q = value.trim().toLowerCase();
     const farmers = window.db.getFarmers();
-    const match = farmers.find(f => 
-      (f.rfid && f.rfid.toLowerCase() === q) || 
+    const match = farmers.find(f =>
+      (f.rfid && f.rfid.toLowerCase() === q) ||
       (f.id && f.id.toLowerCase() === q) ||
       (f.name && f.name.toLowerCase().includes(q))
     );
@@ -361,9 +383,9 @@ class DairyDovaApp {
     if (!farmer) {
       const farmers = window.db.getFarmers();
       const q = (farmerIdOrRfid || '').toString().toLowerCase().trim();
-      farmer = farmers.find(f => 
-        (f.rfid && f.rfid.toLowerCase() === q) || 
-        (f.id && f.id.toLowerCase() === q) || 
+      farmer = farmers.find(f =>
+        (f.rfid && f.rfid.toLowerCase() === q) ||
+        (f.id && f.id.toLowerCase() === q) ||
         (f.name && f.name.toLowerCase().includes(q))
       );
     }
@@ -467,7 +489,7 @@ class DairyDovaApp {
   // Registration & Onboarding for Farmers (Unified in Farmer Portal)
   setupFarmerRegistration() {
     const openBtns = [
-      document.getElementById('btn-open-register-modal'), 
+      document.getElementById('btn-open-register-modal'),
       document.getElementById('btn-open-register-modal-passbook'),
       document.getElementById('btn-open-register-modal-intake'),
       document.getElementById('btn-open-register-modal-admin')
@@ -733,13 +755,13 @@ class DairyDovaApp {
 
     if (enteredPin !== 'NANI@2005') {
       if (window.soundCtrl) window.soundCtrl.playWarning();
-      
+
       // 1. Show prominent error banner in the modal
       if (errEl) {
         if (errText) errText.innerText = 'Incorrect password! Please try again.';
         errEl.style.display = 'flex';
       }
-      
+
       // 2. Highlight password field in red
       if (pinInput) {
         pinInput.style.borderColor = '#ef4444';
@@ -781,7 +803,7 @@ class DairyDovaApp {
   populateFarmerSelectors() {
     const farmers = window.db.getFarmers();
     const selectors = ['intake-farmer-select', 'passbook-farmer-select'];
-    
+
     selectors.forEach(id => {
       const el = document.getElementById(id);
       if (!el) return;
@@ -1228,11 +1250,11 @@ class DairyDovaApp {
       mstatusTierText.innerText = `${scoreTier.icon} ${scoreTier.label}`;
       mstatusTierText.style.color = scoreTier.color;
       mstatusBox.style.borderColor = scoreTier.color;
-      mstatusBox.style.background = scoreTier.color === '#ef4444' 
-        ? 'rgba(239, 68, 68, 0.12)' 
-        : scoreTier.color === '#f59e0b' 
-        ? 'rgba(245, 158, 11, 0.12)' 
-        : 'rgba(16, 185, 129, 0.12)';
+      mstatusBox.style.background = scoreTier.color === '#ef4444'
+        ? 'rgba(239, 68, 68, 0.12)'
+        : scoreTier.color === '#f59e0b'
+          ? 'rgba(245, 158, 11, 0.12)'
+          : 'rgba(16, 185, 129, 0.12)';
     }
 
     // Highlight active tier rule chip: 90–100 PREMIUM, 75–89 GOOD, 60–74 AVERAGE, <60 POOR
@@ -1278,13 +1300,13 @@ class DairyDovaApp {
       if (totalValEl) totalValEl.innerText = `${pts.total} / 100`;
       if (totalBarEl) {
         totalBarEl.style.width = `${pts.total}%`;
-        totalBarEl.style.background = pts.total >= 90 
-          ? 'linear-gradient(90deg, #10b981, #0ea5e9)' 
-          : pts.total >= 75 
-          ? '#10b981' 
-          : pts.total >= 60 
-          ? '#f59e0b' 
-          : '#ef4444';
+        totalBarEl.style.background = pts.total >= 90
+          ? 'linear-gradient(90deg, #10b981, #0ea5e9)'
+          : pts.total >= 75
+            ? '#10b981'
+            : pts.total >= 60
+              ? '#f59e0b'
+              : '#ef4444';
       }
       if (totalBadgeEl) {
         totalBadgeEl.innerText = `${scoreTier.icon} ${scoreTier.label}`;
@@ -1437,11 +1459,11 @@ class DairyDovaApp {
                 </span>
               </div>
               <h3 style="font-size: 1.5rem; margin-top: 6px; color: ${classification.color};">
-                ${classification.code === 'GRADE A+' ? '🏆 Grade A+ Certified: 100% Pure Organic Milk' : 
-                  classification.code === 'GRADE A' ? '🥇 Grade A Certified: Standard Cooperative Quality' :
-                  classification.code === 'GRADE B' ? '🥈 Grade B Assigned: Marginal Composition Discounted' :
-                  classification.code === 'GRADE C' ? '🥉 Grade C Assigned: Diluted / High Water Penalty' :
-                  '🚨 Grade F Assigned: Chemical Adulteration Confiscated'}
+                ${classification.code === 'GRADE A+' ? '🏆 Grade A+ Certified: 100% Pure Organic Milk' :
+          classification.code === 'GRADE A' ? '🥇 Grade A Certified: Standard Cooperative Quality' :
+            classification.code === 'GRADE B' ? '🥈 Grade B Assigned: Marginal Composition Discounted' :
+              classification.code === 'GRADE C' ? '🥉 Grade C Assigned: Diluted / High Water Penalty' :
+                '🚨 Grade F Assigned: Chemical Adulteration Confiscated'}
               </h3>
               <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">
                 ${classification.description}
@@ -2004,7 +2026,7 @@ class DairyDovaApp {
     const scanBtn = document.getElementById('btn-run-scan');
     const laser = document.getElementById('tank-scan-laser');
     const diagBanner = document.getElementById('sensor-diagnostic-banner');
-    
+
     if (scanBtn) {
       scanBtn.disabled = true;
       scanBtn.innerHTML = `
@@ -2060,7 +2082,7 @@ class DairyDovaApp {
         }
       } else {
         clearInterval(interval);
-        
+
         const s = window.sensorEngine.state;
         const farmer = this.activeFarmer || window.db.getFarmers()[0];
         window.sensorEngine.recalculateDerivedParameters();
@@ -2231,12 +2253,12 @@ class DairyDovaApp {
     setInner('pricing-preview-base', `₹${pricing.baseRate.toFixed(2)}/L`);
     setInner('pricing-preview-fat-adj', `${pricing.fatDiff > 0 ? '+' : ''}₹${pricing.fatAdjustment.toFixed(2)}`);
     setInner('pricing-preview-snf-adj', `${pricing.snfDiff > 0 ? '+' : ''}₹${pricing.snfAdjustment.toFixed(2)}`);
-    
-    const qualityAdjText = pricing.qualityBonusOrDeduction > 0 
-      ? `+₹${pricing.qualityBonusOrDeduction.toFixed(2)} (${pricing.grade})` 
-      : pricing.qualityBonusOrDeduction < 0 
-      ? `-₹${Math.abs(pricing.qualityBonusOrDeduction).toFixed(2)} (${pricing.grade})` 
-      : `₹0.00 (Standard)`;
+
+    const qualityAdjText = pricing.qualityBonusOrDeduction > 0
+      ? `+₹${pricing.qualityBonusOrDeduction.toFixed(2)} (${pricing.grade})`
+      : pricing.qualityBonusOrDeduction < 0
+        ? `-₹${Math.abs(pricing.qualityBonusOrDeduction).toFixed(2)} (${pricing.grade})`
+        : `₹0.00 (Standard)`;
     setInner('pricing-preview-quality-tier', qualityAdjText);
     const qualityAdjEl = document.getElementById('pricing-preview-quality-tier');
     if (qualityAdjEl) {
@@ -2385,7 +2407,7 @@ class DairyDovaApp {
     container.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <div>
-          <div style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">DAIRY DOVA FARMER APP</div>
+          <div style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">DAIRY NOVA FARMER APP</div>
           <div style="font-size: 1.15rem; font-weight: 800;">${farmer.name}</div>
         </div>
         <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem;">
@@ -2620,7 +2642,7 @@ class DairyDovaApp {
           <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin: 0 auto 1rem;"><circle cx="12" cy="12" r="10" stroke-width="2"/><line x1="12" y1="8" x2="12" y2="12" stroke-width="2"/><line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2"/></svg>
           <h3>Batch "${code}" Not Found</h3>
           <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">
-            No matching certified records in the Dairy Dova Cloud Network. Please verify the batch number on your pouch.
+            No matching certified records in the Dairy Nova Cloud Network. Please verify the batch number on your pouch.
           </p>
         </div>
       `;
@@ -2719,7 +2741,7 @@ class DairyDovaApp {
     const latency = Math.floor(Math.random() * 8) + 12;
     const connEl = document.getElementById('atlas-conn-status');
     if (connEl) {
-      connEl.innerHTML = `mongodb+srv://cluster0.dairydova.mongodb.net (<span style="color: #10b981;">Connected &bull; ${latency}ms latency &bull; Primary M10 Replica</span>)`;
+      connEl.innerHTML = `mongodb+srv://cluster0.dairynova.mongodb.net (<span style="color: #10b981;">Connected &bull; ${latency}ms latency &bull; Primary M10 Replica</span>)`;
     }
     if (window.soundCtrl) window.soundCtrl.playSuccess();
     this.showToast(`⚡ MongoDB Atlas Cluster Ping: ${latency}ms (Connected: AWS Mumbai ap-south-1)`, 'success');
@@ -3048,9 +3070,8 @@ class DairyDovaApp {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  window.app = new DairyDovaApp();
-  window.DairyDovaApp = DairyDovaApp;
-  window.DairyNovaApp = DairyDovaApp;
+  window.app = new DairyNovaApp();
+  window.DairyDovaApp = DairyNovaApp;
   window.app.init();
 
   // Mobile Progressive Web App Service Worker Registration
