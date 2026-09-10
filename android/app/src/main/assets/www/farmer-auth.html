@@ -201,6 +201,20 @@
           </div>
         </div>
 
+        <!-- Manual RFID Number Entry -->
+        <div style="margin-bottom: 1.25rem;">
+          <label class="form-label" for="signin-rfid-input" style="display: flex; justify-content: space-between;">
+            <span>Or Enter RFID Number:</span>
+            <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: normal;">e.g. RFID-88192-A2</span>
+          </label>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="signin-rfid-input" class="form-input" placeholder="Type RFID UID number (e.g. RFID-88192-A2)..." onkeydown="if (event.key === 'Enter') handleRfidInputSignIn(this.value)" style="font-family: var(--font-mono); font-size: 0.88rem;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="handleRfidInputSignIn(document.getElementById('signin-rfid-input').value)" style="white-space: nowrap; padding: 0.5rem 0.9rem;">
+              Verify &amp; Open
+            </button>
+          </div>
+        </div>
+
         <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-md); padding: 0.85rem 1rem; display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem;">
           <span style="font-size: 1.5rem;">📶</span>
           <div style="font-size: 0.85rem; color: var(--text-muted);">
@@ -371,16 +385,43 @@
       if (window.soundCtrl) window.soundCtrl.playTick();
     }
 
+    function handleRfidInputSignIn(rfidVal) {
+      if (!rfidVal || !rfidVal.trim()) {
+        alert('Please enter an RFID number (e.g. RFID-88192-A2).');
+        return;
+      }
+      const q = rfidVal.trim().toLowerCase();
+      const farmers = window.db.getFarmers();
+      const farmer = farmers.find(f => 
+        (f.rfid && f.rfid.toLowerCase() === q) || 
+        (f.id && f.id.toLowerCase() === q) || 
+        (f.rfid && f.rfid.toLowerCase().replace(/[^a-z0-9]/g, '') === q.replace(/[^a-z0-9]/g, ''))
+      );
+      if (!farmer) {
+        alert(`RFID "${rfidVal}" not found in registered database. Please verify or register.`);
+        return;
+      }
+      localStorage.setItem('dairy_nova_active_farmer', JSON.stringify(farmer));
+      localStorage.setItem('dairy_dova_active_farmer', JSON.stringify(farmer));
+      if (window.soundCtrl) window.soundCtrl.playSuccessChime();
+      window.location.href = `index.html?farmer=${farmer.id}#passbook`;
+    }
+
     function handleSignInSubmit() {
+      const rfidInput = document.getElementById('signin-rfid-input');
+      if (rfidInput && rfidInput.value.trim()) {
+        handleRfidInputSignIn(rfidInput.value);
+        return;
+      }
       if (!selectedFarmerId) {
-        alert('Please select a farmer profile to sign in.');
+        alert('Please select a farmer profile or enter an RFID number to sign in.');
         return;
       }
       const farmer = window.db.getFarmerById(selectedFarmerId);
       localStorage.setItem('dairy_nova_active_farmer', JSON.stringify(farmer));
       localStorage.setItem('dairy_dova_active_farmer', JSON.stringify(farmer));
       if (window.soundCtrl) window.soundCtrl.playSuccessChime();
-      window.location.href = 'index.html#passbook';
+      window.location.href = `index.html?farmer=${farmer.id}#passbook`;
     }
 
     function handleSignUpSubmit(e) {

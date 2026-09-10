@@ -494,16 +494,27 @@
 
         <!-- Registered Farmer RFID Deck -->
         <div class="card-glass">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 8px;">
             <div>
               <h3 style="font-size: 1.1rem; color: #ffffff; margin: 0;">Select Producer RFID</h3>
               <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
-                Click any enrolled farmer card below to bind the test intake session
+                Tap enrolled farmer card to test, or enter RFID number manually to view farmer details
               </p>
             </div>
             <a href="farmer-auth.html?mode=signup" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; text-decoration: none;">
               + Enroll New
             </a>
+          </div>
+
+          <!-- Manual RFID Number Entry Row -->
+          <div style="display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap;">
+            <div style="position: relative; flex: 1; min-width: 260px;">
+              <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem;">💳</span>
+              <input type="text" id="testing-manual-rfid-input" class="form-input" placeholder="Don't scan RFID? Enter RFID number (e.g. RFID-88192-A2)..." style="padding-left: 38px; width: 100%; font-size: 0.85rem;" onkeydown="if (event.key === 'Enter') handleManualTestingRfid(this.value)">
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="handleManualTestingRfid(document.getElementById('testing-manual-rfid-input').value)" style="display: inline-flex; align-items: center; gap: 6px; padding: 0.5rem 1rem;">
+              <span>👨‍🌾</span> View Farmer Details &rarr;
+            </button>
           </div>
 
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem;" id="farmer-rfid-deck">
@@ -734,6 +745,32 @@
         renderRfidDeck();
         if (window.soundCtrl) window.soundCtrl.playScan();
         showToast(`Farmer Identified via RC522: ${found.name} (${found.rfid})`, "info");
+      }
+    }
+
+    function handleManualTestingRfid(value) {
+      if (!value || !value.trim()) {
+        showToast("⚠️ Please enter an RFID number (e.g. RFID-88192-A2)", "warning");
+        return;
+      }
+      const q = value.trim().toLowerCase();
+      const farmers = window.db.getFarmers();
+      const match = farmers.find(f => 
+        (f.rfid && f.rfid.toLowerCase() === q) || 
+        (f.id && f.id.toLowerCase() === q) ||
+        (f.name && f.name.toLowerCase().includes(q)) ||
+        (f.rfid && f.rfid.toLowerCase().replace(/[^a-z0-9]/g, '') === q.replace(/[^a-z0-9]/g, ''))
+      );
+      if (match) {
+        localStorage.setItem('dairy_dova_active_farmer', JSON.stringify(match));
+        localStorage.setItem('dairy_nova_active_farmer', JSON.stringify(match));
+        showToast(`✅ RFID Identified: ${match.name}. Opening Farmer Details...`, "success");
+        if (window.soundCtrl) window.soundCtrl.playSuccessChime();
+        setTimeout(() => {
+          window.location.href = `index.html?farmer=${match.id}#passbook`;
+        }, 300);
+      } else {
+        showToast(`⚠️ RFID "${value}" not found in registered database`, "danger");
       }
     }
 
